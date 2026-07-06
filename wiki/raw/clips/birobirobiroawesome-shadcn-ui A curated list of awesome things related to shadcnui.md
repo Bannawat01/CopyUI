@@ -7,6 +7,7 @@ created: 2026-07-06
 description: "A curated list of awesome things related to shadcn/ui. - birobirobiro/awesome-shadcn-ui"
 tags:
   - "clippings"
+status: processed
 ---
 [![awesome-shadcn/ui logo](https://github.com/birobirobiro/awesome-shadcn-ui/raw/main/public/logo.svg)](https://awesome-shadcn-ui.vercel.app/)
 

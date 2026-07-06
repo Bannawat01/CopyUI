@@ -3,22 +3,29 @@
 **Status: [implemented]**
 
 ## Flow
-1. User selects a primary color via `ColorControl` on the
+1. User selects a primary color via `ColorControl` and a **tool mode**
+   (`v0.dev` / `Cursor` / `GenVibe`) via `ToolModeSelector` on the
    [Detail Page](detail-page.md).
 2. Clicking "Copy Prompt" (`CopyPromptButton`, client component) immediately
    flips to a `loading` state (spinner icon, button `disabled` +
    `aria-busy="true"` to prevent double submits) and POSTs
-   `{ primaryColor }` to `POST /api/prompts/[slug]/build`.
+   `{ primaryColor, toolMode }` to `POST /api/prompts/[slug]/build`.
 3. The route handler (`src/app/api/prompts/[slug]/build/route.ts`) looks up
    the prompt server-side, validates `primaryColor` against a hex-color
-   regex (falls back to the theme's default if invalid/missing), calls
-   `buildPrompt()`, and returns `{ text }` as JSON.
+   regex (falls back to the theme's default if invalid/missing) and
+   `toolMode` against `isToolMode()` (falls back to no tool framing if
+   invalid/missing), calls `buildPrompt()` to substitute `{{primaryColor}}`,
+   then `applyToolMode()` to prepend the tool-specific framing paragraph
+   (see [prompt-system.md](prompt-system.md)), and returns `{ text,
+   toolMode }` as JSON.
 4. The client calls `navigator.clipboard.writeText(text)`.
 5. Button label animates to Copied!/Copy failed (Framer Motion
    `AnimatePresence`), and a color-coded status line below the button
    (green for success, red for failure) is wired to `role="status"
    aria-live="polite"` so screen reader users get the same feedback as the
-   visual state. Reverts to idle after ~2.2s.
+   visual state — now reading "Copied — tailored for {tool}" on success so
+   the tool mode is reflected in the feedback too. Reverts to idle after
+   ~2.2s.
 
 ## Visual redesign impact
 The gallery/detail visual redesign (bigger preview, template-tile cards,

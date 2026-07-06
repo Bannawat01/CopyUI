@@ -2,15 +2,16 @@
 
 **Status: [MVP done + UX/QA polish done + prompt content/preview pass done +
 prompt output-quality refinement done + premium marketplace visual
-redesign done + 18-theme dataset expansion done]**
+redesign done + 18-theme dataset expansion done + motion/interaction pass
+done + Tool Mode feature done]**
 
 The MVP described in CLAUDE.md is implemented, polished, has
 production-ready prompt content, a premium dark template-marketplace
-visual identity, and now a much larger dataset: **18 themes across 12
-categories** (up from 6), each with its own screenshot-like preview
-mockup, and category-pill filtering on the Gallery page working alongside
-search. Passes `npm run build` / `npm run lint`. Suggested next steps, in
-rough order:
+visual identity, a large dataset (**18 themes across 12 categories**), a
+full motion/interaction pass, and now a **Tool Mode** selector (v0.dev /
+Cursor / GenVibe) that tailors the hidden, server-built prompt to the
+target AI tool via a tool-specific framing prefix. Passes `npm run build` /
+`npm run lint`. Suggested next steps, in rough order:
 
 1. Consider replacing the hand-built CSS/div screenshot mockups with real
    thumbnail images, rendered screenshots, or live-rendered component
@@ -37,17 +38,42 @@ rough order:
 5. Add automated tests (none exist yet) for `buildPrompt()`, the
    `/api/prompts/[slug]/build` route, and the search/category-filter/
    empty-state and copy-feedback UI.
-6. **[uncertain]** Verify real-browser/keyboard behavior for the polish-pass
-   and category-pill changes (stretched-link cards, focus-visible rings,
-   aria-live copy status, aria-pressed pills) — checked via build/lint/curl
-   only so far, not a live browser or screen reader session.
+6. **[uncertain]** Verify real-browser/keyboard behavior for the polish-pass,
+   category-pill, and now motion-pass changes (stretched-link cards,
+   focus-visible rings, aria-live copy status, aria-pressed pills, the new
+   hover/focus-unified card animation, staggered entrances, and — most
+   importantly — actual `prefers-reduced-motion` behavior in a real OS
+   setting) — checked via build/lint/curl only so far, never in a live
+   browser or with an OS-level reduced-motion toggle actually flipped on.
 7. **[uncertain]** The prompt templates (refined twice, plus 12 new ones
-   written to the same bar) have still not been tried against an actual AI
-   tool (v0.dev/Cursor/GenVibe) — this remains the most important
-   unverified assumption in the project. All refinement so far has been
-   judged by reading the prompt text, not by generating and inspecting
-   real UI output.
-8. Explicitly out of scope per CLAUDE.md / this task: backend persistence,
+   written to the same bar) — and now the 3 Tool Mode framings on top of
+   them — have still not been tried against an actual AI tool
+   (v0.dev/Cursor/GenVibe) — this remains the most important unverified
+   assumption in the project. All refinement so far has been judged by
+   reading the prompt text, not by generating and inspecting real UI
+   output. This is doubly true for Tool Mode: the framing prefixes were
+   written based on how each tool is generally understood to work, not
+   validated against real output from any of the three.
+8. **[uncertain]** Tool Mode uses one shared framing prefix per tool
+   across all 18 themes, rather than per-theme-per-tool tuning — worth
+   revisiting if a specific theme+tool combination turns out to need more
+   than a generic prefix (e.g. the Kanban board under Cursor mode might
+   want more specific state-management guidance than the generic
+   "propose a file structure" framing gives it).
+9. Explicitly out of scope per CLAUDE.md / this task: backend persistence,
    auth, payments, database, admin features. Revisit only when asked.
+10. New, from clip research (see [feature-ideas.md](feature-ideas.md)):
+    consider an "Open in v0.dev" deep link alongside Copy Prompt when Tool
+    Mode = v0 (Cult UI pattern); a client-side Most Copied/Newest sort
+    using the existing mock `copies` stat (21st.dev pattern); and a count
+    badge per category pill (Shadcnblocks pattern). All three are small,
+    backend-free, and evaluated but not yet built.
+11. **[uncertain]** Re-clip Magic UI, Aceternity UI, Motion-Primitives,
+    and Superdesign UI Design Prompts directly if their intended research
+    (motion technique detail, prompt-writing quality guidance) is still
+    wanted — none were found among the processed `wiki/raw/clips` files,
+    so [motion-inspiration.md](motion-inspiration.md) and
+    [prompt-quality.md](prompt-quality.md) currently have thin or
+    substitute-only source material.
 
 This list should be revised as decisions are made — do not treat it as fixed.

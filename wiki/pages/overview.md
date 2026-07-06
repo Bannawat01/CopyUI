@@ -40,7 +40,10 @@ layout, visual hierarchy, components & states, design language, responsive
 behavior, accessibility, `{{primaryColor}}` injection) and its own
 screenshot-like preview mockup. The Gallery page now has category-pill
 filtering (All/Landing/Dashboard/SaaS/Ecommerce/AI/Portfolio/Docs) working
-alongside search. `npm run lint` and `npm run build` both pass clean.
+alongside search, a full motion/interaction pass, and a **Tool Mode**
+selector on the Detail page (v0.dev / Cursor / GenVibe) that tailors the
+hidden, server-built prompt to the target AI tool. `npm run lint` and
+`npm run build` both pass clean.
 
 ## Not yet built
 No backend, auth, payments, database, or admin features — out of scope per

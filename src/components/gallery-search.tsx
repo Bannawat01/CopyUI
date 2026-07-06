@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { PromptGrid } from "@/components/prompt-grid";
 import { GALLERY_CATEGORIES, type PublicPromptTheme } from "@/lib/prompts";
@@ -60,13 +61,20 @@ export function GallerySearch({ prompts }: { prompts: PublicPromptTheme[] }) {
               type="button"
               aria-pressed={active}
               onClick={() => setCategory(c)}
-              className={`rounded-full border px-3 py-1.5 text-sm font-medium outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 ${
+              className={`relative rounded-full px-3 py-1.5 text-sm font-medium outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 ${
                 active
-                  ? "border-white/20 bg-white text-black"
-                  : "border-white/10 bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
+                  ? "text-black"
+                  : "border border-white/10 bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
               }`}
             >
-              {c}
+              {active && (
+                <motion.span
+                  layoutId="category-pill-active"
+                  className="absolute inset-0 rounded-full bg-white"
+                  transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                />
+              )}
+              <span className="relative">{c}</span>
             </button>
           );
         })}

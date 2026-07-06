@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import type { PromptTheme, PreviewKind } from "@/lib/prompts";
 
 const dim = (opacity: number) => `rgba(255,255,255,${opacity})`;
@@ -647,7 +650,15 @@ export function PromptPreview({
           className="h-full w-full overflow-hidden rounded-md shadow-[0_1px_0_rgba(255,255,255,0.06)_inset]"
           style={{ background: "linear-gradient(180deg, #101014, #0a0a0d)" }}
         >
-          <Mock primaryColor={color} />
+          <motion.div
+            key={color}
+            initial={{ opacity: 0.55 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="h-full w-full"
+          >
+            <Mock primaryColor={color} />
+          </motion.div>
         </div>
       </div>
     </div>

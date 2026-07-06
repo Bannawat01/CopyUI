@@ -249,3 +249,180 @@
 - Not done this pass (same gap as prior entries): no real browser/visual
   check of the new mockups, and none of the prompt templates (new or
   refined) have been tried against an actual AI tool yet.
+
+## [2026-07-06] motion-pass | Premium motion and interaction pass
+- Goal: the site was visually redesigned and content-rich but felt static;
+  added tasteful Framer Motion micro-interactions across gallery, cards,
+  category filtering, detail page, and the Copy button.
+- Global reduced-motion: added `src/components/motion-provider.tsx` (a
+  client wrapper around Framer Motion's `<MotionConfig reducedMotion="user">`)
+  rendered once from `src/app/layout.tsx`. This makes every animation in
+  the app respect the OS `prefers-reduced-motion` setting automatically,
+  instead of adding a `useReducedMotion()` check per component.
+- `src/components/prompt-grid.tsx` (now `"use client"`): gallery cards
+  reveal with a staggered fade/rise on load (`delay: min(index*0.035s,
+  0.28s)`, kept fast for an 18-card grid); wrapped in
+  `AnimatePresence mode="popLayout"` so filtering by search/category
+  animates cards out/in and reflows remaining cards via `layout` instead
+  of an instant re-render; the empty state now fades/rises in instead of
+  appearing abruptly, and its "Clear filters" button shows for any active
+  filter (search or category), not just search text.
+- `src/components/gallery-search.tsx`: the active category pill's white
+  background is now a `motion.span` with a shared `layoutId`, so switching
+  categories slides/morphs the highlight between buttons.
+- `src/components/prompt-card.tsx`: replaced the mouse-only `whileHover`
+  lift with a small `active` boolean state (set by `onMouseEnter`/
+  `onMouseLeave` on the card and `onFocus`/`onBlur` on the stretched
+  `Link`) driving a Framer Motion `variants` animation — so keyboard focus
+  now triggers the exact same lift as mouse hover. Added matching
+  `group-focus-within:` classes alongside every existing `group-hover:`
+  class (glow, preview scale, gradient overlay, Copy icon, metadata row)
+  so none of the hover polish is hover-only, and added a metadata-row
+  color brighten (`text-white/40` → `text-white/60`) on hover/focus.
+- `src/components/prompt-preview.tsx` (now `"use client"`): the mock
+  content is wrapped in a `motion.div` keyed on the current color, doing a
+  quick opacity dip-and-recover (0.55 → 1, 0.3s) whenever `primaryColor`
+  changes — a deliberate "refresh" pulse, since CSS can't smoothly
+  interpolate between arbitrary gradient/hex colors.
+- Detail page entrance: extracted the title/description/tags header into
+  a new client component `src/components/detail-header.tsx` so it could
+  animate (fade + rise) without making the whole route a client
+  component; `src/components/prompt-detail.tsx` staggers the preview,
+  color panel, and Copy Prompt panel in at +0.05s/+0.15s/+0.22s.
+- `src/components/copy-prompt-button.tsx`: the success state now uses a
+  bouncier spring transition (`stiffness: 500, damping: 15`) distinct from
+  the plain fade used for loading/error, plus a one-shot
+  `scale: [1, 1.04, 1]` pulse on the button itself when it reaches
+  success — `aria-live` status text and the loading/error states are
+  unchanged.
+- **Build issue found and fixed**: initially wrote `motion.div` directly
+  inside the Server Component `src/app/prompts/[slug]/page.tsx` and inside
+  `src/app/layout.tsx` — both failed the build with "Attempted to call
+  createMotionComponent() from the server," since a file must have
+  `"use client"` itself to reference `motion.*`/`MotionConfig` JSX, even
+  if it's otherwise fine to be a Server Component. Fixed by extracting
+  that JSX into small dedicated client components
+  (`detail-header.tsx`, `motion-provider.tsx`) and by adding `"use client"`
+  to `prompt-preview.tsx` once it started using `motion.div` too. See
+  [styling.md](styling.md) for the rule.
+- No architecture changes, no backend/auth/payments/database/admin
+  added, no new dependencies (Framer Motion was already installed); no
+  loops or autoplaying animations — everything is mount/interaction
+  triggered and settles to a resting state.
+- Hidden-template guarantee re-verified after the motion pass: `curl`
+  against the gallery page and a sample of detail routes (including two
+  of the 12 newer themes) confirms none contain "Product context:"; a
+  direct `POST /api/prompts/saas-dashboard/build` call confirms
+  `{{primaryColor}}` substitution still works.
+- Quality: `rtk npm run lint` clean, `rtk npm run build` clean (all 22
+  pages, including all 18 detail routes, built successfully after the
+  client-boundary fix).
+- Not done this pass: no verification in a real browser with OS-level
+  `prefers-reduced-motion` actually toggled on — the `MotionConfig`
+  wiring is correct per Framer Motion's documented behavior, but hasn't
+  been visually confirmed to suppress motion end-to-end.
+
+## [2026-07-06] tool-mode | Add Tool Mode (v0.dev / Cursor / GenVibe)
+- Goal: differentiate CopyUI from a generic template gallery by letting
+  the copied prompt be tailored to the AI tool the user is pasting it
+  into, without exposing the hidden template or duplicating templates
+  per tool.
+- `src/lib/tool-modes.ts` (new): `ToolMode` type (`"v0" | "cursor" |
+  "genvibe"`), `TOOL_MODES` (value+label pairs for the UI), `isToolMode()`
+  validator, `getToolModeLabel()`, and `applyToolMode(basePrompt,
+  toolMode?)` — prepends one tool-specific framing paragraph to the
+  theme's already-built prompt text. Chose a single shared framing prefix
+  per tool (applied to any theme) over authoring 18 × 3 = 54 separate
+  templates, keeping the per-theme `promptTemplate` as the sole source of
+  truth for the actual UI spec.
+  - `v0`: layout/component-selection (shadcn/ui)/Tailwind/visual-output
+    framing.
+  - `cursor`: file-structure/React-Next.js/TypeScript/code-quality framing.
+  - `genvibe`: creative-direction/interaction-feel/visual-polish framing.
+- `src/app/api/prompts/[slug]/build/route.ts`: now reads `toolMode` from
+  the request body (validated via `isToolMode`, falls back to no framing
+  if missing/invalid — backward compatible with the pre-tool-mode
+  request shape), calls `applyToolMode(buildPrompt(...), toolMode)`, and
+  returns `{ text, toolMode }`.
+- `src/components/tool-mode-selector.tsx` (new): compact `role="radiogroup"`
+  segmented control (3 `role="radio"` buttons, `aria-checked`), styled to
+  match the existing `ColorControl` conventions.
+- `src/components/prompt-detail.tsx`: added `toolMode` state (default
+  `"v0"`), renders `ToolModeSelector` above the Copy button, passes
+  `toolMode` through to `CopyPromptButton`, and updated the hidden-prompt
+  explainer copy to mention tool mode.
+- `src/components/copy-prompt-button.tsx`: now requires a `toolMode` prop,
+  sends it in the POST body, and the loading/success status text now
+  reads "Building a {tool} prompt…" / "Copied — tailored for {tool}"
+  instead of static strings — `aria-live` wiring is unchanged.
+- Mid-task note: this task was briefly interrupted by a switch into plan
+  mode partway through implementation (after the API route and
+  tool-modes.ts were written but before the UI wiring was finished); a
+  plan file was written summarizing the in-progress state and remaining
+  steps, then work resumed from that plan once plan mode exited. One
+  small bug from the in-flight edit (a stale `STATUS_TEXT` reference in
+  `copy-prompt-button.tsx` left over from renaming to a local
+  `statusText`) was caught and fixed before running quality checks.
+- No architecture changes, no backend/auth/payments/database/admin
+  added, no new dependencies, no changes to the prompt data model itself
+  (`PromptTheme`/`getPublicPrompts()` untouched — tool mode is purely an
+  API + UI concern layered on top of the existing hidden-template flow).
+- Hidden-template guarantee re-verified: `curl` against the gallery page
+  and 3 detail routes (including 2 of the newer themes) confirms neither
+  "Product context:" (base template) nor "Target tool:" (tool-mode
+  framing) appears anywhere in rendered HTML — `applyToolMode()` only
+  ever runs inside the API route handler. Directly `POST`ing the build
+  API with each of `v0`/`cursor`/`genvibe` confirms distinct, correctly
+  prefixed output per mode, and omitting `toolMode` still returns the
+  plain base prompt.
+- Quality: `rtk npm run lint` clean, `rtk npm run build` clean (all 22
+  pages built).
+- Not done this pass (new, on top of prior gaps): the 3 tool-mode framing
+  prefixes have not been validated against real output from v0.dev,
+  Cursor, or GenVibe — they were written based on general understanding
+  of each tool, not tested end-to-end. See next-actions.md.
+
+## [2026-07-06] clip-synthesis | Processed Obsidian raw clips into wiki research
+- Task: turn raw clips in `wiki/raw/clips` (12 files total) into short,
+  source-backed synthesis notes — no app code touched, no packages
+  installed, no full-repo scan (only `wiki/raw/clips` and existing wiki
+  pages read).
+- Inspected all 12 clip files. 2 were unrelated to CopyUI design research
+  (Obsidian Web Clipper templates, MarkItDown — personal tooling clips,
+  not part of the requested source list) and were left untouched. The
+  other 10 were processed and each given `status: processed` in its
+  frontmatter: `Components.md`, `Introduction.md`, `Examples.md` (all
+  ui.shadcn.com docs), `birobirobiro...awesome-shadcn-ui...md`,
+  `Shadcn Components - Extra components for Shadcn UI.md`
+  (shadcnblocks.com, despite the generic filename), `Shadcn UI
+  Components, Blocks & Templates.md` (cult-ui.com — filename doesn't
+  match its actual source), `21st.dev - Crafted React components...md`,
+  `serafimcloud21st...md` (21st.dev's GitHub repo),
+  `nolly-studiocult-ui...md` (Cult UI's GitHub repo), and
+  `shadcnoriginui...md` (Origin UI — a bonus source present in the clips
+  but not on the user's named list).
+- **Source gap found**: the user's list also named Magic UI, Aceternity
+  UI, Motion-Primitives, and Superdesign UI Design Prompts. Only
+  Aceternity UI appears anywhere in the clips, as a single table-row
+  description inside the awesome-shadcn-ui list — not enough to
+  synthesize from. The other three were not found at all. This was
+  called out explicitly (not silently skipped) in both
+  `motion-inspiration.md` and `prompt-quality.md`, and as a next action.
+- Created 5 new wiki pages: `competitor-inspiration.md` (21st.dev, Cult
+  UI, Shadcnblocks, Origin UI, awesome-shadcn-ui — what each is, why it
+  matters, ideas, what to avoid, next actions), `shadcn-patterns.md`
+  (shadcn/ui docs + registry schema + token conventions),
+  `motion-inspiration.md` (source-gap page — captured the thin real
+  signal without inventing missing content), `prompt-quality.md`
+  (source-gap page — used the shadcn registry schema as the closest
+  adjacent, weaker signal), and `feature-ideas.md` (5 concrete,
+  source-backed ideas plus an explicit "not recommended" list).
+- Updated existing pages with short cross-references only (no content
+  duplication): `gallery-page.md`, `detail-page.md`, `styling.md`,
+  `prompt-system.md`, and `next-actions.md` (added 2 new numbered next
+  actions: evaluate the 3 feature ideas, and re-clip the 4 missing
+  sources if that research is still wanted). Updated `index.md` with a
+  new "Research" section listing the 5 new pages.
+- No raw clip content was copied wholesale into the wiki — every new
+  page is a short synthesis with inline source attribution back to the
+  specific clip file.

@@ -4,24 +4,27 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Copy, Loader2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getToolModeLabel, type ToolMode } from "@/lib/tool-modes";
 
 type CopyState = "idle" | "loading" | "success" | "error";
-
-const STATUS_TEXT: Record<CopyState, string> = {
-  idle: "",
-  loading: "Copying prompt…",
-  success: "Prompt copied to clipboard",
-  error: "Couldn't copy the prompt. Please try again.",
-};
 
 export function CopyPromptButton({
   slug,
   primaryColor,
+  toolMode,
 }: {
   slug: string;
   primaryColor: string;
+  toolMode: ToolMode;
 }) {
   const [state, setState] = useState<CopyState>("idle");
+
+  const statusText: Record<CopyState, string> = {
+    idle: "",
+    loading: `Building a ${getToolModeLabel(toolMode)} prompt…`,
+    success: `Copied — tailored for ${getToolModeLabel(toolMode)}`,
+    error: "Couldn't copy the prompt. Please try again.",
+  };
 
   async function handleCopy() {
     setState("loading");
@@ -29,7 +32,7 @@ export function CopyPromptButton({
       const res = await fetch(`/api/prompts/${slug}/build`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ primaryColor }),
+        body: JSON.stringify({ primaryColor, toolMode }),
       });
       if (!res.ok) throw new Error("Failed to build prompt");
       const { text } = await res.json();
@@ -44,7 +47,12 @@ export function CopyPromptButton({
 
   return (
     <div className="flex flex-col gap-2">
-      <motion.div whileTap={{ scale: 0.97 }} className="inline-block">
+      <motion.div
+        whileTap={{ scale: 0.97 }}
+        animate={{ scale: state === "success" ? [1, 1.04, 1] : 1 }}
+        transition={{ duration: 0.35, ease: "easeOut" }}
+        className="inline-block"
+      >
         <Button
           size="lg"
           onClick={handleCopy}
@@ -67,9 +75,10 @@ export function CopyPromptButton({
             ) : state === "success" ? (
               <motion.span
                 key="success"
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 0.7 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ type: "spring", stiffness: 500, damping: 15 }}
                 className="flex items-center gap-2"
               >
                 <Check className="h-4 w-4" /> Copied!
@@ -110,7 +119,7 @@ export function CopyPromptButton({
               : "text-transparent"
         }`}
       >
-        {STATUS_TEXT[state] || " "}
+        {statusText[state] || " "}
       </p>
     </div>
   );

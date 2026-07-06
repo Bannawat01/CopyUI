@@ -31,6 +31,11 @@ rule) for a true deep-black marketplace background, and `PromptCard`/
 `#08080a`) rather than the `--card` token, since they need a darker,
 more "screenshot frame" surface than a standard content card.
 
+Cross-checked against clipped ecosystem research: Origin UI's own
+CSS-variable block (same oklch `--background`/`--primary`/etc. names)
+confirms this token convention is the ecosystem standard, not a one-off —
+see [shadcn-patterns.md](shadcn-patterns.md).
+
 ## Premium marketplace visual language (gallery/detail redesign)
 - **Cards as template tiles, not app cards**: `PromptCard` leads with a
   large `aspect-video` (16:9) preview that dominates the tile, with
@@ -64,6 +69,42 @@ Page-level containers use a mobile-first padding/gap scale (e.g.
 value, so hero/detail sections don't feel cramped on small viewports or
 over-padded on desktop.
 
+## Motion system (motion/interaction pass)
+- **Global reduced-motion handling**: the app is wrapped once, at the root,
+  in Framer Motion's `<MotionConfig reducedMotion="user">` (via
+  `src/components/motion-provider.tsx`, a tiny client wrapper rendered from
+  `src/app/layout.tsx`). This makes every `motion.*` animation in the app
+  automatically respect the OS-level `prefers-reduced-motion` setting
+  (stripping transform-based motion like lifts/scale/stagger for those
+  users) without needing a manual `useReducedMotion()` check in every
+  component — one fix, applied everywhere, rather than scattered checks.
+- **Client-boundary rule learned this pass**: a file that directly writes
+  `motion.div` (or any other `motion.*`/`MotionConfig` JSX) in its own
+  render output must have `"use client"` at the top of *that specific
+  file* — it's not enough for the file to only ever be *used by* a client
+  component. The build failed with "Attempted to call
+  createMotionComponent() from the server" the first time this was missed
+  (in the Server Component `src/app/prompts/[slug]/page.tsx` and in
+  `src/app/layout.tsx`); the fix was extracting the motion-using JSX into
+  small dedicated client components (`detail-header.tsx`,
+  `motion-provider.tsx`) rather than writing `motion.*` inline in a
+  Server Component file. `src/components/prompt-preview.tsx` also gained
+  its own `"use client"` directive for the same reason once it started
+  using `motion.div` for the color-change pulse.
+- **No loops or autoplay**: every animation in the app is triggered by a
+  mount, a filter/state change, or a user interaction (hover, focus, click,
+  color pick) — nothing repeats or autoplays. The Copy button's success
+  bounce and the preview's color-change pulse are explicitly one-shot
+  (they settle back to a resting value, not a repeating keyframe loop).
+- **Where motion lives**: `PromptGrid` (entrance stagger + filter
+  transitions + empty-state fade), `GallerySearch` (category pill
+  `layoutId` slide), `PromptCard` (hover/focus lift, glow, preview scale,
+  metadata fade — see [gallery-page.md](gallery-page.md)),
+  `PromptPreview` (color-change pulse), `DetailHeader` + `PromptDetail`
+  (staggered page entrance — see [detail-page.md](detail-page.md)), and
+  `CopyPromptButton` (already-existing state transitions, now with a
+  bouncier success spring).
+
 ## Accessibility conventions
 - shadcn/ui's `Button` and `Input` primitives already ship
   `focus-visible:ring-3 focus-visible:ring-ring/50` — custom interactive
@@ -80,3 +121,7 @@ over-padded on desktop.
 - [overview.md](overview.md)
 - [gallery-page.md](gallery-page.md)
 - [detail-page.md](detail-page.md)
+- [shadcn-patterns.md](shadcn-patterns.md)
+- [motion-inspiration.md](motion-inspiration.md) — note: thin source
+  material (Magic UI/Aceternity UI/Motion-Primitives were not found in
+  the processed clips), so no new motion techniques were borrowed from it.

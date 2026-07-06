@@ -22,16 +22,37 @@
   `gap-5` to `lg:gap-8`) of template tiles. Each tile leads with a large
   16:9 (`aspect-video`) screenshot-like preview, with title, tags, and
   creator/copies metadata below — see below and [detail-page.md](detail-page.md).
-- Empty state unchanged in behavior (icon, unmatched query, hint, "Clear
-  search" button), still wired to `GallerySearch`'s `setQuery("")`.
+- Empty state now animates in (`PromptGrid`, fade + slight rise, 0.25s)
+  instead of appearing abruptly, and shows whenever search + category
+  combine to zero results, not just on an empty search.
+- Motion pass: `PromptGrid` wraps its cards in Framer Motion's
+  `AnimatePresence` (`mode="popLayout"`) so the initial gallery load reveals
+  cards with a staggered fade/rise (each card delayed
+  `min(index * 0.035s, 0.28s)` so a full 18-card grid still finishes well
+  under half a second — subtle and fast, not a slow curtain-reveal).
+  Filtering by search or category re-runs the same list through
+  `AnimatePresence`: cards that drop out of the filtered set animate out
+  (fade + scale down) rather than vanishing instantly, and cards that
+  remain reflow smoothly into their new grid position via the `layout`
+  prop — no re-entrance replay for cards that were already visible.
+  Category pills also animate: the active pill's white background is a
+  single `motion.span` with a shared `layoutId`, so selecting a different
+  pill slides/morphs the highlight between buttons instead of an instant
+  color swap.
 - Card hover is now a fuller "premium tile" interaction: a Framer Motion
-  lift (`whileHover={{ y: -6 }}`), a soft `{{defaultPrimaryColor}}`-tinted
-  glow at the top of the card, a brightened border, and the preview image
-  scaling up slightly (`scale-[1.04]`) inside its clipped frame — all on a
-  smooth `duration-300`/`duration-500` transition. The entire card (image +
+  lift (state-driven `animate`, spring transition), a soft
+  `{{defaultPrimaryColor}}`-tinted glow at the top of the card, a
+  brightened border, the preview image scaling up slightly (`scale-[1.04]`)
+  inside its clipped frame, and the creator/copies metadata row brightening
+  from `text-white/40` to `text-white/60`. The entire card (image +
   metadata) is one stretched `Link` (`absolute inset-0` positioned as the
   card's last child) so it's a single click/keyboard target, with a visible
-  focus ring via `has-[a:focus-visible]`.
+  focus ring via `has-[a:focus-visible]`. Keyboard focus on that link now
+  triggers the *same* lift/glow/scale/metadata treatment as mouse hover
+  (via a shared `active` boolean state set by both `onMouseEnter`/
+  `onMouseLeave` and the link's `onFocus`/`onBlur`, plus parallel
+  `group-focus-within:` Tailwind classes alongside every `group-hover:`
+  one) — none of the premium interaction is hover-only.
 - Preview visuals: `PromptPreview` was rewritten from small abstract glyphs
   to richer, screenshot-like mockups per `preview.kind` — see
   [prompt-system.md](prompt-system.md) and [styling.md](styling.md) for
@@ -55,7 +76,15 @@
 dataset with `promptTemplate` stripped out, so the hidden prompt text is never
 shipped to the client bundle. See [prompt-system.md](prompt-system.md).
 
+## Inspiration backlog
+Ideas synthesized from clipped competitor/adjacent-product research
+(21st.dev's facets, Shadcnblocks' per-category counts) that could inform
+future gallery changes — not yet implemented. See
+[feature-ideas.md](feature-ideas.md) items #2–#4 and
+[competitor-inspiration.md](competitor-inspiration.md).
+
 ## Related
 - [overview.md](overview.md)
 - [styling.md](styling.md)
 - [prompt-system.md](prompt-system.md)
+- [feature-ideas.md](feature-ideas.md)

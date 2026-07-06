@@ -14,6 +14,13 @@ Status legend: **[implemented]** / **[planned]** / **[stub]**
 ## Cross-cutting
 - [styling.md](pages/styling.md) — Tailwind, shadcn/ui, Framer Motion conventions. **[implemented]**
 
+## Research (from clipped sources in wiki/raw/clips)
+- [competitor-inspiration.md](pages/competitor-inspiration.md) — 21st.dev, Cult UI, Shadcnblocks, Origin UI, awesome-shadcn-ui. **[new]**
+- [shadcn-patterns.md](pages/shadcn-patterns.md) — shadcn/ui docs, registry schema, token conventions. **[new]**
+- [motion-inspiration.md](pages/motion-inspiration.md) — thin source material; Magic UI/Aceternity UI/Motion-Primitives not found in clips. **[new, gap noted]**
+- [prompt-quality.md](pages/prompt-quality.md) — thin source material; Superdesign UI Design Prompts not found in clips. **[new, gap noted]**
+- [feature-ideas.md](pages/feature-ideas.md) — concrete, source-backed feature ideas to evaluate. **[new]**
+
 ## Tracking
 - [known-issues.md](pages/known-issues.md) — open bugs. **[stub, empty]**
 - [next-actions.md](pages/next-actions.md) — what to build next. **[implemented]**

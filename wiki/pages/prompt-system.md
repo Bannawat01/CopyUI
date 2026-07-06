@@ -56,6 +56,30 @@ tertiary hierarchy, per-component states, precise `{{primaryColor}}`
 placement rules, specific ARIA/contrast requirements) — they were
 authored to the same bar, not as lighter-weight filler entries.
 
+## Tool Mode
+`src/lib/tool-modes.ts` adds a `ToolMode` type (`"v0" | "cursor" |
+"genvibe"`) and `applyToolMode(basePrompt, toolMode?)`, which prepends a
+tool-specific framing paragraph to a theme's already-built prompt text:
+- `v0`: frames the brief for a visual UI generation model — layout
+  composition, component selection (shadcn/ui primitives), Tailwind
+  utility classes, responsive breakpoints; favors a single polished
+  visual output over file-splitting or code-quality guidance.
+- `cursor`: frames the brief for an AI coding agent — concrete
+  file/component structure, App Router paths, TypeScript types, idiomatic
+  React/Next.js patterns, brief code-quality notes.
+- `genvibe`: frames the brief around creative direction — interaction
+  texture (motion, easing, hover/press feedback), visual polish (depth,
+  light, material), and emotional tone.
+
+Deliberately implemented as **one framing prefix per tool**, applied
+server-side to the existing per-theme `promptTemplate`, rather than
+authoring 18 × 3 = 54 separate templates. This keeps the per-theme
+template as the single source of truth for the actual UI spec, while
+still producing genuinely different final text per tool (verified via the
+API — see below). `isToolMode()` validates the value; an invalid/missing
+`toolMode` in the API request falls back to the untouched base prompt
+(backward compatible with pre-tool-mode clients).
+
 ## Placeholder syntax
 Templates use `{{variableName}}`, e.g. `{{primaryColor}}`. `buildPrompt()`
 does a simple global regex replace (`\{\{(\w+)\}\}`) against a
@@ -100,8 +124,27 @@ requirement:
   "Product context:" — the hidden-template guarantee held through the
   3x-larger dataset without any changes to `getPublicPrompts()`'s
   omission logic or the Detail page's prop-passing.
+- Re-verified after adding Tool Mode: neither the base `promptTemplate`
+  text ("Product context:") nor the tool-specific framing text ("Target
+  tool:") appears anywhere in gallery/detail HTML — `applyToolMode()` only
+  runs inside the `/api/prompts/[slug]/build` route handler, never in a
+  component. Directly `POST`ing the build API with `toolMode: "v0"` /
+  `"cursor"` / `"genvibe"` confirms each produces distinct, correctly
+  prefixed output, and omitting `toolMode` still returns the plain base
+  prompt (backward compatible).
+
+## Inspiration backlog
+shadcn's registry-item schema (`cssVars`, `dependencies`) is a structured
+precedent for describing a themed UI as data — a weak but real signal
+that CopyUI's `{{primaryColor}}`-only customization could extend to more
+named tokens later. Superdesign UI Design Prompts (the source requested
+for direct prompt-quality research) was not found among the processed
+clips — see [prompt-quality.md](prompt-quality.md) for the gap and what
+was captured instead.
 
 ## Related
 - [copy-mechanism.md](copy-mechanism.md)
 - [detail-page.md](detail-page.md)
 - [gallery-page.md](gallery-page.md)
+- [prompt-quality.md](prompt-quality.md)
+- [shadcn-patterns.md](shadcn-patterns.md)
