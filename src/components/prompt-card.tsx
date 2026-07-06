@@ -2,46 +2,79 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { Copy } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { PromptPreview } from "@/components/prompt-preview";
 import type { PublicPromptTheme } from "@/lib/prompts";
 
 export function PromptCard({ prompt }: { prompt: PublicPromptTheme }) {
+  const initial = prompt.meta.creator.charAt(0).toUpperCase();
+
   return (
     <motion.div
-      whileHover={{ y: -4 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="group relative flex flex-col overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10 transition-shadow hover:shadow-lg hover:shadow-black/20 has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-ring"
+      whileHover={{ y: -6 }}
+      transition={{ type: "spring", stiffness: 300, damping: 22 }}
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0c0c0e] transition-shadow duration-300 hover:border-white/20 hover:shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_24px_48px_-16px_rgba(0,0,0,0.6)] has-[a:focus-visible]:border-ring has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-ring"
     >
-      <PromptPreview
-        preview={prompt.preview}
-        primaryColor={prompt.defaultPrimaryColor}
-        className="h-40 w-full"
+      <div
+        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background: `radial-gradient(400px circle at 50% 0%, ${prompt.defaultPrimaryColor}22, transparent 70%)`,
+        }}
       />
-      <div className="flex flex-1 flex-col gap-3 p-4">
-        <div>
-          <h3 className="font-heading text-base font-medium">{prompt.title}</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {prompt.description}
-          </p>
+
+      <div className="relative aspect-video w-full overflow-hidden">
+        <div className="absolute inset-0 scale-100 transition-transform duration-500 ease-out group-hover:scale-[1.04]">
+          <PromptPreview
+            preview={prompt.preview}
+            primaryColor={prompt.defaultPrimaryColor}
+            className="h-full w-full"
+          />
         </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      </div>
+
+      <div className="relative flex flex-1 flex-col gap-3 p-4">
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="font-heading text-sm font-medium text-white/90">
+            {prompt.title}
+          </h3>
+          <Copy className="mt-0.5 h-3.5 w-3.5 shrink-0 text-white/25 transition-colors group-hover:text-white/60" />
+        </div>
+
         <div className="flex flex-wrap gap-1.5">
-          {prompt.tags.map((tag) => (
-            <Badge key={tag} variant="secondary" className="text-xs">
+          {prompt.tags.slice(0, 3).map((tag) => (
+            <Badge
+              key={tag}
+              variant="secondary"
+              className="border-white/5 bg-white/5 text-[10px] text-white/50"
+            >
               {tag}
             </Badge>
           ))}
         </div>
-        <Link
-          href={`/prompts/${prompt.slug}`}
-          aria-label={`View prompt: ${prompt.title}`}
-          className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-foreground outline-none transition-colors after:absolute after:inset-0 group-hover:text-primary focus-visible:text-primary"
-        >
-          View Prompt
-          <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </Link>
+
+        <div className="mt-auto flex items-center justify-between border-t border-white/5 pt-3 text-xs text-white/40">
+          <div className="flex items-center gap-1.5">
+            <span
+              className="flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold text-white/80"
+              style={{ backgroundColor: `${prompt.defaultPrimaryColor}33` }}
+            >
+              {initial}
+            </span>
+            <span>{prompt.meta.creator}</span>
+          </div>
+          <span>{prompt.meta.copies.toLocaleString()} copies</span>
+        </div>
       </div>
+
+      <Link
+        href={`/prompts/${prompt.slug}`}
+        aria-label={`View prompt: ${prompt.title}`}
+        className="absolute inset-0 rounded-2xl outline-none focus-visible:outline-none"
+      >
+        <span className="sr-only">View prompt: {prompt.title}</span>
+      </Link>
     </motion.div>
   );
 }

@@ -108,3 +108,144 @@
   detail routes statically prerendered).
 - Not done this pass: no manual test of the built prompt text against an
   actual AI tool (v0.dev/Cursor/GenVibe) — see next-actions.md.
+
+## [2026-07-06] prompt-output-refinement | Prompt template output-quality pass
+- Rewrote all 6 `promptTemplate` strings again in `src/lib/prompts.ts`,
+  this time targeting real generated-output quality rather than just
+  structural completeness. Kept the same 6 themes/slugs, same section-based
+  format, but added a dedicated "Visual hierarchy" section per theme and
+  replaced vague adjectives ("clean," "modern," "bold" alone) with concrete,
+  actionable specifics: exact breakpoints and spacing scales, explicit
+  dominant/secondary/tertiary element callouts, default/hover/active/
+  disabled/loading/empty states per component, concrete dark-mode elevation
+  rules (surface-lighter-than-background instead of drop shadows), and
+  specific WCAG contrast ratios / ARIA attributes / semantic elements in
+  place of generic "keyboard accessible" notes.
+- `{{primaryColor}}` placement rules were tightened per theme — each
+  template now states explicitly where the color should and shouldn't be
+  used (e.g. pricing: Pro card border/glow/badge/CTAs only, not every
+  tier's CTA; changelog: newest entry's dot/badge only, not every row) so
+  the accent reads as deliberate rather than decorative repetition.
+- No architecture, routing, or data-shape changes — `PromptTheme`,
+  `getPublicPrompts()`, `buildPrompt()`, and the API route are untouched;
+  this is a content-only change to the `promptTemplate` string values.
+- Hidden-template guarantee re-verified: `curl` across the gallery page and
+  all 6 detail routes confirms "Product context:" (a string unique to
+  `promptTemplate`) does not appear in any rendered HTML; a direct
+  `POST /api/prompts/saas-dashboard/build` call confirms `{{primaryColor}}`
+  substitution still works against the refined template.
+- Quality: `rtk npm run lint` clean, `rtk npm run build` clean (all 6
+  detail routes statically prerendered).
+- Remaining gap (unchanged from prior entry): the refined templates have
+  still not been run through an actual AI tool (v0.dev/Cursor/GenVibe) to
+  confirm they produce better real output — this pass improved the prompt
+  text based on judgment/best practice, not on observed generation results.
+
+## [2026-07-06] marketplace-redesign | Premium visual redesign
+- Goal: make CopyUI feel like a premium dark template marketplace instead
+  of a generic product grid — cards previously used small abstract
+  glyphs/icons on a mid-gray dark background, which read as placeholder-y.
+- `src/lib/prompts.ts`: added a `meta: { creator, copies }` field to
+  `PromptTheme` (mock/local marketplace metadata, no accounts/backend) and
+  populated it for all 6 themes; included in `getPublicPrompts()`'s output
+  since it's safe display data, unlike `promptTemplate`.
+- `src/components/prompt-preview.tsx`: fully rewritten. Replaced the small
+  centered icon+gradient with 6 dedicated mock components
+  (`DashboardMock`, `HeroMock`, `PricingMock`, `AuthMock`, `PortfolioMock`,
+  `ChangelogMock`), each built from Tailwind-styled `div`s only — no image
+  files or new dependencies — approximating a miniature real screenshot
+  (sidebar+KPI+chart+table for dashboard, nav+headline+CTA for hero, three
+  pricing columns with an elevated middle plan, a centered auth card,
+  masonry portfolio blocks, a changelog timeline). `primaryColor` still
+  drives the same accent points as before.
+- `src/components/prompt-card.tsx`: redesigned as a template-marketplace
+  tile — large `aspect-video` (16:9) preview dominates the top, title/tags/
+  creator+copies metadata below. Hover now lifts the card
+  (`whileHover={{ y: -6 }}`), brightens the border, shows a
+  `defaultPrimaryColor`-tinted glow, and scales the preview image slightly
+  inside its clipped frame. The whole tile (image + metadata) is one
+  stretched `Link` positioned as the card's last child, so it stays a
+  single keyboard-accessible click target.
+- `src/components/prompt-grid.tsx`: wider gaps (`gap-5` → `lg:gap-8`) to
+  match the more spacious marketplace feel.
+- `src/app/page.tsx` + `src/components/gallery-search.tsx`: gallery
+  widened to `max-w-7xl`, page background set to `bg-[#050505]`, hero
+  compacted into a left-aligned page header (no longer the visual focus),
+  and search moved into a "Browse Templates" toolbar row above the grid so
+  the template tiles are now the main event.
+- `src/components/prompt-detail.tsx` + detail `page.tsx`: preview enlarged
+  to a bordered `aspect-video` frame taking 3 of 5 grid columns on
+  desktop; detail page widened to `max-w-6xl` and given the same
+  `bg-[#050505]` background as the gallery for visual consistency.
+- `src/app/globals.css`: `.dark` theme tokens tuned darker —
+  `--background` `oklch(0.145 0 0)` → `oklch(0.08 0 0)`, `--card` `0.205`
+  → `0.16` — so the base UI reads as near-black with cards still one
+  elevation step lighter.
+- No backend/auth/payments/database/admin added; no new routes; no new
+  dependencies (mockups are plain `div`s, no images).
+- Hidden-template guarantee re-verified after all of the above: `curl`
+  across the gallery page and all 6 detail routes shows no "Product
+  context:" match (the string unique to `promptTemplate`); confirmed the
+  new `meta.creator`/`meta.copies` fields do appear in gallery HTML, which
+  is intentional (mock display data, not the hidden template).
+- Quality: `rtk npm run lint` clean, `rtk npm run build` clean (all 6
+  detail routes statically prerendered).
+- Not done this pass: no actual browser/visual screenshot check — this
+  redesign was verified via build output, HTML/markup inspection, and code
+  review only, not by looking at rendered pixels in a browser. Flagged in
+  next-actions.md as the top follow-up.
+
+## [2026-07-06] dataset-expansion | 6 → 18 prompt themes + category filtering
+- Goal: the marketplace felt too small at 6 themes; expanded the dataset
+  to feel like a real template marketplace with variety across use cases.
+- `src/lib/prompts.ts`: added 12 new themes (agency-landing,
+  ai-chat-interface, analytics-command-center, ecommerce-product-page,
+  finance-dashboard, kanban-project-board, docs-knowledge-base,
+  mobile-app-landing, real-estate-listing, restaurant-menu-page,
+  event-conference-page, creator-link-in-bio) alongside the original 6,
+  bringing the total to 18. Each new theme has the full `PromptTheme`
+  shape: slug, title, description, tags, `category`, `preview` (gradient +
+  label + a unique `kind`), `meta` (mock creator/copies), a
+  `defaultPrimaryColor`, and a `promptTemplate` written to the same
+  7-section structured format as the refined original 6 (product context,
+  layout, visual hierarchy, components & states, design language,
+  responsive behavior, accessibility, `{{primaryColor}}` injection).
+- Added a `category: Category` field (12-value union: Landing, Dashboard,
+  SaaS, Ecommerce, AI, Portfolio, Docs, Form, Mobile, Finance,
+  Real Estate, Content) to every theme, and a `GALLERY_CATEGORIES` export
+  (`All`, `Landing`, `Dashboard`, `SaaS`, `Ecommerce`, `AI`, `Portfolio`,
+  `Docs` — the 8-pill subset requested) for the gallery filter UI.
+  `getPublicPrompts()` includes `category` since it's safe public data.
+- `src/components/prompt-preview.tsx`: added 12 new mock components
+  (`AgencyMock`, `ChatMock`, `AnalyticsMock`, `EcommerceMock`,
+  `FinanceMock`, `KanbanMock`, `DocsMock`, `MobileMock`, `RealEstateMock`,
+  `MenuMock`, `EventMock`, `LinkBioMock`), all Tailwind `div`-only (no
+  images, no new dependencies), each approximating a miniature real
+  screenshot for its theme (e.g. chat sidebar + message bubbles, phone-
+  frame mockup for the mobile app landing, stacked link buttons for
+  link-in-bio). `MOCKS` record extended to map all 18 `PreviewKind` values.
+- `src/components/gallery-search.tsx`: added category-pill state
+  (`role="group"`, `aria-pressed` per pill) alongside the existing search
+  `useMemo`, combined with AND logic (a prompt must match both the active
+  category and the search query). `src/components/prompt-grid.tsx`'s
+  empty-state button was generalized from "Clear search" to "Clear
+  filters" and now shows whenever either filter is active, not just when
+  search text is present, so a category-only empty result is still
+  recoverable.
+- No architecture changes: no new routes (the existing `/prompts/[slug]`
+  dynamic route + `generateStaticParams` picked up all 18 slugs
+  automatically), no backend/auth/payments/database/admin, no new
+  dependencies, filtering stays entirely client-side.
+- Hidden-template guarantee re-verified across the larger dataset: `curl`
+  against the gallery page and all **18** `/prompts/<slug>` detail routes
+  confirms none contain "Product context:" (unique to `promptTemplate`);
+  a direct `POST /api/prompts/ai-chat-interface/build` call confirms
+  `{{primaryColor}}` substitution works correctly for one of the new
+  themes.
+- Quality: `rtk npm run lint` clean, `rtk npm run build` clean (all 18
+  detail routes + gallery + API route = 22 total pages built).
+- Also fixed while updating docs: a duplicated "## Responsive spacing"
+  heading in `wiki/pages/styling.md` left over from an earlier edit pass.
+- Not done this pass (same gap as prior entries): no real browser/visual
+  check of the new mockups, and none of the prompt templates (new or
+  refined) have been tried against an actual AI tool yet.

@@ -21,6 +21,43 @@ overrides in the `.dark` selector. Per-prompt "primary color" customization
 is separate — it's user-selected data threaded through props/inline styles,
 not a Tailwind/shadcn theme token.
 
+Tuned darker for the marketplace redesign: `.dark`'s `--background` moved
+from `oklch(0.145 0 0)` to `oklch(0.08 0 0)` and `--card` from `0.205` to
+`0.16`, so the base page reads as near-black with cards still one clear
+elevation step lighter. Gallery/detail page `<main>` containers additionally
+set an explicit `bg-[#050505]` (an arbitrary Tailwind value, not a new CSS
+rule) for a true deep-black marketplace background, and `PromptCard`/
+`PromptPreview` use their own near-black arbitrary values (`#0c0c0e`,
+`#08080a`) rather than the `--card` token, since they need a darker,
+more "screenshot frame" surface than a standard content card.
+
+## Premium marketplace visual language (gallery/detail redesign)
+- **Cards as template tiles, not app cards**: `PromptCard` leads with a
+  large `aspect-video` (16:9) preview that dominates the tile, with
+  title/tags/metadata below — modeled on template-marketplace tiles rather
+  than a dashboard-style "boxed" product card.
+- **Hover as a premium interaction**: on hover a card lifts
+  (`whileHover={{ y: -6 }}`, Framer Motion spring), gains a brighter
+  border, shows a soft radial glow tinted with the prompt's
+  `defaultPrimaryColor`, and its preview image scales up slightly inside a
+  clipped frame — all `duration-300`/`duration-500` transitions, no
+  instant/jarring state changes.
+- **Screenshot-like previews, not icons**: `PromptPreview` no longer
+  renders a small centered icon + gradient. Each `preview.kind` now has a
+  dedicated mock component built entirely from Tailwind-styled `div`s (no
+  image files, no new dependencies) that approximate a miniature real
+  screenshot. Now **18 mock components**, one per theme kind — the original
+  6 (`DashboardMock`, `HeroMock`, `PricingMock`, `AuthMock`,
+  `PortfolioMock`, `ChangelogMock`) plus 12 added during the dataset
+  expansion (`AgencyMock`, `ChatMock`, `AnalyticsMock`, `EcommerceMock`,
+  `FinanceMock`, `KanbanMock`, `DocsMock`, `MobileMock`, `RealEstateMock`,
+  `MenuMock`, `EventMock`, `LinkBioMock`) — e.g. a chat interface gets a
+  sidebar + message bubbles, a mobile-app landing gets a phone-frame
+  mockup, a link-in-bio gets a centered avatar + stacked link buttons.
+  `primaryColor` drives the same accent points as before (active nav,
+  primary buttons/CTAs, highlighted chart bar, featured item) so every
+  preview still responds live to the color picker on the Detail page.
+
 ## Responsive spacing
 Page-level containers use a mobile-first padding/gap scale (e.g.
 `px-4 py-10 sm:px-6 sm:py-16`, `gap-6 sm:gap-8`) rather than a single fixed

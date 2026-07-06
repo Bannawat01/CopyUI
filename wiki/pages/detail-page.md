@@ -4,15 +4,21 @@
 
 ## Location
 `src/app/prompts/[slug]/page.tsx` (server component, `generateStaticParams`
-pre-renders all 6 mock slugs) + `src/components/prompt-detail.tsx` (client
-component holding the selected color state).
+pre-renders all **18** mock slugs) + `src/components/prompt-detail.tsx`
+(client component holding the selected color state).
 
 ## Behavior
-- Visual preview (`PromptPreview`) reacts live to the selected color; height
-  scales down on mobile (`h-56` → `sm:h-72` → `md:h-full`). The preview
-  layout glyph and icon are theme-specific (`preview.kind`), matching the
-  gallery card so the two views feel like the same product, not just a
-  gradient placeholder — see [gallery-page.md](gallery-page.md).
+- Visual preview (`PromptPreview`) reacts live to the selected color and is
+  now the dominant element of the page: a 16:9 (`aspect-video`) screenshot-
+  style mockup taking 3 of 5 grid columns on desktop (`md:grid-cols-5`,
+  preview at `md:col-span-3`), bordered like a real template showcase frame
+  rather than a small fixed-height box. The mockup is theme-specific
+  (`preview.kind`) and matches the gallery card's preview exactly, so the
+  two views read as the same product — see [gallery-page.md](gallery-page.md)
+  and [prompt-system.md](prompt-system.md).
+- Page container widened to `max-w-6xl` and switched to the same near-black
+  background as the gallery (`bg-[#050505]`) for visual consistency across
+  the two pages.
 - An "UI Prompt Theme" eyebrow label above the title, plus a "Copy Prompt"
   section heading above the CTA card (which has a slightly stronger ring than
   the color-picker card), establish visual hierarchy between

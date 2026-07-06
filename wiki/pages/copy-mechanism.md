@@ -20,6 +20,13 @@
    aria-live="polite"` so screen reader users get the same feedback as the
    visual state. Reverts to idle after ~2.2s.
 
+## Visual redesign impact
+The gallery/detail visual redesign (bigger preview, template-tile cards,
+premium dark styling) is presentation-only — it did not touch this flow.
+`CopyPromptButton` still POSTs to `/api/prompts/[slug]/build` and the
+button/status-line markup is unchanged; only the surrounding page layout
+and the visual preview above it changed.
+
 ## Content quality
 Templates were rewritten (see [prompt-system.md](prompt-system.md)) to be
 longer, structured, production-ready briefs rather than one-liners. This is

@@ -26,13 +26,13 @@ export function PromptGrid({
           Try a different keyword or tag, like &ldquo;dashboard&rdquo; or
           &ldquo;landing&rdquo;.
         </p>
-        {query && onClearQuery && (
+        {onClearQuery && (
           <button
             type="button"
             onClick={onClearQuery}
             className="mt-1 rounded-lg text-sm font-medium text-foreground underline underline-offset-4 outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
           >
-            Clear search
+            Clear filters
           </button>
         )}
       </div>
@@ -40,7 +40,7 @@ export function PromptGrid({
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
       {prompts.map((prompt) => (
         <PromptCard key={prompt.slug} prompt={prompt} />
       ))}

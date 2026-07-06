@@ -20,7 +20,7 @@ export default async function PromptDetailPage({
   if (!prompt) notFound();
 
   return (
-    <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-4 py-10 sm:gap-8 sm:px-6 sm:py-16">
+    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 bg-[#050505] px-4 py-8 sm:gap-8 sm:px-6 sm:py-10 lg:px-10">
       <Link
         href="/"
         className="inline-flex w-fit items-center gap-1.5 rounded-md text-sm text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"

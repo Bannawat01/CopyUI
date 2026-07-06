@@ -29,14 +29,18 @@ The focus is a premium visual experience and a seamless copying mechanism.
 
 ## Current state
 MVP is implemented and polished: Gallery + Detail pages work end-to-end,
-Copy Prompt mechanism is functional, and a UX/QA pass added better empty
-states, clearer copy feedback, mobile spacing, and basic accessibility
-(focus-visible states, aria-labels, aria-live status). The 6 mock prompt
-templates were rewritten with structured, production-ready instructions
-(product context, layout, components, visual style, responsive behavior,
-accessibility notes, `{{primaryColor}}` injection) and each preview card/
-detail visual now has a distinct mini layout illustration instead of a
-generic icon+gradient. `npm run lint` and `npm run build` both pass clean.
+Copy Prompt mechanism is functional, a UX/QA pass added better empty
+states/copy feedback/accessibility, and a visual redesign gave the gallery
+a premium dark template-marketplace look (16:9 screenshot-style card
+previews, near-black theme). The dataset has grown from 6 to **18 mock
+prompt themes** across 12 categories (Landing, Dashboard, SaaS, Ecommerce,
+AI, Portfolio, Docs, Form, Mobile, Finance, Real Estate, Content), each
+with a structured, production-ready `promptTemplate` (product context,
+layout, visual hierarchy, components & states, design language, responsive
+behavior, accessibility, `{{primaryColor}}` injection) and its own
+screenshot-like preview mockup. The Gallery page now has category-pill
+filtering (All/Landing/Dashboard/SaaS/Ecommerce/AI/Portfolio/Docs) working
+alongside search. `npm run lint` and `npm run build` both pass clean.
 
 ## Not yet built
 No backend, auth, payments, database, or admin features — out of scope per
