@@ -20,6 +20,12 @@
    aria-live="polite"` so screen reader users get the same feedback as the
    visual state. Reverts to idle after ~2.2s.
 
+## Content quality
+Templates were rewritten (see [prompt-system.md](prompt-system.md)) to be
+longer, structured, production-ready briefs rather than one-liners. This is
+a content-only change — the flow above (POST → substitute → clipboard) is
+unchanged, and the built text is still only ever generated server-side.
+
 ## Why an API route instead of building client-side
 Building the prompt in the client component would require passing
 `promptTemplate` down as a prop, which Next.js would embed in the page's

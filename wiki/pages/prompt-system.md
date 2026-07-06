@@ -6,8 +6,18 @@
 `src/lib/prompts.ts` exports a local `PromptTheme[]` array (6 mock themes:
 saas-dashboard, landing-hero, pricing-table, auth-form, portfolio-grid,
 changelog-feed). Each item has `slug`, `title`, `description`, `tags`,
-`preview` (gradient + label used for the visual placeholder), a
+`preview` (gradient + label + a `kind` discriminant used to pick a distinct
+mini layout illustration — see [gallery-page.md](gallery-page.md)), a
 `defaultPrimaryColor`, and a `promptTemplate` string.
+
+## Template content quality
+Each `promptTemplate` was rewritten as a structured instruction covering:
+product context, layout direction, component requirements, visual style,
+responsive behavior, and accessibility notes, with `{{primaryColor}}`
+injected at the relevant visual-accent points (buttons, active states,
+highlights) rather than as an afterthought. Intent is that pasting the
+built output directly into v0.dev/Cursor/GenVibe gives a usable, specific
+brief rather than a one-line description.
 
 ## Placeholder syntax
 Templates use `{{variableName}}`, e.g. `{{primaryColor}}`. `buildPrompt()`
@@ -27,6 +37,12 @@ requirement:
 - Re-verified during the MVP polish pass (no data-model or route changes made
   that pass): confirmed via `curl` that raw template text still doesn't
   appear in either page's HTML.
+- Re-verified again after the prompt-content rewrite: `promptTemplate` grew
+  significantly longer/more structured, but the hidden-template guarantee is
+  unaffected since it never touched `getPublicPrompts()` or what's passed to
+  client components. Confirmed via `curl` (checking for the string "Product
+  context:", which only appears inside `promptTemplate`) that none of the 6
+  detail pages or the gallery page leak it.
 
 ## Related
 - [copy-mechanism.md](copy-mechanism.md)

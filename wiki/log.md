@@ -81,3 +81,30 @@
   build/lint/curl).
 - Remaining known issues: none new. Same as prior entry (dev-server
   transient EPERM quirk, no automated tests yet, mock preview/content data).
+
+## [2026-07-06] content-and-preview | Prompt content + preview visual pass
+- Rewrote all 6 `promptTemplate` strings in `src/lib/prompts.ts` as
+  structured, production-ready briefs: product context, layout direction,
+  component requirements, visual style, responsive behavior, and
+  accessibility notes, each with `{{primaryColor}}` injected at concrete
+  visual-accent points instead of a single generic mention.
+- Added a `preview.kind` discriminant (`dashboard` | `hero` | `pricing` |
+  `auth` | `portfolio` | `changelog`) to `PromptTheme["preview"]` and
+  rewrote `src/components/prompt-preview.tsx` to render a small theme-
+  specific layout glyph (e.g. sidebar+KPI grid, 3-column pricing with a
+  highlighted middle, form card, masonry blocks, timeline dots) plus a
+  matching lucide icon per kind, so gallery cards and the detail preview
+  are visually distinct instead of differing only by gradient color.
+- No new dependencies, no new routes/pages — `PromptGrid`, `PromptCard`,
+  and `PromptDetail` needed no changes since they already pass `preview`
+  through generically.
+- Hidden-template guarantee unaffected: `getPublicPrompts()` and the
+  Detail page's props to `PromptDetail` still omit `promptTemplate`
+  entirely; only `/api/prompts/[slug]/build` reads it. Re-verified via
+  `curl` across the gallery page and all 6 detail routes (grepped for
+  "Product context:", a string that only exists inside `promptTemplate`) —
+  not present anywhere in rendered HTML.
+- Quality: `rtk npm run lint` clean, `rtk npm run build` clean (all 6
+  detail routes statically prerendered).
+- Not done this pass: no manual test of the built prompt text against an
+  actual AI tool (v0.dev/Cursor/GenVibe) — see next-actions.md.

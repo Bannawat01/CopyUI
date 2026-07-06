@@ -9,7 +9,10 @@ component holding the selected color state).
 
 ## Behavior
 - Visual preview (`PromptPreview`) reacts live to the selected color; height
-  scales down on mobile (`h-56` → `sm:h-72` → `md:h-full`).
+  scales down on mobile (`h-56` → `sm:h-72` → `md:h-full`). The preview
+  layout glyph and icon are theme-specific (`preview.kind`), matching the
+  gallery card so the two views feel like the same product, not just a
+  gradient placeholder — see [gallery-page.md](gallery-page.md).
 - An "UI Prompt Theme" eyebrow label above the title, plus a "Copy Prompt"
   section heading above the CTA card (which has a slightly stronger ring than
   the color-picker card), establish visual hierarchy between

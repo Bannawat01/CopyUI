@@ -31,8 +31,12 @@ The focus is a premium visual experience and a seamless copying mechanism.
 MVP is implemented and polished: Gallery + Detail pages work end-to-end,
 Copy Prompt mechanism is functional, and a UX/QA pass added better empty
 states, clearer copy feedback, mobile spacing, and basic accessibility
-(focus-visible states, aria-labels, aria-live status). `npm run lint` and
-`npm run build` both pass clean.
+(focus-visible states, aria-labels, aria-live status). The 6 mock prompt
+templates were rewritten with structured, production-ready instructions
+(product context, layout, components, visual style, responsive behavior,
+accessibility notes, `{{primaryColor}}` injection) and each preview card/
+detail visual now has a distinct mini layout illustration instead of a
+generic icon+gradient. `npm run lint` and `npm run build` both pass clean.
 
 ## Not yet built
 No backend, auth, payments, database, or admin features — out of scope per

@@ -24,6 +24,12 @@
   card is a click target via a stretched-link pattern (`after:absolute
   after:inset-0` on the "View Prompt" `Link`), and keyboard focus on that link
   shows a ring on the card itself (`has-[a:focus-visible]:ring-2`).
+- Preview visuals: each card's `PromptPreview` now renders a small
+  hand-built layout glyph specific to its `preview.kind` (e.g. sidebar +
+  KPI grid for dashboard, three columns with a highlighted middle for
+  pricing, a timeline with dots for changelog) plus a matching lucide icon,
+  so cards are visually distinct at a glance instead of only differing by
+  gradient color and a generic sparkle icon.
 
 ## Data source
 `getPublicPrompts()` in `src/lib/prompts.ts` — a version of the mock prompt
