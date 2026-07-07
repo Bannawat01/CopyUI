@@ -535,3 +535,16 @@
   check of the new caption/label wording, no AI-tool validation of the
   Tool Mode framings, true "Open in v0" still blocked on v0.dev
   publishing a reliable format) — nothing new introduced.
+
+## [2026-07-07] v0-validation | First real v0.dev output check
+- Tested the copied AI Chat Interface prompt (v0.dev tool mode) in an
+  actual v0.dev session — the first time any prompt template has been
+  validated against real AI-tool output rather than judged by reading
+  the template text.
+- Result: worked successfully; v0.dev produced usable output without
+  needing immediate prompt changes.
+- Decision: keep the current prompt structure and content as-is for now
+  — no speculative rewriting based on this result.
+- Going forward, further prompt-template work should be driven by real
+  failed outputs or specific observed quality gaps from testing, not
+  speculative refinement.

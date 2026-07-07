@@ -159,6 +159,15 @@ requirement:
   text. The label/caption changes are presentation-only — no new prop
   or data ever carries `promptTemplate` client-side.
 
+## Real-world validation
+The AI Chat Interface template (v0.dev tool mode) was tested against
+actual v0.dev output for the first time on 2026-07-07 — prior passes had
+only been judged by reading the template text. Result: it worked
+successfully without needing immediate changes, so the current prompt
+structure/content is being kept as-is for now. Further template
+refinement should be driven by real failed outputs or specific observed
+quality gaps, not speculative rewriting. See [log.md](../log.md).
+
 ## Inspiration backlog
 shadcn's registry-item schema (`cssVars`, `dependencies`) is a structured
 precedent for describing a themed UI as data — a weak but real signal

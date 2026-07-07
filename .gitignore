@@ -39,3 +39,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+cat > .gitignore <<'EOF'
+node_modules
+.next
+out
+dist
+.env
+.env.local
+.vercel
+
+# Obsidian/private raw notes
+wiki/raw/
+EOF
