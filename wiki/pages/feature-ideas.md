@@ -8,18 +8,37 @@ Concrete, source-backed feature ideas for CopyUI, drawn from
 a committed roadmap — cross-check against CLAUDE.md's no-backend/
 no-over-engineering rules before building any of them.
 
-## 1. "Open in [tool]" deep link, not just copy-to-clipboard
+## 1. "Open in [tool]" deep link, not just copy-to-clipboard — PROTOTYPED (deferred)
 *Source: Cult UI (cult-ui.com) — "Install with shadcn, download as
 Nextjs app, or open in v0."*
 Cult UI offers three destinations for a component, one of which is a
 direct "open in v0" link. CopyUI already has Tool Mode (v0/Cursor/
-GenVibe — see [detail-page.md](detail-page.md)); this is a natural
-extension: instead of (or alongside) copying the built prompt to the
-clipboard, deep-link directly into the selected tool with the prompt
-pre-filled, where the tool supports it (v0.dev has a documented
-`?q=`-style chat-open URL pattern in the shadcn docs clip). **Effort**:
-moderate — needs per-tool URL construction and testing whether the target
-tool actually accepts a prefilled query param.
+GenVibe — see [detail-page.md](detail-page.md)).
+
+**Update after checking the actual source**: the shadcn docs clip
+(`wiki/raw/clips/Components.md`) shows v0's only documented "open in"
+mechanism is `https://v0.dev/chat/api/open?url=<url>`, where `<url>`
+must point to a **shadcn registry-item JSON** (a `registry:style`
+payload with `dependencies`/`cssVars`/etc.), not raw prompt text. There
+is no documented `?q=`-style parameter for opening v0 chat with an
+arbitrary text prompt — the earlier note above claiming that was
+incorrect and has been corrected here after re-checking the source.
+Since a reliable arbitrary-prompt deep-link format isn't confirmed, a
+true "Open in v0" link was **not implemented** (would mean faking a URL
+format we can't verify works).
+
+**What was built instead**: a small "Copy for v0" secondary action
+(`src/components/copy-for-v0-button.tsx`), shown only when Tool Mode is
+v0, that runs the same server-side build + clipboard-copy flow with a
+v0-specific label, success message ("Copied for v0.dev"), and a caption
+explaining the prompt is optimized for v0 and should be pasted into a
+new v0 chat. A code-level TODO documents the deep-link gap and what
+would need to change (either v0 documenting a text-prompt URL param, or
+CopyUI hosting its built prompt as a registry-item-shaped JSON at a
+public URL — the latter would be a bigger architecture change than
+this task's scope allows). **Effort**: small (done) for the copy
+action; moderate-to-unclear for a true deep link, blocked on v0
+publishing a reliable format.
 
 ## 2. Trending / most-copied sort
 *Source: 21st.dev ("Latest components" by week, per-item view counts)*

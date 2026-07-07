@@ -14,6 +14,17 @@ export function getToolModeLabel(mode: ToolMode): string {
   return TOOL_MODES.find((m) => m.value === mode)?.label ?? mode;
 }
 
+/** Short caption telling the user what to do with the copied prompt. */
+const TOOL_MODE_CAPTION: Record<ToolMode, string> = {
+  v0: "Paste this into a new v0 chat.",
+  cursor: "Paste this into Cursor Chat or an implementation prompt.",
+  genvibe: "Paste this into GenVibe for visual direction.",
+};
+
+export function getToolModeCaption(mode: ToolMode): string {
+  return TOOL_MODE_CAPTION[mode];
+}
+
 /**
  * Server-side-only framing prepended to a theme's base prompt so the same
  * hidden template produces output tuned for the selected AI tool, without

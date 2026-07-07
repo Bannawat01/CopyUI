@@ -1,10 +1,24 @@
 "use client";
 
+/**
+ * TODO(true-v0-deep-link): v0.dev's only documented "open in" mechanism
+ * (`https://v0.dev/chat/api/open?url=...`) expects a URL pointing to a
+ * shadcn registry-item JSON payload, not raw prompt text — see
+ * wiki/pages/copy-mechanism.md and wiki/raw/clips/Components.md. There is
+ * no documented way to deep-link into v0 chat with an arbitrary text
+ * prompt, so this stays a copy-to-clipboard action for all tool modes.
+ * Revisit if v0 publishes a reliable prompt-text deep-link format.
+ */
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Copy, Loader2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getToolModeLabel, type ToolMode } from "@/lib/tool-modes";
+import {
+  getToolModeCaption,
+  getToolModeLabel,
+  type ToolMode,
+} from "@/lib/tool-modes";
 
 type CopyState = "idle" | "loading" | "success" | "error";
 
@@ -101,7 +115,7 @@ export function CopyPromptButton({
                 exit={{ opacity: 0, scale: 0.8 }}
                 className="flex items-center gap-2"
               >
-                <Copy className="h-4 w-4" /> Copy Prompt
+                <Copy className="h-4 w-4" /> Copy for {getToolModeLabel(toolMode)}
               </motion.span>
             )}
           </AnimatePresence>
@@ -119,7 +133,11 @@ export function CopyPromptButton({
               : "text-transparent"
         }`}
       >
-        {statusText[state] || " "}
+        {statusText[state] || " "}
+      </p>
+
+      <p className="text-xs text-muted-foreground">
+        {getToolModeCaption(toolMode)}
       </p>
     </div>
   );

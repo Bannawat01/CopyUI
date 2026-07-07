@@ -57,11 +57,28 @@ referenced directly inside a Server Component file; see
   button, letting the user pick `v0.dev`, `Cursor`, or `GenVibe`
   (`src/lib/tool-modes.ts`, default `"v0"`). The selected mode is passed
   into `CopyPromptButton`, which sends it to the build API alongside
-  `primaryColor`; the loading/success status text now says "Building a
-  {tool} prompt…" / "Copied — tailored for {tool}" so the feedback
-  reflects which tool the copied text was optimized for. See
-  [copy-mechanism.md](copy-mechanism.md) for how tool mode changes the
-  built prompt.
+  `primaryColor`.
+- **Copy button adapts to Tool Mode** (replaces the earlier separate
+  "Copy for v0" button — see the note below): the single
+  `CopyPromptButton`'s idle label reads "Copy for {tool}" (e.g. "Copy
+  for v0.dev", "Copy for Cursor", "Copy for GenVibe"), its loading/
+  success `aria-live` status text says "Building a {tool} prompt…" /
+  "Copied — tailored for {tool}", and a small always-visible caption
+  below the status line tells the user what to do next per tool
+  ("Paste this into a new v0 chat." / "Paste this into Cursor Chat or an
+  implementation prompt." / "Paste this into GenVibe for visual
+  direction."). One button, one flow, label/feedback/caption all driven
+  by the same `toolMode` value — see
+  [copy-mechanism.md](copy-mechanism.md) for the full flow.
+- **Removed**: the separate `CopyForV0Button` secondary action added in
+  a prior pass was removed after review — it ran the exact same
+  server-side build + clipboard flow as the main Copy Prompt button
+  whenever Tool Mode was `v0`, so having two buttons do the same thing
+  read as redundant rather than as a meaningful shortcut. Its
+  v0-specific caption and copy-confirmation wording were folded into
+  the main button instead (see above). A true "Open in v0" deep link
+  remains investigated-and-deferred, not faked — see
+  [copy-mechanism.md](copy-mechanism.md).
 - Unknown slugs render Next's `notFound()` → 404.
 
 ## Variable customization
@@ -72,11 +89,12 @@ Additional variables would extend `promptTemplate` placeholders in
 [prompt-system.md](prompt-system.md) and the `ColorControl`-equivalent input.
 
 ## Inspiration backlog
-Cult UI's "open in v0" one-click link (vs. copy-to-clipboard only) is a
-source-backed idea for extending Tool Mode — see
-[feature-ideas.md](feature-ideas.md) item #1 and
-[competitor-inspiration.md](competitor-inspiration.md). Not yet
-implemented.
+Cult UI's "open in v0" one-click link (vs. copy-to-clipboard only)
+originally prompted a separate "Copy for v0" button; that was later
+merged into the main Copy Prompt button's adaptive label once it became
+clear the two buttons did the same thing (see the "Removed" note above).
+See [feature-ideas.md](feature-ideas.md) item #1 for the full story and
+[competitor-inspiration.md](competitor-inspiration.md) for the source.
 
 ## Related
 - [overview.md](overview.md)

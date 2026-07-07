@@ -426,3 +426,112 @@
 - No raw clip content was copied wholesale into the wiki — every new
   page is a short synthesis with inline source attribution back to the
   specific clip file.
+
+## [2026-07-06] copy-for-v0 | "Copy for v0" secondary action prototyped
+- Goal: add a lightweight v0-oriented action (per
+  [feature-ideas.md](pages/feature-ideas.md) item #1) so CopyUI feels
+  more useful than a generic template gallery, without faking a deep
+  link that might not actually work.
+- **Checked the actual source before building anything**: re-read
+  `wiki/raw/clips/Components.md` (the shadcn docs clip) for v0's
+  documented "open in" mechanism. It's
+  `https://v0.dev/chat/api/open?url=<url>`, where `<url>` must point to
+  a shadcn **registry-item JSON** (`registry:style`, `dependencies`,
+  `cssVars`), not raw prompt text — there is no documented parameter for
+  opening a new v0 chat pre-filled with arbitrary text. This corrects an
+  earlier, incorrect claim in `feature-ideas.md` that v0.dev had a
+  `?q=`-style text param; that claim has been struck through and
+  replaced with the corrected finding.
+- Because a reliable arbitrary-prompt deep-link format isn't confirmed,
+  **no fake "Open in v0" link was built**. Instead: `src/components/
+  copy-for-v0-button.tsx` (new) — a secondary, v0-branded button shown
+  only when Tool Mode is `v0`, next to the existing Copy Prompt button.
+  It reuses the exact same server-side build flow (`POST
+  /api/prompts/[slug]/build` with `toolMode: "v0"` hard-coded,
+  `navigator.clipboard.writeText`), with its own label ("Copy for v0"),
+  its own success/error feedback ("Copied for v0.dev" / "Copy failed"),
+  and an always-visible caption explaining the prompt is optimized for
+  v0.dev and should be pasted into a new v0 chat. A code-level TODO
+  comment documents the deep-link gap and what would need to change to
+  support it later.
+- `src/components/prompt-detail.tsx`: imports and conditionally renders
+  `CopyForV0Button` when `toolMode === "v0"`, right after the main
+  `CopyPromptButton`.
+- Tool Mode itself was already fully implemented from a prior session
+  (`src/lib/tool-modes.ts`, the build API's `toolMode` handling,
+  `ToolModeSelector`) — reused as-is, no changes needed there.
+- No backend/auth/payments/database/admin added, no architecture
+  changes, no new dependencies. The API route (`/api/prompts/[slug]/build`)
+  was not modified — it already accepted `toolMode` from the prior Tool
+  Mode work.
+- Hidden-template guarantee re-verified: `curl` against the gallery page
+  and the saas-dashboard detail page shows no "Product context:" match;
+  confirmed the new "Copy for v0" button and its caption render in the
+  initial HTML (default Tool Mode is `v0`); directly `POST`ing the build
+  API with `toolMode: "v0"` returns the correctly framed, real prompt
+  text.
+- Quality: `rtk npm run lint` clean, `rtk npm run build` clean (all 22
+  pages built).
+- Wiki updated: `feature-ideas.md` (corrected the v0 URL-param claim,
+  marked item #1 as prototyped/deferred with the real finding),
+  `prompt-system.md`, `copy-mechanism.md`, `detail-page.md` (documented
+  the new action and why the deep link was deferred, not faked),
+  `next-actions.md` (marked the copy action done, added a dedicated
+  next-action for the still-open deep-link question).
+- Remaining issue: the "Copy for v0" and main "Copy Prompt" buttons now
+  do functionally the same thing when Tool Mode is v0 (same request,
+  same clipboard write) — this is intentional (a branded shortcut
+  action, not a functional differentiation), but worth reconsidering if
+  it reads as redundant once seen in a real browser rather than via
+  markup review.
+
+## [2026-07-06] copy-ux-refine | Removed redundant "Copy for v0" button, made main button adaptive
+- Goal: address the redundancy flagged in the prior entry — the
+  secondary "Copy for v0" button and the main "Copy Prompt" button did
+  the exact same thing whenever Tool Mode was v0.
+- `src/lib/tool-modes.ts`: added `getToolModeCaption(mode)` returning a
+  short per-tool instruction ("Paste this into a new v0 chat." /
+  "Paste this into Cursor Chat or an implementation prompt." / "Paste
+  this into GenVibe for visual direction.").
+- `src/components/copy-prompt-button.tsx`: the idle label now reads
+  "Copy for {tool}" (driven by `getToolModeLabel(toolMode)`) instead of
+  a static "Copy Prompt", and a new always-visible caption
+  (`getToolModeCaption(toolMode)`) was added below the existing
+  `aria-live` status line. Added a code-level TODO comment at the top of
+  the file documenting the v0 deep-link gap (moved here from the now-
+  deleted `copy-for-v0-button.tsx`). Loading/success/error states,
+  `aria-busy`, and the `role="status" aria-live="polite"` wiring are
+  otherwise unchanged.
+- `src/components/prompt-detail.tsx`: removed the `CopyForV0Button`
+  import and its conditional render block; `ToolModeSelector` and the
+  single `CopyPromptButton` remain, unchanged in position.
+- Deleted `src/components/copy-for-v0-button.tsx` (no longer used).
+- No changes to the server-side flow: `POST /api/prompts/[slug]/build`,
+  `buildPrompt()`, and `applyToolMode()` are untouched — this pass is
+  presentation-only, on top of the existing hidden-template-safe flow.
+- No backend/auth/payments/database/admin added, no architecture
+  changes, no new dependencies. No fake "Open in v0" link was added —
+  the TODO from the prior pass carried forward unchanged.
+- Note: hit a repeated `Edit` tool failure on `copy-prompt-button.tsx`
+  (old_string not found despite matching a fresh `Read`, on both a
+  multi-line and later a single-line attempt) — worked around by
+  rewriting the whole file with `Write` instead of chasing it further.
+- Hidden-template guarantee re-verified: `curl` against the gallery page
+  and the saas-dashboard detail page shows no "Product context:" match;
+  confirmed the adaptive label renders correctly (React SSR splits
+  `Copy for ` and the interpolated `v0.dev` across a comment-marker
+  boundary in raw HTML — cosmetic in the markup, renders as one string
+  in the browser); confirmed the old redundant button/label no longer
+  appears; directly `POST`ing the build API with `toolMode: "cursor"`
+  confirms the build flow is unaffected.
+- Quality: `rtk npm run lint` clean, `rtk npm run build` clean (all 22
+  pages built).
+- Wiki updated: `copy-mechanism.md` (replaced the "Copy for v0" section
+  with a "one adaptive button, not two" explanation + the deep-link
+  rationale kept separate), `detail-page.md` and `prompt-system.md`
+  (documented the adaptive button, noted the removal), `next-actions.md`
+  (marked the redundancy resolved).
+- Remaining issues: same open items as before this pass (no real-browser
+  check of the new caption/label wording, no AI-tool validation of the
+  Tool Mode framings, true "Open in v0" still blocked on v0.dev
+  publishing a reliable format) — nothing new introduced.

@@ -62,12 +62,15 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
    "propose a file structure" framing gives it).
 9. Explicitly out of scope per CLAUDE.md / this task: backend persistence,
    auth, payments, database, admin features. Revisit only when asked.
-10. New, from clip research (see [feature-ideas.md](feature-ideas.md)):
-    consider an "Open in v0.dev" deep link alongside Copy Prompt when Tool
-    Mode = v0 (Cult UI pattern); a client-side Most Copied/Newest sort
-    using the existing mock `copies` stat (21st.dev pattern); and a count
-    badge per category pill (Shadcnblocks pattern). All three are small,
-    backend-free, and evaluated but not yet built.
+10. From clip research (see [feature-ideas.md](feature-ideas.md)): the
+    v0-oriented copy action shipped, then **refined** — the separate
+    "Copy for v0" secondary button was removed as redundant and its
+    behavior folded into the main Copy Prompt button's adaptive label/
+    caption (now covers all 3 tool modes, not just v0). Still open: a
+    client-side Most Copied/Newest sort using the existing mock `copies`
+    stat (21st.dev pattern), and a count badge per category pill
+    (Shadcnblocks pattern) — both small, backend-free, evaluated but not
+    yet built.
 11. **[uncertain]** Re-clip Magic UI, Aceternity UI, Motion-Primitives,
     and Superdesign UI Design Prompts directly if their intended research
     (motion technique detail, prompt-writing quality guidance) is still
@@ -75,5 +78,13 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
     so [motion-inspiration.md](motion-inspiration.md) and
     [prompt-quality.md](prompt-quality.md) currently have thin or
     substitute-only source material.
+12. **[uncertain]** A true "Open in v0.dev" deep link remains blocked on
+    v0.dev publishing (or CopyUI discovering) a documented way to open a
+    new v0 chat pre-filled with arbitrary prompt text — the only
+    confirmed mechanism (`/chat/api/open?url=...`) expects a shadcn
+    registry-item JSON URL, not raw text. Revisit if v0 documents
+    something else, or if hosting the built prompt as a
+    registry-item-shaped public JSON endpoint is ever judged worth the
+    added architecture (out of this task's scope).
 
 This list should be revised as decisions are made — do not treat it as fixed.

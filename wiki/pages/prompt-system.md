@@ -71,6 +71,19 @@ tool-specific framing paragraph to a theme's already-built prompt text:
   texture (motion, easing, hover/press feedback), visual polish (depth,
   light, material), and emotional tone.
 
+### Tool-mode-adaptive copy button
+`CopyPromptButton` reads `toolMode` to drive three things: its idle
+label ("Copy for {tool}"), its loading/success `aria-live` status text,
+and a small caption (`getToolModeCaption()` in `src/lib/tool-modes.ts`)
+telling the user what to do with the copied text per tool. This
+replaced an earlier separate `CopyForV0Button` secondary action (shown
+only when Tool Mode was `v0`) that was removed after review — it ran the
+exact same server-side build + clipboard flow as the main button, so two
+buttons doing the same thing read as redundant rather than useful. See
+[copy-mechanism.md](copy-mechanism.md) for the full flow and for why a
+true "Open in v0" deep link was investigated and deferred rather than
+faked.
+
 Deliberately implemented as **one framing prefix per tool**, applied
 server-side to the existing per-theme `promptTemplate`, rather than
 authoring 18 × 3 = 54 separate templates. This keeps the per-theme
@@ -132,6 +145,19 @@ requirement:
   `"cursor"` / `"genvibe"` confirms each produces distinct, correctly
   prefixed output, and omitting `toolMode` still returns the plain base
   prompt (backward compatible).
+- Re-verified after adding the "Copy for v0" action: `curl` against the
+  gallery page and the detail page confirms no "Product context:" match;
+  the new button's own `POST` (with `toolMode: "v0"` hard-coded) returns
+  the same server-built, correctly framed text as the main Copy Prompt
+  button — no separate code path that could accidentally expose the
+  template differently.
+- Re-verified after removing that secondary button and folding its
+  behavior into the main `CopyPromptButton`'s adaptive label/caption:
+  `curl` against the gallery page and the detail page still shows no
+  "Product context:" match, and a direct `POST` with `toolMode: "cursor"`
+  confirms the build API is unchanged and still returns correctly framed
+  text. The label/caption changes are presentation-only — no new prop
+  or data ever carries `promptTemplate` client-side.
 
 ## Inspiration backlog
 shadcn's registry-item schema (`cssVars`, `dependencies`) is a structured
