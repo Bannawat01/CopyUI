@@ -4,17 +4,40 @@ import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { PromptGrid } from "@/components/prompt-grid";
-import { GALLERY_CATEGORIES, type PublicPromptTheme } from "@/lib/prompts";
+import {
+  GALLERY_CATEGORIES,
+  type Category as FullCategory,
+  type PublicPromptTheme,
+} from "@/lib/prompts";
 
 type Category = (typeof GALLERY_CATEGORIES)[number];
+
+type SortOption = "most-copied" | "newest" | "a-z";
+
+const SORT_OPTIONS: { value: SortOption; label: string }[] = [
+  { value: "most-copied", label: "Most Copied" },
+  { value: "newest", label: "Newest" },
+  { value: "a-z", label: "A-Z" },
+];
 
 export function GallerySearch({ prompts }: { prompts: PublicPromptTheme[] }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<Category>("All");
+  const [sort, setSort] = useState<SortOption>("most-copied");
+
+  const categoryCounts = useMemo(() => {
+    const counts: Partial<Record<FullCategory | "All", number>> = {
+      All: prompts.length,
+    };
+    for (const p of prompts) {
+      counts[p.category] = (counts[p.category] ?? 0) + 1;
+    }
+    return counts;
+  }, [prompts]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return prompts.filter((p) => {
+    const matched = prompts.filter((p) => {
       const matchesCategory = category === "All" || p.category === category;
       const matchesQuery =
         !q ||
@@ -23,7 +46,17 @@ export function GallerySearch({ prompts }: { prompts: PublicPromptTheme[] }) {
         p.tags.some((tag) => tag.toLowerCase().includes(q));
       return matchesCategory && matchesQuery;
     });
-  }, [prompts, query, category]);
+
+    const sorted = [...matched];
+    if (sort === "most-copied") {
+      sorted.sort((a, b) => b.meta.copies - a.meta.copies);
+    } else if (sort === "newest") {
+      sorted.sort((a, b) => prompts.indexOf(b) - prompts.indexOf(a));
+    } else {
+      sorted.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    return sorted;
+  }, [prompts, query, category, sort]);
 
   const hasActiveFilter = query.trim() !== "" || category !== "All";
 
@@ -42,6 +75,21 @@ export function GallerySearch({ prompts }: { prompts: PublicPromptTheme[] }) {
             onChange={(e) => setQuery(e.target.value)}
             className="h-10 w-full border-white/10 bg-white/5 text-white placeholder:text-white/30 sm:w-72"
           />
+          <label className="sr-only" htmlFor="gallery-sort">
+            Sort templates
+          </label>
+          <select
+            id="gallery-sort"
+            value={sort}
+            onChange={(e) => setSort(e.target.value as SortOption)}
+            className="h-10 shrink-0 rounded-lg border border-white/10 bg-white/5 px-3 text-sm text-white outline-none transition-colors hover:bg-white/10 focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            {SORT_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value} className="bg-[#111]">
+                {opt.label}
+              </option>
+            ))}
+          </select>
           <span className="hidden shrink-0 text-sm text-white/40 sm:inline">
             {filtered.length} of {prompts.length}
           </span>
@@ -74,7 +122,14 @@ export function GallerySearch({ prompts }: { prompts: PublicPromptTheme[] }) {
                   transition={{ type: "spring", stiffness: 400, damping: 32 }}
                 />
               )}
-              <span className="relative">{c}</span>
+              <span className="relative inline-flex items-center gap-1.5">
+                {c}
+                <span
+                  className={`text-xs ${active ? "text-black/60" : "text-white/45"}`}
+                >
+                  {categoryCounts[c] ?? 0}
+                </span>
+              </span>
             </button>
           );
         })}

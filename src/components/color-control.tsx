@@ -36,7 +36,7 @@ export function ColorControl({
               aria-label={`Use ${swatch} as primary color`}
               aria-pressed={selected}
               onClick={() => onChange(swatch)}
-              className="h-7 w-7 rounded-full outline-none ring-2 ring-offset-2 ring-offset-background transition-transform hover:scale-110 focus-visible:scale-110 focus-visible:ring-ring"
+              className="h-7 w-7 rounded-full outline-none ring-2 ring-offset-2 ring-offset-card transition-transform hover:scale-110 focus-visible:scale-110 focus-visible:ring-ring"
               style={{
                 backgroundColor: swatch,
                 // @ts-expect-error css var not typed
@@ -53,7 +53,7 @@ export function ColorControl({
           type="color"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="h-7 w-7 cursor-pointer rounded-full border-0 bg-transparent p-0 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="h-7 w-7 cursor-pointer rounded-full border-0 bg-transparent p-0 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
         />
         <span className="ml-1 text-xs font-mono text-muted-foreground">
           {value}
