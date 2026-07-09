@@ -36,9 +36,12 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
 4. Add more customizable variables beyond `primaryColor` (e.g. font, border
    radius, layout density) — extends [prompt-system.md](prompt-system.md)
    and the Detail page controls.
-5. Add automated tests (none exist yet) for `buildPrompt()`, the
-   `/api/prompts/[slug]/build` route, and the search/category-filter/
-   empty-state and copy-feedback UI.
+5. Automated tests: a **Vitest smoke suite now exists** (`npm test`, 20
+   tests) covering `buildPrompt()`, `applyToolMode()`, the hidden-template
+   guarantee, sitemap/robots, and a homepage render — see
+   [production-readiness.md](production-readiness.md). Still untested: the
+   `/api/prompts/[slug]/build` route handler end-to-end, and the
+   search/category-filter/empty-state and copy-feedback UI interactions.
 6. **[uncertain]** Verify real-browser/keyboard behavior for the polish-pass,
    category-pill, and now motion-pass changes (stretched-link cards,
    focus-visible rings, aria-live copy status, aria-pressed pills, the new
@@ -92,11 +95,12 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
     [production-readiness.md](production-readiness.md)): the OG image and
     branded favicon/app icons are now **done** (generated via
     `ImageResponse`). Still open: **set `NEXT_PUBLIC_SITE_URL` in the
-    deployment environment** — until then canonical, sitemap, and OG
-    image URLs all resolve against localhost. Vercel Analytics + Speed
-    Insights are now installed and mounted, but must be **enabled in the
-    Vercel project settings** before they collect anything. Error
-    monitoring (Sentry or similar) remains unaddressed.
+    deployment environment** — and then **verified in production**: check
+    the deployed `/sitemap.xml`, `/robots.txt`, and the canonical/OG tags
+    show the real domain, not localhost. Speed Insights is now **enabled**
+    (data needs real visits before it appears); Vercel **Analytics still
+    needs enabling/confirming** in the project settings. Error monitoring
+    (Sentry or similar) remains unaddressed.
 14. Feedback links (Request a prompt / Report bad output / Suggest
     improvement) now ship in the site footer as prefilled GitHub Issues
     links. This closes the loop on item #7's gap — real user reports of

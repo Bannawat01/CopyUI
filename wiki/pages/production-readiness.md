@@ -101,12 +101,54 @@ Real data only appears after deploying and enabling Analytics / Speed
 Insights in the Vercel project settings — installing the packages alone
 is not sufficient.
 
+## Deployment status (2026-07-09)
+- **Speed Insights: enabled** in the Vercel project. Performance data
+  won't appear until real visits accumulate — an empty dashboard right
+  after enabling is expected, not a misconfiguration.
+- **Analytics: still to be enabled/confirmed** in the Vercel project
+  settings. The `<Analytics />` component ships, but it collects nothing
+  until the toggle is on.
+- **`NEXT_PUBLIC_SITE_URL`: needs verification in production.** Check the
+  deployed `/sitemap.xml`, `/robots.txt`, and the OG `og:url` /
+  `<link rel="canonical">` tags actually show the real domain, not
+  `localhost:3000`.
+
+## Smoke tests (added 2026-07-09)
+**Framework: Vitest** (`vitest` devDependency only). Chosen as the
+lightest practical option: `react-dom/server` was already a dependency,
+so the homepage renders via `renderToStaticMarkup` with **no jsdom, no
+testing-library, no Playwright**. Config: `vitest.config.ts` (node
+environment, `@/*` alias mirroring tsconfig). Run with **`npm test`**
+(`vitest run`).
+
+20 tests across 3 files, all under ~1.5s:
+- `tests/prompts.test.ts` — 18 unique, resolvable slugs; unknown slug
+  returns undefined; **`getPublicPrompts()` strips `promptTemplate`** and
+  its serialized output contains no "Product context:", "Target tool:",
+  or `{{primaryColor}}`; `buildPrompt()` injects the color at every
+  placeholder and leaves none behind; `applyToolMode()` yields three
+  distinct, correctly-named framings and passes the base prompt through
+  untouched for a missing/invalid mode.
+- `tests/metadata.test.ts` — sitemap contains the homepage + all 18
+  detail routes with no duplicates; robots disallows `/api/`, allows the
+  rest, links the sitemap.
+- `tests/homepage.test.tsx` — homepage renders the positioning headline,
+  the three "How it works" steps, and real prompt titles; asserts again
+  at the **HTML level** that no hidden template text leaks.
+
+The OG image and icon routes aren't unit-tested — `ImageResponse` needs
+the Next runtime. `npm run build` already proves they compile and
+prerender, which is the check that matters.
+
 ## Remaining production gaps
-- **`NEXT_PUBLIC_SITE_URL` must be set** in the deployment env or all
-  canonical/sitemap URLs say localhost.
-- Analytics + Speed Insights are wired but **must still be enabled in the
-  Vercel project settings** to collect anything.
-- No error monitoring (Sentry or similar), no automated tests.
+- Verify `NEXT_PUBLIC_SITE_URL` took effect in production (see above).
+- Enable/confirm Vercel Analytics; let Speed Insights accumulate visits.
+- No error monitoring (Sentry or similar).
+- Test gaps: the `/api/prompts/[slug]/build` route handler is not tested
+  end-to-end (only its `buildPrompt`/`applyToolMode` building blocks);
+  no component interaction tests (color picker, tool-mode selector,
+  copy-button states); no browser/E2E coverage of the actual clipboard
+  write; detail pages are not render-tested the way the homepage is.
 - No structured data (JSON-LD) — optional, low priority at this scale.
 
 ## Related

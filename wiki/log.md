@@ -657,3 +657,50 @@
 - Remaining gaps: `NEXT_PUBLIC_SITE_URL` in deploy env; Analytics/Speed
   Insights must still be **enabled in Vercel project settings** to
   collect data; no error monitoring; no tests; no JSON-LD.
+
+## [2026-07-09] deploy-status | Speed Insights enabled (docs only)
+- No app code changed. Recording deployment state:
+- **Speed Insights: enabled** in the Vercel project. Performance data
+  requires real visits before it appears — an empty dashboard right
+  after enabling is expected, not a misconfiguration.
+- **Analytics: still to be enabled/confirmed** in Vercel project
+  settings; the component ships but collects nothing until toggled on.
+- **`NEXT_PUBLIC_SITE_URL`: verify in production** — confirm the deployed
+  `/sitemap.xml`, `/robots.txt`, and canonical/OG tags resolve to the
+  real domain rather than `localhost:3000`.
+- Wiki: production-readiness.md (new "Deployment status" section, gap
+  list rewritten), next-actions.md (item 13), this entry.
+
+## [2026-07-09] smoke-tests | Vitest smoke suite (first tests in the project)
+- Framework: **Vitest** (`vitest` devDependency only, no other test deps).
+  Picked as the lightest option that covers the asked-for surface:
+  `react-dom/server` was already a dependency, so the homepage renders
+  via `renderToStaticMarkup` — **no jsdom, no testing-library, no
+  Playwright**. `vitest.config.ts` (node env, `@/*` alias mirroring
+  tsconfig). Added `"test": "vitest run"` to package.json scripts.
+- 3 files, 20 tests, ~1.4s:
+  - `tests/prompts.test.ts` — 18 unique/resolvable slugs; unknown slug →
+    undefined; **`getPublicPrompts()` strips `promptTemplate`** and its
+    serialized output has no "Product context:", "Target tool:", or
+    `{{primaryColor}}`; `buildPrompt()` injects at every placeholder and
+    leaves none; `applyToolMode()` gives 3 distinct correctly-named
+    framings, passes base prompt through for missing/invalid mode.
+  - `tests/metadata.test.ts` — sitemap has homepage + all 18 detail
+    routes, no duplicates; robots disallows `/api/`, allows `/`, links
+    the sitemap.
+  - `tests/homepage.test.tsx` — homepage renders the positioning
+    headline, the 3 How-it-works steps, real prompt titles; re-asserts
+    the no-leak guarantee at the HTML level.
+- OG image / icon routes deliberately not unit-tested — `ImageResponse`
+  needs the Next runtime, and `npm run build` already proves they compile
+  and prerender.
+- No app code touched; no architecture change; one devDependency added.
+- `rtk npm test` 20/20 pass; `rtk npm run lint` clean; `rtk npm run build`
+  clean (27 routes).
+- Wiki: production-readiness.md (smoke-tests section + test-gap list),
+  next-actions.md (item 5 rewritten — it claimed no tests existed), this
+  entry.
+- Remaining test gaps: build API route not tested end-to-end; no
+  component interaction tests (color picker, tool-mode selector, copy
+  states); no browser coverage of the real clipboard write; detail pages
+  not render-tested.
