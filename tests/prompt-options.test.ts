@@ -338,6 +338,156 @@ describe("option conflicts (from real v0 output)", () => {
   });
 });
 
+describe("mobile app layout compliance (from real v0 output)", () => {
+  // v0 followed the preset only weakly — output stayed a desktop hero.
+  const mobileBuild = applyPromptOptions(BASE, {
+    promptIntent: "build",
+    layoutPreset: "mobile-app",
+    themeMode: "dark",
+  });
+
+  it("requires a phone/app-screen frame and mobile viewport width", () => {
+    expect(mobileBuild).toContain("phone/app-screen frame");
+    expect(mobileBuild).toContain("390–430px");
+    expect(mobileBuild).toContain("fixed bottom tab/navigation bar");
+    expect(mobileBuild).toContain("thumb-reachable");
+    expect(mobileBuild).toContain("44px");
+  });
+
+  it("forbids a desktop hero composition", () => {
+    expect(mobileBuild).toContain("Do NOT produce a wide desktop hero");
+    expect(mobileBuild).toContain("no multi-column desktop layout");
+    expect(mobileBuild).toContain(
+      "This must visually read as a mobile app screen at first glance, not as a responsive desktop landing page.",
+    );
+  });
+
+  it("puts the hard requirements after the base brief so they win", () => {
+    expect(mobileBuild.indexOf("hard requirements")).toBeGreaterThan(
+      mobileBuild.indexOf(BASE),
+    );
+  });
+
+  it("other presets get no mobile-app requirements", () => {
+    const out = applyPromptOptions(BASE, {
+      promptIntent: "build",
+      layoutPreset: "docs-layout",
+    });
+    expect(out).not.toContain("Mobile App Layout — hard requirements");
+  });
+
+  // Material Design 3 navigation rules — bottom bar carries destinations.
+  it("says the bottom bar carries destinations, not actions", () => {
+    expect(mobileBuild).toContain("top-level DESTINATIONS only");
+    for (const destination of [
+      "Home",
+      "Search",
+      "Projects",
+      "Activity",
+      "Settings",
+    ]) {
+      expect(mobileBuild).toContain(destination);
+    }
+    for (const action of ["Submit", "Save", "Buy now", "Start free trial"]) {
+      expect(mobileBuild).toContain(action);
+    }
+    expect(mobileBuild).toContain("Those are actions, not destinations");
+  });
+
+  it("forbids putting the primary CTA inside the bottom nav", () => {
+    expect(mobileBuild).toContain(
+      "Do NOT place the primary call to action inside the bottom navigation bar",
+    );
+    expect(mobileBuild).toContain("visually dominant");
+    expect(mobileBuild).toContain("never outrank or absorb it");
+  });
+
+  it("requires legible nav labels and icons", () => {
+    expect(mobileBuild).toContain("must remain clearly legible");
+    expect(mobileBuild).toContain(
+      "Never render navigation labels faint, low-contrast",
+    );
+  });
+
+  it("forbids a horizontal logo strip as fake app navigation", () => {
+    expect(mobileBuild).toContain("Do NOT fake app navigation");
+    expect(mobileBuild).toContain("horizontal logo strip");
+    expect(mobileBuild).toContain("desktop-style top nav dressed up as a tab bar");
+  });
+});
+
+describe("headline highlight contrast", () => {
+  const out = applyPromptOptions(BASE, {
+    promptIntent: "build",
+    themeMode: "dark",
+  });
+
+  it("requires a bright, fully-opaque accent tint", () => {
+    expect(out).toContain("bright, fully-opaque, readable accent tint");
+    expect(out).toContain("If a color fails contrast, change the color value");
+  });
+
+  it("forbids low-opacity utilities on important headline text", () => {
+    for (const forbidden of [
+      "text-black/20",
+      "text-white/20",
+      "opacity-20",
+      "opacity-30",
+    ]) {
+      expect(out).toContain(forbidden);
+    }
+    expect(out).toContain("never dim the text");
+  });
+});
+
+describe("final self-check", () => {
+  it("asks about layout, highlight, CTA, and fixed theme", () => {
+    const out = applyPromptOptions(BASE, {
+      promptIntent: "build",
+      layoutPreset: "mobile-app",
+      themeMode: "dark",
+    });
+    expect(out).toContain("Does this visually read as Mobile App Layout?");
+    expect(out).toContain("Is the highlighted phrase clearly readable?");
+    expect(out).toContain("Is CTA text clearly readable?");
+    expect(out).toContain("Is the theme fixed dark?");
+  });
+
+  it("omits the layout question when the preset is auto", () => {
+    const out = applyPromptOptions(BASE, {
+      promptIntent: "build",
+      themeMode: "light",
+      layoutPreset: "auto",
+    });
+    expect(out).toContain("Is CTA text clearly readable?");
+    expect(out).not.toContain("Does this visually read as");
+  });
+});
+
+describe("retheme is unchanged by the mobile/highlight fixes", () => {
+  const out = applyPromptOptions(BASE, {
+    promptIntent: "retheme",
+    layoutPreset: "mobile-app",
+    themeMode: "dark",
+  });
+
+  it("keeps the preset advisory with no mandates or self-check", () => {
+    expect(out).toContain("ADVISORY ONLY");
+    expect(out).not.toContain("Final layout override");
+    expect(out).not.toContain("Mobile App Layout — hard requirements");
+    expect(out).not.toContain("Final self-check");
+    expect(out).not.toContain("Highlighted text (non-negotiable)");
+  });
+
+  it("does not impose the bottom-nav destination rules on a retheme", () => {
+    expect(out).not.toContain("top-level DESTINATIONS only");
+    expect(out).not.toContain("Do NOT fake app navigation");
+    expect(out).not.toContain(
+      "Do NOT place the primary call to action inside the bottom navigation bar",
+    );
+  });
+});
+
 describe("UI copy", () => {
   it("intent descriptions match the agreed user-facing wording", () => {
     const byValue = Object.fromEntries(

@@ -956,3 +956,72 @@
   reading the built text, not by regenerating UI. The sanitizer is
   phrase-matching, so a future template using different dark wording
   could slip through (the final override still covers it).
+
+## [2026-07-09] clip-synthesis-2 | Processed 5 clips (v0 prompting, contrast, tab bars)
+- No app code touched. Processed 5 of the 9 newly-clipped raw notes and
+  marked them `status: processed`: `How to prompt v0.md` and
+  `Maximizing outputs with v0…` (Vercel), `UI Design Prompts…`
+  (Superdesign), `Understanding Success Criterion 1.4.3…` (W3C WAI),
+  and `Tab bars.md` (Apple HIG).
+- **The Superdesign source gap is CLOSED.** `prompt-quality.md` had
+  recorded it as "not found in wiki/raw/clips" since the first synthesis
+  pass; it is now clipped and processed. That page is rewritten from a
+  gap note into real synthesis.
+- Rules extracted into [prompt-quality.md](pages/prompt-quality.md):
+  v0's three inputs (product surface / context of use / constraints &
+  taste); "a label returns the average of that label"; prompts are
+  tool-dialects; WCAG 4.5:1 normal / 3:1 large (≥18pt or ≥14pt bold),
+  thresholds unrounded, logos exempt unless interactive; Apple's tab-bar
+  rules (navigation not actions, always visible, never disable a tab,
+  always label, badges only for critical info).
+- **Two findings that validate recent work**: (1) Superdesign states a
+  prompt "that sings in one tool is mediocre in another" — the first
+  external source supporting CopyUI's Tool Mode framing-prefix design,
+  which until now rested on judgment. (2) The WCAG clip confirms the
+  contrast-vs-opacity lesson from real v0 output: a highlight can
+  "pass" a rounded ratio and still be unreadable; fix the color value,
+  never dim the text.
+- **One gap found in our own templates**: they are strong on product
+  surface and constraints but uneven on *context of use* (who uses this,
+  in what moment, for what decision) — Vercel says omitting it makes v0
+  guess. Recorded as [feature-ideas.md](pages/feature-ideas.md) #8, with
+  #9 for Superdesign's four-part context block (its CONVENTIONS slot is
+  a plausible new prompt option).
+- **Unprocessed and why**: `WebAIM Contrast Checker` (a live calculator,
+  not guidance); `Mobbin` (marketing copy); `Human Interface Guidelines`
+  (broad index page, `topic: needs-review`); `Navigation bar – Material
+  Design 3` — **clipped empty, frontmatter only, 0-byte body**. That
+  last one was the intended source for phone-viewport dimensions, so the
+  390–430px figure in `prompt-options.ts` remains judgment-based rather
+  than source-backed. Re-clip it.
+- No large raw content pasted; every rule is a short synthesis with its
+  source named inline.
+
+## [2026-07-09] clip-synthesis-3 | Material Design 3 navigation-bar note processed
+- Processed `wiki/raw/clips/Material Design 3 - Navigation Bar.md`
+  (hand-written, citing m3.material.io) → `status: processed`. It fills
+  the phone-viewport gap the previous entry flagged after the two
+  auto-clipped M3 files came back near-empty.
+- Rules added to [prompt-quality.md](pages/prompt-quality.md): required
+  cues for a screen to read as an app (narrow surface, mobile-first
+  vertical composition, 44px targets, thumb-reachable actions, bottom bar
+  where it fits, no wide desktop hero); a **bottom navigation vs primary
+  actions** section; and an enumerated **what-to-avoid** list for the
+  observed v0 failure (desktop centered hero, wide max-width sections,
+  nav-as-CTA, faint nav labels, logo strips posing as app nav, silently
+  reverting to the base template's layout).
+- **New rule not yet in the code**: bottom navigation carries
+  *destinations* (Home, Search, Settings), never *actions* (Submit, Buy
+  now, Start free trial), and the primary CTA must stay dominant rather
+  than be absorbed into the bar. `MOBILE_APP_REQUIREMENTS` mandates a
+  bottom bar but says nothing about what may go in it — recorded as
+  [feature-ideas.md](pages/feature-ideas.md) #10 (trivial: prompt wording
+  + tests, one file).
+- **Honesty note**: the 390–430px width appears in this note too, but the
+  note is ours, not clipped from M3 — the figure still traces to common
+  device widths, not a primary source. Recorded as a caveat rather than
+  letting it read as a citation.
+- Housekeeping: two near-empty duplicate clips remain
+  (`Navigation bar – Material Design 3.md`, 564B, and
+  `… 3 1.md`, 340B) — both frontmatter/stub only, still `unprocessed`.
+  Superseded by this note; safe to delete.

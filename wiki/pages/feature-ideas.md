@@ -155,6 +155,61 @@ new product surface (visual editor, its own state model, likely
 persistence), whereas layout presets reuse the existing prompt
 composition end to end. Revisit only if presets prove insufficient.
 
+## 8. Add "context of use" to prompt templates
+*Source: `How to prompt v0.md` (Vercel) — the three-input framework*
+Vercel names three inputs behind every good v0 prompt: product surface,
+**context of use** (who uses it, in what moment, to make what decision),
+and constraints & taste. CopyUI's 7-section templates cover surface and
+constraints thoroughly, but *context of use* appears unevenly across the
+18 templates. Vercel's claim is that omitting it makes v0 guess and
+"optimize for assumed usage." **Effort**: small (content-only pass over
+the templates, no code). Backed by the strongest external source we have
+for the exact tool CopyUI targets.
+
+## 9. Ship the context block as a prompt option
+*Source: `UI Design Prompts…` (Superdesign)*
+Superdesign's four-part reusable preamble — TARGET / CONVENTIONS /
+CONSTRAINTS / SCOPE — is pasted *before* any UI prompt, and its rules
+overlap CopyUI's almost exactly (8px grid, one accent, AA contrast, all
+interactive states, empty/loading/error states, no lorem ipsum).
+Two things worth stealing: an explicit **"never say clean and modern"**
+rule (Superdesign's diagnosis: a label returns the average of that
+label), and a **CONVENTIONS** slot letting the user name their stack and
+design tokens so generated code reuses their components instead of
+inventing new ones. The latter would be a real new prompt option;
+the former is one line of template wording. **Effort**: trivial (wording)
+to moderate (a conventions field).
+
+**Independent validation**: Superdesign states a prompt "that sings in
+one tool is mediocre in another" — direct third-party support for
+CopyUI's Tool Mode framing-prefix design, which until now rested on
+judgment rather than a source.
+
+## 10. Tighten Mobile App Layout: nav bar is destinations, never the CTA
+*Source: `Material Design 3 - Navigation Bar.md`*
+`MOBILE_APP_REQUIREMENTS` in `prompt-options.ts` already mandates a phone
+surface, a bottom tab bar, thumb-reachable actions, and forbids a desktop
+hero. It does **not** yet say what may go *in* the bar. The M3 note draws
+the line clearly: bottom navigation carries **destinations** (Home,
+Search, Projects, Settings), never **actions** (Submit, Save, Buy now,
+Start free trial) — and the primary CTA must stay visually dominant
+rather than being absorbed into the nav bar.
+
+Three lines worth adding to the preset's hard requirements:
+- The bottom tab bar is for navigation destinations only; never place the
+  primary CTA inside it.
+- If the screen has a primary CTA, it remains the dominant element; the
+  nav bar supports movement between sections.
+- Navigation labels must stay legible — never faint or low-contrast.
+  (Same failure mode as the headline-highlight bug: legibility lost to
+  dimming, not to a bad color.)
+
+Also worth forbidding explicitly, from the same note: **horizontal
+desktop-style logo strips masquerading as app navigation** — a plausible
+way v0 could "satisfy" a bottom-bar requirement while still shipping a
+landing page. **Effort**: trivial (prompt wording only, one file, plus
+tests).
+
 ## Explicitly not recommended
 - Paid/premium tiers (Shadcnblocks pattern) — blocked by CLAUDE.md's
   no-payments rule.

@@ -268,6 +268,39 @@ describe("POST /api/prompts/[slug]/build", () => {
     expect(text).toContain("Product context:");
   });
 
+  // Second v0 round: dark theme worked, but mobile-app was still weak.
+  it("enforces mobile-app layout and highlight contrast for the hero + dark case", async () => {
+    const { json } = await postJson("landing-hero", {
+      themeMode: "dark",
+      layoutPreset: "mobile-app",
+      promptIntent: "build",
+      toolMode: "v0",
+    });
+    const text: string = json.text;
+
+    expect(text).toContain("Mobile App Layout — hard requirements");
+    expect(text).toContain("390–430px");
+    expect(text).toContain("Do NOT produce a wide desktop hero");
+    expect(text).toContain(
+      "must visually read as a mobile app screen at first glance",
+    );
+    expect(text).toContain("bright, fully-opaque, readable accent tint");
+    expect(text).toContain("opacity-30");
+    expect(text).toContain("Does this visually read as Mobile App Layout?");
+    expect(text).toContain("Is the theme fixed dark?");
+    expect(text).toContain("Product context:");
+    // Bottom nav carries destinations; the CTA never lives inside it.
+    expect(text).toContain("top-level DESTINATIONS only");
+    expect(text).toContain(
+      "Do NOT place the primary call to action inside the bottom navigation bar",
+    );
+    expect(text).toContain("Do NOT fake app navigation");
+    // Mandates land after the base brief.
+    expect(text.indexOf("hard requirements")).toBeGreaterThan(
+      text.indexOf("Product context:"),
+    );
+  });
+
   it("light theme mode via API is fixed, not adaptive", async () => {
     const { json } = await postJson(SLUG, { themeMode: "light" });
     expect(json.text).toContain("LIGHT (fixed)");

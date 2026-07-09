@@ -135,8 +135,50 @@ const LAYOUT_DESCRIPTIONS: Record<
   "docs-layout":
     "a three-column documentation layout — a navigation tree on the left, article content in a readable centered column (around 720px), and an 'on this page' table of contents on the right that collapses on smaller screens",
   "mobile-app":
-    "a mobile-first app layout — a narrow centered column sized for a phone viewport, a fixed bottom navigation bar or tab bar, large touch targets (44px minimum), and thumb-reachable primary actions",
+    "a mobile app screen — a visible phone/app-screen frame or narrow mobile viewport container (main app surface capped at roughly 390–430px wide), an app-like vertical structure, a fixed bottom tab/navigation bar, large touch targets (44px minimum), and the primary action placed in the thumb-reachable lower area",
 };
+
+/**
+ * Real v0 output followed the mobile-app preset only weakly — it still
+ * produced a desktop centered hero. These requirements are appended for
+ * that preset in build mode, on top of the generic layout directive.
+ */
+const MOBILE_APP_REQUIREMENTS = `Mobile App Layout — hard requirements (do not soften these):
+- Render a visible phone/app-screen frame, or a narrow mobile viewport container; the main app surface must be capped at roughly 390–430px wide and horizontally centered.
+- Structure the content as an app screen stacked vertically (status/top bar → screen content → bottom bar), not as page sections across a wide canvas.
+- Include a fixed bottom tab/navigation bar whenever the content plausibly supports one.
+- The bottom navigation bar is for top-level DESTINATIONS only — items a person navigates to, such as Home, Search, Projects, Activity, or Settings. It must NEVER contain actions such as Submit, Save, Buy now, or Start free trial. Those are actions, not destinations.
+- Do NOT place the primary call to action inside the bottom navigation bar. The primary CTA stays a distinct, visually dominant element on the screen; the bottom bar only moves the user between sections and must never outrank or absorb it.
+- Bottom navigation labels and icons must remain clearly legible — real labels (single words where possible) with simple icons, at full contrast. Never render navigation labels faint, low-contrast, or icon-only-by-omission.
+- Do NOT fake app navigation with a horizontal logo strip, a row of partner/brand marks, or a desktop-style top nav dressed up as a tab bar. A bottom navigation bar is a labeled set of destinations, nothing else.
+- Place the primary action in the thumb-reachable lower area of the screen, with a touch target of at least 44px.
+- Do NOT produce a wide desktop hero composition: no full-bleed edge-to-edge hero, no multi-column desktop layout, no wide centered marketing hero that merely happens to be responsive.
+- This must visually read as a mobile app screen at first glance, not as a responsive desktop landing page.`;
+
+/**
+ * v0 claimed the headline highlight passed contrast while the rendered
+ * result was visibly hard to read — opacity-based tints were the culprit.
+ */
+const HIGHLIGHT_CONTRAST_RULES = `Highlighted text (non-negotiable): the highlighted phrase in the headline must use a bright, fully-opaque, readable accent tint — pick a lighter or darker shade of the accent color so it clearly separates from the background. Never render the highlighted phrase, the CTA label, or any other important headline text with reduced opacity or a faded tint: do not use text-black/20, text-white/20, opacity-20, opacity-30, or any similar low-opacity utility on this text. If a color fails contrast, change the color value — never dim the text.`;
+
+/** Appended in build mode so the model verifies its own output. */
+function selfCheck(
+  themeMode: ThemeMode | undefined,
+  layoutPreset: LayoutPreset | undefined,
+): string | null {
+  const checks: string[] = [];
+  if (layoutPreset && layoutPreset !== "auto") {
+    const label = LAYOUT_PRESETS.find((p) => p.value === layoutPreset)?.label;
+    checks.push(`- Does this visually read as ${label}?`);
+  }
+  checks.push("- Is the highlighted phrase clearly readable?");
+  checks.push("- Is CTA text clearly readable?");
+  if (themeMode) {
+    checks.push(`- Is the theme fixed ${themeMode}?`);
+  }
+  if (checks.length === 0) return null;
+  return `Final self-check before you finish — answer each, and fix the output if any answer is no:\n${checks.join("\n")}`;
+}
 
 function layoutDirective(
   preset: LayoutPreset,
@@ -249,13 +291,27 @@ const LAYOUT_OVERRIDE = `Final layout override: use the selected layout preset a
 function finalOverrides(options: PromptOptions): string[] {
   const overrides: string[] = [];
   if (options.themeMode) overrides.push(THEME_OVERRIDES[options.themeMode]);
-  if (
-    options.layoutPreset &&
-    options.layoutPreset !== "auto" &&
-    options.promptIntent !== "retheme"
-  ) {
+
+  // Retheme never gets layout mandates, highlight rewrites, or a self-check —
+  // its preservation rules stay the last word.
+  if (options.promptIntent !== "build") return overrides;
+
+  const hasPreset = Boolean(
+    options.layoutPreset && options.layoutPreset !== "auto",
+  );
+  if (hasPreset) {
     overrides.push(LAYOUT_OVERRIDE);
+    if (options.layoutPreset === "mobile-app") {
+      overrides.push(MOBILE_APP_REQUIREMENTS);
+    }
   }
+
+  if (hasPreset || options.themeMode) {
+    overrides.push(HIGHLIGHT_CONTRAST_RULES);
+    const check = selfCheck(options.themeMode, options.layoutPreset);
+    if (check) overrides.push(check);
+  }
+
   return overrides;
 }
 

@@ -11,10 +11,14 @@
             "id": "0910b915ddec9ad5",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "raw/clips/Maximizing outputs with v0 From UI generation to code creation.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Maximizing outputs with v0 From UI generation to code creation"
             }
           }
         ]
@@ -178,6 +182,17 @@
   },
   "active": "0910b915ddec9ad5",
   "lastOpenFiles": [
+    "raw/clips/Navigation bar – Material Design 3 1.md",
+    "raw/clips/sedyM1fjK",
+    "raw/clips/Material Design 3 - Navigation Bar.md",
+    "raw/clips/Maximizing outputs with v0 From UI generation to code creation.md",
+    "raw/clips/How to prompt v0.md",
+    "raw/clips/Understanding Success Criterion 1.4.3 Contrast (Minimum)  WAI.md",
+    "raw/clips/WebAIM Contrast Checker.md",
+    "raw/clips/Mobbin — UI & UX design inspiration for mobile & web apps.md",
+    "raw/clips/Navigation bar – Material Design 3.md",
+    "raw/clips/Human Interface Guidelines.md",
+    "raw/clips/Tab bars.md",
     "log.md.tmp.39728.2dfe011571bf",
     "pages/next-actions.md.tmp.39728.ba337d288caa",
     "pages/detail-page.md.tmp.39728.882ff0db9c4b",
@@ -203,18 +218,6 @@
     "raw/clips/serafimcloud21st npm for design engineers largest marketplace of shadcnui-based React Tailwind components, blocks and hooks.md",
     "raw/clips/Components.md",
     "raw/clips/21st.dev - Crafted React components and templates, not AI slop.md",
-    "pages/copy-mechanism.md.tmp.40420.8e2e3c4ff885",
-    "pages/copy-mechanism.md.tmp.40420.242edb08c19e",
-    "raw/clips/UI Design Prompts 11 Copy-Paste Prompts That Work (2026).md",
-    "raw/clips/Motion-Primitives - UI kit to make beautiful, animated interfaces, faster.md",
-    "raw/clips/UI library for Design Engineers.md",
-    "raw/clips/shadcnoriginui Origin UI is an extensive collection of copy-and-paste components for quickly building application UIs. Powered by Tailwind CSS and React.md",
-    "raw/clips/Shadcn Components - Extra components for Shadcn UI.md",
-    "raw/clips/obsidian-communityweb-clipper-templates Community collection of templates for the official Obsidian web clipper.md",
-    "raw/clips/nolly-studiocult-ui Components crafted for Design Engineers. Styled using Tailwind CSS, fully compatible with Shadcn, and easy to integrate—just copy and paste. MIT 🤌.md",
-    "raw/clips/Introduction.md",
-    "raw/clips/Examples.md",
-    "pages/feature-ideas.md",
-    "pages/prompt-quality.md"
+    "raw/clips/UI Design Prompts 11 Copy-Paste Prompts That Work (2026).md"
   ]
 }

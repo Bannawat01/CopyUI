@@ -8,6 +8,14 @@ created: 2026-07-06
 description: "11 copy-paste UI design prompts, wrapped in a reusable context block and segmented by tool (v0, Lovable, Cursor, Figma Make). Specific in, designed out."
 tags:
   - "clippings"
+  - copyui
+  - raw
+  - prompt-quality
+type: prompt-reference
+project: CopyUI
+status: processed
+topic: v0-prompting
+source_url: "https://superdesign.dev/blog/ui-design-prompts"
 ---
 Quick answer
 
