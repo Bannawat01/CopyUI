@@ -73,8 +73,12 @@ What you SHOULD change: visual styling only — theme tokens/CSS variables, colo
  * Light selection still produced a system-following theme.
  */
 const THEME_DIRECTIVES: Record<ThemeMode, string> = {
-  dark: `Theme mode: DARK (fixed). Use the dark styling exactly as described in the brief below, as a single permanent theme. Do NOT add a light variant, do NOT use prefers-color-scheme, and do NOT follow the browser or OS theme — the UI must render dark for every user.`,
-  light: `Theme mode: LIGHT (fixed). Render a single permanent light theme: near-white base background, subtle gray surfaces one step darker for cards, dark text — keeping the brief's visual hierarchy, elevation logic (surface shifts + 1px borders, not heavy shadows), accent-color placement rules, and WCAG contrast ratios, re-derived for light surfaces rather than naively inverted. This is NOT adaptive: do NOT use prefers-color-scheme, do NOT follow the browser or OS theme, and do NOT include a dark variant — the UI must render light for every user regardless of their system setting.`,
+  dark: `Theme mode: DARK (fixed). Use the dark styling exactly as described in the brief below, as a single permanent theme. Do NOT add a light variant, do NOT use prefers-color-scheme, and do NOT follow the browser or OS theme — the UI must render dark for every user.
+
+Contrast (dark): highlighted words in headings and the primary CTA's label must meet 4.5:1 against their own background — lighten the accent tint if it fails at small sizes rather than lowering opacity, and never render a filled CTA whose label blends into its fill.`,
+  light: `Theme mode: LIGHT (fixed). Render a single permanent light theme: near-white base background, subtle gray surfaces one step darker for cards, dark text — keeping the brief's visual hierarchy, elevation logic (surface shifts + 1px borders, not heavy shadows), accent-color placement rules, and WCAG contrast ratios, re-derived for light surfaces rather than naively inverted. Use the primary/secondary/accent colors for the CTA fill, highlighted words, borders, and badges. This is NOT adaptive: do NOT use prefers-color-scheme, do NOT follow the browser or OS theme, and do NOT include a dark variant — the UI must render light for every user regardless of their system setting.
+
+Contrast (light): the primary CTA's label must remain clearly legible against its filled background (4.5:1) — never a dark button with dark text, and never a filled button whose label inherits the page's dark text color. Highlighted words in headings must meet 4.5:1 against the light background; if the accent color is too pale on white, darken the tint rather than lowering opacity. Never use low-opacity dark text for important words (headline highlights, CTA labels, prices).`,
   system: `Theme mode: system/adaptive. This is the ONLY mode that follows the user's OS/browser preference: implement BOTH a dark and a light theme driven by prefers-color-scheme, with the dark variant following the brief below and the light variant re-derived for light surfaces (not naive inversion). Define colors as theme tokens/CSS variables so both modes share one structure, and keep contrast ratios valid in both.`,
   mono: `Theme mode: monochrome (fixed). Render the design in a strict black/white/gray palette: use shades of a single neutral scale for all surfaces, text, and borders. Where the brief assigns an accent color to an element, use the strongest neutral contrast (pure white or near-black) plus weight/size instead of hue to create emphasis. Color may only be used for functional states (errors, success) if omitting it would harm usability. Do not follow the browser or OS theme.`,
 };
@@ -145,7 +149,7 @@ function layoutDirective(
     return `Layout preference (ADVISORY ONLY): the user's preferred arrangement is ${description}. Because this is a retheme, do NOT restructure the existing page to match it — the preservation rules above take precedence. Treat this only as a hint for how visual styling (spacing rhythm, alignment, density, emphasis) should lean within the structure that already exists. Only change the actual layout if the user explicitly asks for layout changes.`;
   }
 
-  return `Layout preset: build the interface as ${description}. This is the required structural arrangement — where the brief below describes a different layout, follow this preset for structure and use the brief for everything else (components, states, hierarchy, styling, accessibility).`;
+  return `Layout preset: build the interface as ${description}. This is the required structural arrangement — where the brief below describes a different layout, follow this preset for structure and use the brief for everything else (components, states, hierarchy, styling, accessibility). If the preset is an unusual fit for the brief's page type, adapt the brief's content into the preset rather than ignoring the preset — e.g. a marketing hero under Mobile App Layout becomes a phone-style landing screen with the same headline, subtext, and call to action, not a desktop centered hero.`;
 }
 
 export type ActionStyle = "instruct" | "apply";
@@ -193,6 +197,68 @@ function actionStyleDirective(
   return `Execution mode: APPLY THE CHANGES DIRECTLY. Do not stop at advice — create and edit the actual files in the workspace. If the change set is large, state a brief file-level plan first, then implement it.`;
 }
 
+/**
+ * The base templates are written dark-first ("near-black", "text-white/70",
+ * "Dark surface system"). Real v0 output showed those phrases overriding a
+ * selected Light theme, because they arrive *after* the theme directive and
+ * read as active requirements. When light mode is selected we rewrite them
+ * in place so no dark-only instruction survives as a requirement.
+ *
+ * Best-effort text substitution over known phrasing — the final theme
+ * override below is what actually guarantees the result.
+ */
+const LIGHT_SUBSTITUTIONS: [RegExp, string][] = [
+  [/\bDark, high-contrast background\b/gi, "Light, high-contrast background"],
+  [/\bDark surface system\b/gi, "Light surface system"],
+  [/\bCalm, high-trust dark\b/gi, "Calm, high-trust light"],
+  [/\bDark, low-glare\b/gi, "Light, low-glare"],
+  [/\bDark, vibrant\b/gi, "Light, vibrant"],
+  [/\bDark, editorial\b/gi, "Light, editorial"],
+  [/\bVery dark\b/gi, "Very light"],
+  [/\bpremium-dark\b/gi, "premium-light"],
+  [/\bnear-black\b/gi, "near-white"],
+  [/\bdark background\b/gi, "light background"],
+  [/\bdark mode\b/gi, "light mode"],
+  [/\bwhite text\b/gi, "dark text"],
+  [/\btext-white\/\d+\b/g, "text-black/70"],
+  [/\bone step lighter than the (page|background)\b/gi, "one step darker than the $1"],
+  [/\bsurface one step lighter\b/gi, "surface one step darker"],
+];
+
+function neutralizeDarkLanguage(prompt: string): string {
+  return LIGHT_SUBSTITUTIONS.reduce(
+    (text, [pattern, replacement]) => text.replace(pattern, replacement),
+    prompt,
+  );
+}
+
+const THEME_OVERRIDES: Record<ThemeMode, string> = {
+  light: `Final theme override: render this as a fixed light theme only. Ignore any dark-mode wording from the base brief.`,
+  dark: `Final theme override: render this as a fixed dark theme only. Do not add a light variant or follow the browser theme.`,
+  system: `Final theme override: render both themes, switching on prefers-color-scheme. Neither variant is the sole permanent theme.`,
+  mono: `Final theme override: render this in a fixed monochrome neutral scale only. Ignore any accent-color hue wording from the base brief except for functional states.`,
+};
+
+const LAYOUT_OVERRIDE = `Final layout override: use the selected layout preset as the required structure. If the base brief describes a different layout, preserve the content requirements but adapt them into this layout.`;
+
+/**
+ * Trailing section, appended AFTER the base prompt so the user's explicit
+ * choices are the last thing the model reads — the base template's own
+ * theme/layout language can no longer win by being last.
+ */
+function finalOverrides(options: PromptOptions): string[] {
+  const overrides: string[] = [];
+  if (options.themeMode) overrides.push(THEME_OVERRIDES[options.themeMode]);
+  if (
+    options.layoutPreset &&
+    options.layoutPreset !== "auto" &&
+    options.promptIntent !== "retheme"
+  ) {
+    overrides.push(LAYOUT_OVERRIDE);
+  }
+  return overrides;
+}
+
 export type PromptOptions = {
   secondaryColor?: string;
   accentColor?: string;
@@ -227,8 +293,9 @@ function paletteDirective(
 }
 
 /**
- * Composes intent rules, palette, and theme directives around the
- * already-built base prompt. Runs server-side only.
+ * Composes intent rules, palette, theme, and layout directives around the
+ * already-built base prompt, then repeats the user's theme/layout choices
+ * as non-negotiable overrides *after* it. Runs server-side only.
  */
 export function applyPromptOptions(
   basePrompt: string,
@@ -258,6 +325,15 @@ export function applyPromptOptions(
     if (layout) sections.push(layout);
   }
 
-  sections.push(basePrompt);
+  // Light mode: strip dark-only wording out of the base brief itself, so it
+  // can't read as an active requirement that contradicts the chosen theme.
+  sections.push(
+    options.themeMode === "light"
+      ? neutralizeDarkLanguage(basePrompt)
+      : basePrompt,
+  );
+
+  sections.push(...finalOverrides(options));
+
   return sections.join("\n\n");
 }

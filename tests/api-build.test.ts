@@ -242,6 +242,32 @@ describe("POST /api/prompts/[slug]/build", () => {
     expect(json.text).toContain("RETHEME ONLY");
   });
 
+  // Reproduces the exact failing v0 combination: landing-hero + light +
+  // mobile-app + build. The real output stayed dark and ignored the preset.
+  it("resolves theme/layout conflicts for the landing hero + light + mobile-app case", async () => {
+    const { json } = await postJson("landing-hero", {
+      themeMode: "light",
+      layoutPreset: "mobile-app",
+      promptIntent: "build",
+      toolMode: "v0",
+    });
+    const text: string = json.text;
+
+    // No dark-only instruction survives as an active requirement.
+    expect(text).not.toContain("near-black");
+    expect(text).not.toContain("text-white/70");
+    expect(text).not.toContain("Dark, high-contrast background");
+
+    // Both overrides land after the base brief and close the prompt.
+    expect(text).toContain("Final theme override: render this as a fixed light");
+    expect(text).toContain("Final layout override");
+    expect(text.indexOf("Final theme override")).toBeGreaterThan(
+      text.indexOf("Product context:"),
+    );
+    expect(text).toContain("phone-style landing screen");
+    expect(text).toContain("Product context:");
+  });
+
   it("light theme mode via API is fixed, not adaptive", async () => {
     const { json } = await postJson(SLUG, { themeMode: "light" });
     expect(json.text).toContain("LIGHT (fixed)");

@@ -158,6 +158,39 @@ equals the full list), so advanced users keep the odd pairings the
 mapping merely de-emphasizes. Purely presentational — the built prompt
 text is unchanged by this mapping.
 
+### Conflict-safe composition (2026-07-09, from real v0 output)
+Testing Startup Landing Hero on v0 with **Light + Mobile App Layout +
+Build** exposed a composition bug: options were only *prepended*, so the
+base template's own wording — "Dark, high-contrast background",
+"near-black", `text-white/70`, "a centered marketing hero" — arrived
+last and read as the active requirement. v0 produced a dark hero with an
+invisible highlighted word and a blank-looking CTA, ignoring both the
+Light theme and the preset.
+
+Three fixes in `prompt-options.ts`:
+1. **Final overrides appended after the base prompt**, so the user's
+   choices are the last thing the model reads. Light emits exactly:
+   *"Final theme override: render this as a fixed light theme only.
+   Ignore any dark-mode wording from the base brief."* (dark/system/mono
+   have their own.) Build + non-auto preset emits: *"Final layout
+   override: use the selected layout preset as the required structure.
+   If the base brief describes a different layout, preserve the content
+   requirements but adapt them into this layout."* Retheme adds **no**
+   layout override — the preset stays advisory.
+2. **Light-mode sanitizer** (`neutralizeDarkLanguage()`): rewrites known
+   dark-only phrases in the base brief in place (near-black → near-white,
+   `text-white/70` → `text-black/70`, "Dark surface system" → "Light
+   surface system", "one step lighter than the page" → "…darker…"). Only
+   runs for light mode; dark and system keep their wording. Best-effort
+   substitution over known phrasing — the final override is what
+   guarantees the outcome.
+3. **Contrast rules per theme** (both light and dark): CTA labels must
+   stay legible against their fill (4.5:1, never dark-on-dark), heading
+   highlights must meet 4.5:1, and important words must never use
+   low-opacity text. Unusual preset/theme pairings now say to *adapt*
+   rather than drop the preset (a marketing hero under Mobile App Layout
+   becomes a phone-style landing screen).
+
 ### Tool modes expanded (same pass)
 Users asked for more coding tools. Added `vscode` (VS Code / GitHub
 Copilot), `claude-code`, and `windsurf` framings + captions in

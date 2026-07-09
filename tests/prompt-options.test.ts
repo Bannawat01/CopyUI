@@ -238,6 +238,106 @@ describe("layout presets", () => {
   });
 });
 
+describe("option conflicts (from real v0 output)", () => {
+  // v0 ignored a selected Light theme because the base template's own
+  // dark wording arrived after the theme directive and read as active.
+  const DARK_TEMPLATE = `Design language: Dark, high-contrast background (near-black, not pure gray) so the accent and white text pop. Subtext is text-white/70. Dark surface system with a surface one step lighter than the page.`;
+
+  it("light mode strips active dark-only phrases from the base brief", () => {
+    const out = applyPromptOptions(DARK_TEMPLATE, { themeMode: "light" });
+    expect(out).not.toContain("near-black");
+    expect(out).not.toContain("text-white/70");
+    expect(out).not.toContain("Dark, high-contrast background");
+    expect(out).not.toContain("Dark surface system");
+    expect(out).not.toContain("white text");
+    // Rewritten, not deleted — the brief's meaning survives.
+    expect(out).toContain("near-white");
+    expect(out).toContain("Light surface system");
+    expect(out).toContain("one step darker than the page");
+  });
+
+  it("light mode ends with the fixed-light override", () => {
+    const out = applyPromptOptions(DARK_TEMPLATE, { themeMode: "light" });
+    expect(out).toContain(
+      "Final theme override: render this as a fixed light theme only. Ignore any dark-mode wording from the base brief.",
+    );
+    // The override must come AFTER the base brief to win.
+    expect(out.indexOf("Final theme override")).toBeGreaterThan(
+      out.indexOf("Design language"),
+    );
+  });
+
+  it("dark mode keeps its dark design language untouched", () => {
+    const out = applyPromptOptions(DARK_TEMPLATE, { themeMode: "dark" });
+    expect(out).toContain("near-black");
+    expect(out).toContain("text-white/70");
+    expect(out).toContain("Final theme override: render this as a fixed dark");
+  });
+
+  it("system mode keeps adaptive wording and does not rewrite the brief", () => {
+    const out = applyPromptOptions(DARK_TEMPLATE, { themeMode: "system" });
+    expect(out).toContain("prefers-color-scheme");
+    expect(out).toContain("near-black");
+    expect(out).toContain("Final theme override");
+  });
+
+  it("light mode adds contrast rules for CTA labels and highlights", () => {
+    const out = applyPromptOptions(BASE, { themeMode: "light" });
+    expect(out).toContain("Contrast (light)");
+    expect(out).toContain("never a dark button with dark text");
+    expect(out).toContain("Never use low-opacity dark text for important words");
+  });
+
+  it("dark mode adds contrast rules for CTA labels and highlights", () => {
+    const out = applyPromptOptions(BASE, { themeMode: "dark" });
+    expect(out).toContain("Contrast (dark)");
+    expect(out).toContain("4.5:1");
+  });
+
+  it("build + non-auto preset ends with the final layout override", () => {
+    const out = applyPromptOptions(BASE, {
+      promptIntent: "build",
+      layoutPreset: "mobile-app",
+    });
+    expect(out).toContain(
+      "Final layout override: use the selected layout preset as the required structure.",
+    );
+    expect(out).toContain(
+      "preserve the content requirements but adapt them into this layout",
+    );
+    expect(out.indexOf("Final layout override")).toBeGreaterThan(
+      out.indexOf(BASE),
+    );
+  });
+
+  it("guides unusual preset+theme pairings instead of dropping the preset", () => {
+    const out = applyPromptOptions(BASE, {
+      promptIntent: "build",
+      layoutPreset: "mobile-app",
+    });
+    expect(out).toContain(
+      "a marketing hero under Mobile App Layout becomes a phone-style landing screen",
+    );
+  });
+
+  it("auto preset adds no layout override", () => {
+    const out = applyPromptOptions(BASE, {
+      promptIntent: "build",
+      layoutPreset: "auto",
+    });
+    expect(out).not.toContain("Final layout override");
+  });
+
+  it("retheme keeps the preset advisory and adds NO layout override", () => {
+    const out = applyPromptOptions(BASE, {
+      promptIntent: "retheme",
+      layoutPreset: "mobile-app",
+    });
+    expect(out).toContain("ADVISORY ONLY");
+    expect(out).not.toContain("Final layout override");
+  });
+});
+
 describe("UI copy", () => {
   it("intent descriptions match the agreed user-facing wording", () => {
     const byValue = Object.fromEntries(

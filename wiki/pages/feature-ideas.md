@@ -117,6 +117,23 @@ Figma-style drag-to-arrange remains deferred (see #7 below) — the fixes
 above again reused the existing prompt-composition architecture, while
 a layout editor would still be a new product surface.
 
+### #6/#7 validation round 2 (2026-07-09, real v0 output)
+Tested Startup Landing Hero on v0 with Light + Mobile App Layout + Build.
+v0 produced a usable hero, but **ignored both options**: the background
+stayed near-black, the highlighted word was near-invisible, the CTA read
+as a blank dark button, and the layout stayed a desktop centered hero.
+
+Root cause was not the option wording but **composition order** — options
+were prepended, so the base template's own dark/hero language arrived
+last and won. Fixed by appending non-negotiable final theme/layout
+overrides *after* the base brief, sanitizing dark-only phrases out of the
+brief in light mode, and adding per-theme contrast rules. See
+[prompt-system.md](prompt-system.md).
+
+Lesson worth keeping: **prompt options must be conflict-safe against the
+base template, not merely present.** Adding an option is not the same as
+making it win.
+
 ## 7. Layout presets — SHIPPED (2026-07-09)
 Built as the deliberate middle step before any Figma-style editor:
 a **Layout Preset** option — Auto/Best fit (default) plus Centered Hero,

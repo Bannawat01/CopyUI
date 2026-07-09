@@ -909,3 +909,50 @@
 - Remaining: recommendations are hand-curated judgment calls, unvalidated
   against real user preference; optgroup styling not checked in a real
   browser (native selects style inconsistently across OSes).
+
+## [2026-07-09] conflict-safe-prompts | Fix option conflicts found in real v0 output
+- **Real v0 test**: Startup Landing Hero + Light + Mobile App Layout +
+  Build. v0 produced a usable hero but ignored both options — near-black
+  background, near-invisible highlighted word, CTA that read as a blank
+  dark button, and a desktop centered hero instead of a phone layout.
+- **Root cause**: composition order, not wording. Options were only
+  *prepended*; the base template's own "Dark, high-contrast background",
+  "near-black", `text-white/70`, and centered-hero language arrived last
+  and read as the active requirement.
+- Fixes in `src/lib/prompt-options.ts` (no architecture change — same
+  server-side composition, new ordering):
+  1. **Final overrides appended after the base prompt**, so the user's
+     choices are read last. Light: "Final theme override: render this as
+     a fixed light theme only. Ignore any dark-mode wording from the base
+     brief." Dark/system/mono get their own. Build + non-auto preset:
+     "Final layout override: use the selected layout preset as the
+     required structure…". Retheme adds **no** layout override — the
+     preset stays advisory, as before.
+  2. **`neutralizeDarkLanguage()`**, applied only in light mode: rewrites
+     known dark-only phrases in the base brief in place (near-black →
+     near-white, `text-white/70` → `text-black/70`, "Dark surface system"
+     → "Light surface system", "one step lighter than the page" →
+     "…darker…"). Best-effort substitution over enumerated phrasing —
+     `rtk rg` found 13 such phrases across the 18 templates. The final
+     override, not the sanitizer, is what guarantees the outcome.
+  3. **Contrast rules per theme**: CTA labels legible against their fill
+     (4.5:1, never dark-on-dark), heading highlights ≥4.5:1, no
+     low-opacity text for important words. Unusual preset pairings now
+     say to *adapt* rather than drop the preset ("a marketing hero under
+     Mobile App Layout becomes a phone-style landing screen").
+- Tests: 11 new (`prompt-options` + `api-build`), incl. an API test that
+  reproduces the exact failing v0 combination and asserts the dark
+  phrases are gone and both overrides land after "Product context:".
+  Suite **6 files / 83 tests**, all passing.
+- Security: no "Product context:" or "Final theme override" in
+  gallery/detail HTML; live API POST of the failing case confirms zero
+  `near-black` / `text-white` occurrences and both overrides present.
+- `rtk npm test` 83/83; `rtk npm run lint` clean; `rtk npm run build`
+  clean (27 routes).
+- Wiki: prompt-system.md, feature-ideas.md, next-actions.md, this entry.
+- **Lesson recorded**: prompt options must be conflict-safe *against the
+  base template*, not merely present. Adding an option ≠ making it win.
+- Remaining: not yet re-tested on real v0 — verified by tests and by
+  reading the built text, not by regenerating UI. The sanitizer is
+  phrase-matching, so a future template using different dark wording
+  could slip through (the final override still covers it).

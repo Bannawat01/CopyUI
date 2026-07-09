@@ -4,7 +4,9 @@
 prompt output-quality refinement done + premium marketplace visual
 redesign done + 18-theme dataset expansion done + motion/interaction pass
 done + Tool Mode feature done + marketplace controls (sort/counts) done +
-production-readiness pass done (2026-07-09)]**
+production-readiness pass done + Retheme Mode / multi-color / theme modes
+done + layout presets (with per-theme recommendations) done
+(2026-07-09)]**
 
 The MVP described in CLAUDE.md is implemented, polished, has
 production-ready prompt content, a premium dark template-marketplace
@@ -51,10 +53,19 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
    tool framings have not yet been re-tested against real tools — the
    fix responds to observed Cursor behavior, but "apply" compliance is
    unverified until someone runs it again.
+   **Conflict-safe composition (2026-07-09)**: real v0 output showed
+   Light theme and Mobile App Layout both being overridden by the base
+   template's own dark/hero wording, because options were only
+   prepended. Fixed with final theme/layout overrides appended *after*
+   the base brief, a light-mode dark-phrase sanitizer, and per-theme
+   contrast rules. **[uncertain]** Not yet re-tested on v0 — the
+   composition is verified by tests and by inspecting the built text,
+   not by regenerating real UI output.
 5. Automated tests: a **Vitest smoke suite now exists** — `npm test`,
-   **28/28 passing** across 4 files — covering prompt data, the
+   **72/72 passing** across 6 files — covering prompt data, the
    hidden-template guarantee, `buildPrompt()`/`applyToolMode()`,
-   sitemap/robots, a homepage render, and the
+   prompt options (intent/theme/action style/layout presets), layout
+   recommendations, sitemap/robots, a homepage render, and the
    `/api/prompts/[slug]/build` route handler. See
    [production-readiness.md](production-readiness.md). Remaining gaps:
    browser clipboard behavior, component interactions (color picker,
@@ -88,11 +99,10 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
     v0-oriented copy action shipped, then **refined** — the separate
     "Copy for v0" secondary button was removed as redundant and its
     behavior folded into the main Copy Prompt button's adaptive label/
-    caption (now covers all 3 tool modes, not just v0). Still open: a
-    client-side Most Copied/Newest sort using the existing mock `copies`
-    stat (21st.dev pattern), and a count badge per category pill
-    (Shadcnblocks pattern) — both small, backend-free, evaluated but not
-    yet built.
+    caption (now covers all 3 tool modes, not just v0). The client-side
+    Most Copied/Newest/A-Z sort (21st.dev pattern) and per-category-pill
+    count badges (Shadcnblocks pattern) also **shipped** — see
+    [gallery-page.md](gallery-page.md). Nothing open here.
 11. **[uncertain]** Re-clip Magic UI, Aceternity UI, Motion-Primitives,
     and Superdesign UI Design Prompts directly if their intended research
     (motion technique detail, prompt-writing quality guidance) is still
