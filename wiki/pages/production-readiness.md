@@ -68,6 +68,24 @@ existed. Verified: `/icon` and `/apple-icon` return PNGs, the
 `<link rel="icon">` / `<link rel="apple-touch-icon">` tags are injected,
 and `/favicon.ico` now 404s.
 
+## Feedback links (added 2026-07-09, same-day follow-up)
+`src/lib/feedback.ts` builds three GitHub Issues links against
+`https://github.com/Bannawat01/CopyUI`, prefilling title, a structured
+body, and labels via `/issues/new?title=&body=&labels=`:
+**Request a prompt** (enhancement), **Report bad output** (bug — asks
+which theme, which tool mode, what went wrong, what looked good), and
+**Suggest improvement** (enhancement). `src/components/site-footer.tsx`
+renders them as a 3-up card row, plus a "View source on GitHub" line,
+and is mounted once in `layout.tsx` so both gallery and detail pages
+get it. Fully static — no backend, no form, no database.
+
+The "Report bad output" body mirrors the good/bad/needs-improvement
+structure that produced the useful AI Chat Interface feedback, so real
+reports arrive in the shape [prompt-system.md](prompt-system.md)'s
+validation policy asks for. Caveat: GitHub silently drops `labels`
+values that don't already exist in the repo — `enhancement` and `bug`
+are GitHub defaults, so they apply as long as they haven't been deleted.
+
 ## Remaining production gaps
 - **`NEXT_PUBLIC_SITE_URL` must be set** in the deployment env or all
   canonical/sitemap URLs say localhost.

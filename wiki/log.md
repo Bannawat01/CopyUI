@@ -613,3 +613,28 @@
   closed); this log entry.
 - Remaining gaps: `NEXT_PUBLIC_SITE_URL` in deploy env, no
   analytics/monitoring/tests, no JSON-LD.
+
+## [2026-07-09] feedback-links | GitHub Issues feedback footer
+- `src/lib/feedback.ts` (new): `REPO_URL` + an `issueUrl()` helper that
+  prefills title/body/labels via GitHub's `/issues/new` query params.
+  Three links: Request a prompt (enhancement), Report bad output (bug),
+  Suggest improvement (enhancement). The bad-output body asks for
+  theme, tool mode, what went wrong, and what looked good — matching the
+  feedback shape that produced the useful AI Chat Interface fixes.
+- `src/components/site-footer.tsx` (new): 3-up card row of those links
+  plus a "View source on GitHub" line. Mounted once inside
+  `MotionProvider` in `layout.tsx`, so gallery and detail pages both get
+  it without per-page wiring. Server component, static, no state.
+- No backend, database, forms, or architecture change — three `<a>` tags
+  and a URL builder.
+- Verified via `next start` + `curl`: footer renders on both `/` and
+  `/prompts/saas-dashboard`; all three issue URLs are well-formed with
+  encoded title/body/labels; no "Product context:" leak on either page.
+- Lint + build clean (27 routes, unchanged — footer adds no route).
+- Wiki: production-readiness.md (feedback-links section),
+  next-actions.md (items 13/14 updated), this log entry.
+- Caveat noted in wiki: GitHub silently drops `labels` values that don't
+  exist in the repo; `enhancement`/`bug` are defaults so they should
+  apply unless deleted.
+- Remaining gaps: `NEXT_PUBLIC_SITE_URL` in deploy env (now the single
+  most important one), no analytics/monitoring/tests, no JSON-LD.

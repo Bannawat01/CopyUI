@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { MotionProvider } from "@/components/motion-provider";
+import { SiteFooter } from "@/components/site-footer";
 import {
   SITE_DESCRIPTION,
   SITE_NAME,
@@ -55,7 +56,10 @@ export default function RootLayout({
       className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <MotionProvider>{children}</MotionProvider>
+        <MotionProvider>
+          {children}
+          <SiteFooter />
+        </MotionProvider>
       </body>
     </html>
   );

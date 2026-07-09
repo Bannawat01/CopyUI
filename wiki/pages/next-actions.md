@@ -89,9 +89,21 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
     added architecture (out of this task's scope).
 
 13. From the production-readiness pass (see
-    [production-readiness.md](production-readiness.md)): add an OG image
-    (`opengraph-image`) so link previews have a visual; set
-    `NEXT_PUBLIC_SITE_URL` in the deployment environment; consider a
-    branded favicon. Analytics/error monitoring remain unaddressed.
+    [production-readiness.md](production-readiness.md)): the OG image and
+    branded favicon/app icons are now **done** (generated via
+    `ImageResponse`). Still open: **set `NEXT_PUBLIC_SITE_URL` in the
+    deployment environment** — until then canonical, sitemap, and OG
+    image URLs all resolve against localhost. Analytics/error monitoring
+    remain unaddressed.
+14. Feedback links (Request a prompt / Report bad output / Suggest
+    improvement) now ship in the site footer as prefilled GitHub Issues
+    links. This closes the loop on item #7's gap — real user reports of
+    bad AI output can now arrive without any backend. **Next**: actually
+    triage what comes in, and confirm the `enhancement`/`bug` labels
+    still exist in the repo (GitHub drops unknown labels silently). If
+    volume ever justifies it, replace the raw `/issues/new` links with
+    real GitHub issue *templates* (`.github/ISSUE_TEMPLATE/*.yml`),
+    which give required fields and dropdowns instead of a plain
+    prefilled body.
 
 This list should be revised as decisions are made — do not treat it as fixed.
