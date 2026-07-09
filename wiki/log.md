@@ -592,3 +592,24 @@
   added); this log entry.
 - Remaining gaps: `NEXT_PUBLIC_SITE_URL` in deploy env, default favicon,
   no analytics/monitoring/tests.
+
+## [2026-07-09] branded-icons | Favicon + app icon via ImageResponse
+- `src/app/icon.tsx` (32×32) and `src/app/apple-icon.tsx` (180×180),
+  both new: CopyUI "copy" mark — two offset rounded cards (sky behind,
+  indigo in front) on the OG image's near-black surface. Generated with
+  `ImageResponse` for consistency with `opengraph-image.tsx`; kept to
+  two shapes so it survives 16px rendering.
+- **Deleted `src/app/favicon.ico`** (the 25931-byte create-next-app
+  default, added in the initial scaffold commit). Necessary, not
+  incidental: `favicon.ico` takes precedence over `icon.tsx` in Next's
+  icon resolution, so the branded mark would have been ignored.
+- Verified via `next start` + `curl`: `/icon` and `/apple-icon` return
+  200 image/png; `<link rel="icon">` and `<link rel="apple-touch-icon">`
+  are injected into page HTML; `/favicon.ico` returns 404; both PNGs
+  visually checked.
+- Lint + build clean (27 routes, now incl. /icon and /apple-icon). No
+  app-feature, data, or prompt-flow changes.
+- Wiki: production-readiness.md (branded-icons section, favicon gap
+  closed); this log entry.
+- Remaining gaps: `NEXT_PUBLIC_SITE_URL` in deploy env, no
+  analytics/monitoring/tests, no JSON-LD.

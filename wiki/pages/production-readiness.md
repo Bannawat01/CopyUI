@@ -55,10 +55,22 @@ template-card grid motif echoing the gallery previews.
 Both render statically at build (`/opengraph-image`, `/twitter-image`)
 and were visually verified from the served PNG.
 
+## Branded icons (added 2026-07-09, same-day follow-up)
+`src/app/icon.tsx` (32×32) and `src/app/apple-icon.tsx` (180×180) —
+generated with `ImageResponse` like the OG image, so all brand art
+lives in-repo as code. The mark is a "copy" motif: two offset rounded
+cards (sky `#0ea5e9` behind, indigo `#6366f1` in front) on the same
+near-black `#0c0c0e` surface as the OG image; only two shapes so it
+stays legible at 16px. The stock create-next-app `src/app/favicon.ico`
+was **deleted** — `favicon.ico` outranks `icon.tsx` in Next's icon
+resolution, so the branded mark would never have applied while it
+existed. Verified: `/icon` and `/apple-icon` return PNGs, the
+`<link rel="icon">` / `<link rel="apple-touch-icon">` tags are injected,
+and `/favicon.ico` now 404s.
+
 ## Remaining production gaps
 - **`NEXT_PUBLIC_SITE_URL` must be set** in the deployment env or all
   canonical/sitemap URLs say localhost.
-- No favicon branding pass (still the default `favicon.ico`).
 - No analytics, no error monitoring, no automated tests.
 - No structured data (JSON-LD) — optional, low priority at this scale.
 
