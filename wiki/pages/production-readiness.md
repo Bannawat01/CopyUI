@@ -121,7 +121,7 @@ testing-library, no Playwright**. Config: `vitest.config.ts` (node
 environment, `@/*` alias mirroring tsconfig). Run with **`npm test`**
 (`vitest run`).
 
-20 tests across 3 files, all under ~1.5s:
+28 tests across 4 files, all under ~1.5s:
 - `tests/prompts.test.ts` — 18 unique, resolvable slugs; unknown slug
   returns undefined; **`getPublicPrompts()` strips `promptTemplate`** and
   its serialized output contains no "Product context:", "Target tool:",
@@ -135,6 +135,17 @@ environment, `@/*` alias mirroring tsconfig). Run with **`npm test`**
 - `tests/homepage.test.tsx` — homepage renders the positioning headline,
   the three "How it works" steps, and real prompt titles; asserts again
   at the **HTML level** that no hidden template text leaks.
+- `tests/api-build.test.ts` (added 2026-07-09) — the
+  `/api/prompts/[slug]/build` route handler, called directly with a real
+  `NextRequest` (works in the node environment; no server, no jsdom):
+  valid slug returns built text; `primaryColor` is injected with no
+  placeholder left; an invalid color falls back to the theme default;
+  v0/cursor/genvibe produce three distinct correctly-named framings and
+  echo `toolMode`; a missing/invalid mode returns `toolMode: null` with
+  no framing; unknown slug → **404 `{ error: "Prompt not found" }`** and
+  no `text`; a malformed JSON body degrades to defaults rather than
+  throwing; the response body's keys are exactly `text` + `toolMode`, so
+  no raw `promptTemplate` ever rides along as metadata.
 
 The OG image and icon routes aren't unit-tested — `ImageResponse` needs
 the Next runtime. `npm run build` already proves they compile and
@@ -144,11 +155,11 @@ prerender, which is the check that matters.
 - Verify `NEXT_PUBLIC_SITE_URL` took effect in production (see above).
 - Enable/confirm Vercel Analytics; let Speed Insights accumulate visits.
 - No error monitoring (Sentry or similar).
-- Test gaps: the `/api/prompts/[slug]/build` route handler is not tested
-  end-to-end (only its `buildPrompt`/`applyToolMode` building blocks);
-  no component interaction tests (color picker, tool-mode selector,
-  copy-button states); no browser/E2E coverage of the actual clipboard
-  write; detail pages are not render-tested the way the homepage is.
+- Test gaps: no component interaction tests (color picker, tool-mode
+  selector, copy-button loading/success/error states); no browser/E2E
+  coverage of the actual clipboard write; detail pages are not
+  render-tested the way the homepage is; the OG/icon image routes are
+  only covered by `npm run build`.
 - No structured data (JSON-LD) — optional, low priority at this scale.
 
 ## Related

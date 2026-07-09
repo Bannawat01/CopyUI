@@ -704,3 +704,26 @@
   component interaction tests (color picker, tool-mode selector, copy
   states); no browser coverage of the real clipboard write; detail pages
   not render-tested.
+
+## [2026-07-09] api-tests | Smoke tests for the prompt build API route
+- `tests/api-build.test.ts` (new, 8 tests): imports the route's `POST`
+  handler directly and calls it with a real `NextRequest` plus a
+  `Promise`-wrapped `params`. Works in Vitest's **node** environment — no
+  dev server, no Playwright/jsdom/testing-library, no new dependency.
+- Covers: valid slug returns built text; `primaryColor` injected with no
+  placeholder left; invalid color falls back to the theme default;
+  v0/cursor/genvibe give three distinct correctly-named framings and echo
+  `toolMode`; missing/invalid mode → `toolMode: null` and no framing (and
+  both produce identical text); unknown slug → 404 `{ error: "Prompt not
+  found" }` with no `text`; malformed JSON body degrades to defaults
+  rather than throwing; response keys are exactly `text` + `toolMode`, so
+  no raw `promptTemplate` rides along as metadata.
+- No app code touched. Suite is now **4 files / 28 tests, ~1.1s**.
+- `rtk npm test` 28/28 pass; `rtk npm run lint` clean; `rtk npm run build`
+  clean (27 routes).
+- Wiki: production-readiness.md (api-build entry + test-gap list
+  corrected — it still claimed the route was untested), this entry.
+- Remaining test gaps: no component interaction tests (color picker,
+  tool-mode selector, copy-button states); no browser coverage of the
+  real clipboard write; detail pages not render-tested; OG/icon routes
+  covered only by `npm run build`.
