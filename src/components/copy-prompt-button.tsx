@@ -19,16 +19,25 @@ import {
   getToolModeLabel,
   type ToolMode,
 } from "@/lib/tool-modes";
+import type { PromptIntent, ThemeMode } from "@/lib/prompt-options";
 
 type CopyState = "idle" | "loading" | "success" | "error";
 
 export function CopyPromptButton({
   slug,
   primaryColor,
+  secondaryColor,
+  accentColor,
+  themeMode,
+  promptIntent,
   toolMode,
 }: {
   slug: string;
   primaryColor: string;
+  secondaryColor?: string;
+  accentColor?: string;
+  themeMode?: ThemeMode;
+  promptIntent?: PromptIntent;
   toolMode: ToolMode;
 }) {
   const [state, setState] = useState<CopyState>("idle");
@@ -46,7 +55,14 @@ export function CopyPromptButton({
       const res = await fetch(`/api/prompts/${slug}/build`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ primaryColor, toolMode }),
+        body: JSON.stringify({
+          primaryColor,
+          secondaryColor,
+          accentColor,
+          themeMode,
+          promptIntent,
+          toolMode,
+        }),
       });
       if (!res.ok) throw new Error("Failed to build prompt");
       const { text } = await res.json();

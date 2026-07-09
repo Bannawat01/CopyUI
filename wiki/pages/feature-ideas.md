@@ -77,6 +77,34 @@ supports the existing prompt-quality work (7-section structured
 templates) that's otherwise invisible to a visitor since the template
 itself stays hidden. **Effort**: trivial (copy change only).
 
+## 6. Retheme Mode + multi-color + theme modes — SHIPPED (2026-07-09)
+*Source: direct user feedback, not clip research.* Users reported: (a)
+wanting light/dark/black-white theme switching; (b) wanting to use
+CopyUI prompts on an **existing** frontend just to change its theme —
+and when they tried, AI tools sometimes removed functions, broke
+behavior, or generated a disconnected new page; (c) wanting two or
+three colors on one page. Shipped as Prompt Intent (build/retheme with
+strict preservation rules), Theme Mode (dark/light/system/mono), and
+optional secondary/accent colors — see
+[prompt-system.md](prompt-system.md).
+
+**Why this over drag-and-drop layout editing**: users also asked for
+Figma-style drag-to-arrange, but that's a fundamentally different
+product surface (a visual editor with its own state model, likely
+persistence) versus this, which reuses the existing server-side
+prompt-composition architecture end-to-end. Retheme mode fixes an
+active failure users are hitting today; layout editing is an unbuilt
+wish. Deliberately deferred.
+
+## 7. Layout presets (future, before any Figma-style editor)
+A middle step worth evaluating before ever considering a drag-and-drop
+editor: offer 2-3 named layout *presets* per theme (e.g. "sidebar left /
+sidebar right / top-nav" for the dashboard) as another prompt option —
+same select-a-value → server-composed-directive pattern as theme mode,
+no visual editor needed. **Effort**: moderate (needs per-theme preset
+copy). Unblocks most of the "arrange it differently" demand without a
+new architecture.
+
 ## Explicitly not recommended
 - Paid/premium tiers (Shadcnblocks pattern) — blocked by CLAUDE.md's
   no-payments rule.

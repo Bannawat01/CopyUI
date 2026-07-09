@@ -71,6 +71,36 @@ tool-specific framing paragraph to a theme's already-built prompt text:
   texture (motion, easing, hover/press feedback), visual polish (depth,
   light, material), and emotional tone.
 
+## Prompt Intent, Theme Mode, and multi-color palette (2026-07-09)
+Driven by real user feedback: users wanted light/dark/black-white theme
+switching, wanted to apply CopyUI styles to an **existing** frontend
+(where AI tools were removing functions, breaking behavior, or generating
+a disconnected new page), and wanted two- or three-color pages.
+
+`src/lib/prompt-options.ts` (new, server-composed like tool modes):
+- **`PromptIntent`** (`"build"` | `"retheme"`, default build). Retheme
+  prepends a strict preservation block ("Task type: RETHEME ONLY"):
+  preserve routes, functions (no remove/rename/rewrite), state logic,
+  API calls, event handlers, component behavior, page structure, and
+  navigation; change only visual styling/theme tokens/typography/
+  spacing/colors; never generate a standalone replacement page. Build
+  intent adds nothing — current behavior unchanged.
+- **`ThemeMode`** (`dark` | `light` | `system` | `mono`): dark affirms
+  the brief's styling; light instructs re-derivation for light surfaces
+  (not naive inversion); system demands both themes via
+  `prefers-color-scheme` with token-based colors; mono restricts to a
+  neutral scale with weight/size for emphasis.
+- **Palette**: optional `secondaryColor`/`accentColor` append a "Color
+  palette:" section with distinct roles (secondary = supporting
+  surfaces/secondary emphasis; accent = sparse high-attention moments)
+  and a "primary stays dominant" rule. Omitted entirely when neither is
+  set, so single-color prompts are unchanged.
+
+`applyPromptOptions()` composes: retheme rules → palette → theme
+directive → base prompt; the API then wraps with the tool-mode framing
+(so "Target tool:" is always the first line). The base `promptTemplate`
+and `{{primaryColor}}` substitution are untouched.
+
 ### Tool-mode-adaptive copy button
 `CopyPromptButton` reads `toolMode` to drive three things: its idle
 label ("Copy for {tool}"), its loading/success `aria-live` status text,

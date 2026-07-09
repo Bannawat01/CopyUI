@@ -9,15 +9,21 @@
 2. Clicking "Copy Prompt" (`CopyPromptButton`, client component) immediately
    flips to a `loading` state (spinner icon, button `disabled` +
    `aria-busy="true"` to prevent double submits) and POSTs
-   `{ primaryColor, toolMode }` to `POST /api/prompts/[slug]/build`.
+   `{ primaryColor, secondaryColor, accentColor, themeMode, promptIntent,
+   toolMode }` to `POST /api/prompts/[slug]/build`. (Retheme/theme/palette
+   pass, 2026-07-09 — the route validates each field independently and
+   ignores anything invalid, so older/partial clients still work.)
 3. The route handler (`src/app/api/prompts/[slug]/build/route.ts`) looks up
    the prompt server-side, validates `primaryColor` against a hex-color
-   regex (falls back to the theme's default if invalid/missing) and
-   `toolMode` against `isToolMode()` (falls back to no tool framing if
-   invalid/missing), calls `buildPrompt()` to substitute `{{primaryColor}}`,
-   then `applyToolMode()` to prepend the tool-specific framing paragraph
-   (see [prompt-system.md](prompt-system.md)), and returns `{ text,
-   toolMode }` as JSON.
+   regex (falls back to the theme's default if invalid/missing),
+   `secondaryColor`/`accentColor` against the same regex (dropped if
+   invalid), `toolMode` via `isToolMode()`, `themeMode` via
+   `isThemeMode()`, and `promptIntent` via `isPromptIntent()` (defaults
+   to `"build"`). It calls `buildPrompt()` to substitute
+   `{{primaryColor}}`, then `applyPromptOptions()` (retheme rules →
+   palette → theme directive — see [prompt-system.md](prompt-system.md)),
+   then `applyToolMode()` to prepend the tool framing, and returns
+   `{ text, toolMode, themeMode, promptIntent }` as JSON.
 4. The client calls `navigator.clipboard.writeText(text)`.
 5. Button label animates to Copied!/Copy failed (Framer Motion
    `AnimatePresence`), and a color-coded status line below the button

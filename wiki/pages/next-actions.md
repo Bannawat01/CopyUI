@@ -33,9 +33,15 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
    judgment calls made without user input — worth confirming the
    category taxonomy and pill selection match how a real user would
    expect to browse, before treating it as final.
-4. Add more customizable variables beyond `primaryColor` (e.g. font, border
-   radius, layout density) — extends [prompt-system.md](prompt-system.md)
-   and the Detail page controls.
+4. Customizable variables beyond `primaryColor`: **partially done
+   (2026-07-09)** — secondary/accent colors, theme mode
+   (dark/light/system/mono), and prompt intent (build/retheme) shipped
+   from real user feedback. Still open: font, border radius, layout
+   density. Next in this direction: **layout presets** (2-3 named
+   arrangements per theme as a prompt option) as the deliberate middle
+   step before ever considering a Figma-style drag-and-drop editor —
+   see [feature-ideas.md](feature-ideas.md) items #6/#7 for why retheme
+   was prioritized over layout editing.
 5. Automated tests: a **Vitest smoke suite now exists** — `npm test`,
    **28/28 passing** across 4 files — covering prompt data, the
    hidden-template guarantee, `buildPrompt()`/`applyToolMode()`,

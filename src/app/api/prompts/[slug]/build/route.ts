@@ -1,8 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { buildPrompt, getPromptBySlug } from "@/lib/prompts";
 import { applyToolMode, isToolMode } from "@/lib/tool-modes";
+import {
+  applyPromptOptions,
+  isPromptIntent,
+  isThemeMode,
+} from "@/lib/prompt-options";
 
 const HEX_COLOR = /^#[0-9a-fA-F]{3,8}$/;
+
+function hexOrUndefined(value: unknown): string | undefined {
+  return typeof value === "string" && HEX_COLOR.test(value)
+    ? value
+    : undefined;
+}
 
 export async function POST(
   request: NextRequest,
@@ -17,13 +28,28 @@ export async function POST(
 
   const body = await request.json().catch(() => ({}));
   const primaryColor =
-    typeof body.primaryColor === "string" && HEX_COLOR.test(body.primaryColor)
-      ? body.primaryColor
-      : prompt.defaultPrimaryColor;
+    hexOrUndefined(body.primaryColor) ?? prompt.defaultPrimaryColor;
+  const secondaryColor = hexOrUndefined(body.secondaryColor);
+  const accentColor = hexOrUndefined(body.accentColor);
   const toolMode = isToolMode(body.toolMode) ? body.toolMode : undefined;
+  const themeMode = isThemeMode(body.themeMode) ? body.themeMode : undefined;
+  const promptIntent = isPromptIntent(body.promptIntent)
+    ? body.promptIntent
+    : "build";
 
   const base = buildPrompt(prompt.promptTemplate, { primaryColor });
-  const text = applyToolMode(base, toolMode);
+  const withOptions = applyPromptOptions(base, {
+    secondaryColor,
+    accentColor,
+    themeMode,
+    promptIntent,
+  });
+  const text = applyToolMode(withOptions, toolMode);
 
-  return NextResponse.json({ text, toolMode: toolMode ?? null });
+  return NextResponse.json({
+    text,
+    toolMode: toolMode ?? null,
+    themeMode: themeMode ?? null,
+    promptIntent,
+  });
 }

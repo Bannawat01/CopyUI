@@ -626,14 +626,21 @@ const MOCKS: Record<
 export function PromptPreview({
   preview,
   primaryColor,
+  secondaryColor,
+  accentColor,
   className,
 }: {
   preview: PromptTheme["preview"];
   primaryColor?: string;
+  /** Optional palette colors — tint the preview's ambient glows. */
+  secondaryColor?: string;
+  accentColor?: string;
   className?: string;
 }) {
   const Mock = MOCKS[preview.kind];
   const color = primaryColor ?? "#8b5cf6";
+  const glowTop = secondaryColor ?? preview.gradientFrom;
+  const glowBottom = accentColor ?? preview.gradientTo;
 
   return (
     <div
@@ -642,7 +649,7 @@ export function PromptPreview({
       <div
         className="absolute inset-0 opacity-40 transition-opacity duration-300"
         style={{
-          background: `radial-gradient(120% 100% at 100% 0%, ${preview.gradientFrom}, transparent 60%), radial-gradient(120% 100% at 0% 100%, ${preview.gradientTo}, transparent 60%)`,
+          background: `radial-gradient(120% 100% at 100% 0%, ${glowTop}, transparent 60%), radial-gradient(120% 100% at 0% 100%, ${glowBottom}, transparent 60%)`,
         }}
       />
       <div className="absolute inset-0 p-[6%]">
@@ -651,7 +658,7 @@ export function PromptPreview({
           style={{ background: "linear-gradient(180deg, #101014, #0a0a0d)" }}
         >
           <motion.div
-            key={color}
+            key={`${color}-${glowTop}-${glowBottom}`}
             initial={{ opacity: 0.55 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, ease: "easeOut" }}

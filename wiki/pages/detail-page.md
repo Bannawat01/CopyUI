@@ -79,6 +79,19 @@ referenced directly inside a Server Component file; see
   the main button instead (see above). A true "Open in v0" deep link
   remains investigated-and-deferred, not faked — see
   [copy-mechanism.md](copy-mechanism.md).
+- **Retheme Mode + multi-color + theme mode** (2026-07-09, from real user
+  feedback): the color panel now has three `ColorControl` rows — Primary
+  (required, unchanged behavior), Secondary and Accent (optional, with a
+  "None" clear affordance) — plus a **Theme Mode** radiogroup
+  (Dark/Light/System/Monochrome). Secondary/accent tint the preview's
+  two ambient corner glows live (the 18 mocks themselves still render
+  with primary only — a pragmatic middle ground). The copy panel gained
+  a **Prompt Intent** radiogroup above Tool Mode: "Build new UI"
+  ("Generate a fresh interface from this prompt.") vs "Retheme existing
+  UI" ("Apply this style to an existing frontend while preserving logic
+  and behavior."), defaulting to Build. All six values POST to the build
+  API — see [copy-mechanism.md](copy-mechanism.md) and
+  [prompt-system.md](prompt-system.md) for what each does to the text.
 - **Prompt Quality Checklist** (production pass, 2026-07-09): a small
   static trust panel (`src/components/quality-checklist.tsx`) below the
   Copy button lists what every hidden template covers (Product context,

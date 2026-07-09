@@ -743,3 +743,48 @@
   with the production-verification priority), next-actions.md (item 5 —
   it still said 20 tests and listed the API route as untested), this
   entry.
+
+## [2026-07-09] retheme-mode | Prompt Intent, Theme Mode, multi-color palette
+- **Driven by real user feedback**: users wanted (a) light/dark/
+  black-white theme switching; (b) to apply CopyUI styles to an existing
+  frontend — where AI tools were removing functions, breaking behavior,
+  or generating a disconnected new page; (c) two or three colors on one
+  page. (Figma-style drag-to-arrange was also requested but deliberately
+  deferred — different product surface vs. this pass, which reuses the
+  existing server-side prompt-composition architecture. Middle-step
+  idea recorded: layout presets — feature-ideas.md #7.)
+- `src/lib/prompt-options.ts` (new): `PromptIntent` (build/retheme, with
+  the user-facing descriptions), `ThemeMode` (dark/light/system/mono),
+  validators, strict RETHEME preservation rules (preserve routes/
+  functions/state/API calls/handlers/behavior/structure/navigation;
+  visual styling only; no standalone replacement page), theme
+  directives (light = re-derive not invert; system = both themes via
+  prefers-color-scheme; mono = neutral scale), optional palette section
+  for secondary/accent with distinct roles + "primary stays dominant".
+  `applyPromptOptions()` composes retheme → palette → theme → base.
+- Build API: accepts and independently validates `primaryColor`,
+  `secondaryColor`, `accentColor`, `themeMode`, `promptIntent`,
+  `toolMode`; invalid values are dropped (colors/theme) or defaulted
+  (intent → build); response now `{ text, toolMode, themeMode,
+  promptIntent }`. Backward compatible with old request bodies.
+- UI: `ColorControl` generalized (label/id props + optional "None"
+  clear); detail page now has Primary/Secondary/Accent color rows +
+  ThemeModeSelector in the color panel, and a PromptIntentSelector
+  (with description line) above ToolModeSelector in the copy panel.
+  `CopyPromptButton` POSTs all six values. `PromptPreview` tints its
+  two ambient corner glows with secondary/accent when set (mocks
+  themselves still primary-only — pragmatic, not per-mock rewiring).
+- Tests: new `tests/prompt-options.test.ts` (validators, retheme rules
+  present/absent, 2- and 3-color palettes, distinct theme directives,
+  exact UI copy) + `tests/api-build.test.ts` extended (new response
+  shape, palette fields, invalid-field safety, retheme echo/default,
+  theme mode echo/fallback, full-stack composition order). Suite now
+  **5 files / 43 tests**, all passing (~1s).
+- Security: `promptTemplate` flow untouched; `curl` re-verified no
+  "Product context:" or "RETHEME ONLY" text in gallery/detail HTML; live
+  API POST with retheme+light+secondary returns all sections correctly.
+- `rtk npm test` 43/43; `rtk npm run lint` clean; `rtk npm run build`
+  clean (27 routes).
+- Wiki: prompt-system.md, copy-mechanism.md, detail-page.md,
+  feature-ideas.md (#6 shipped + #7 layout presets), next-actions.md
+  (item 4), this entry.
