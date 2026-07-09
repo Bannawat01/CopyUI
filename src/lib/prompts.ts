@@ -83,6 +83,8 @@ export const prompts: PromptTheme[] = [
     defaultPrimaryColor: "#6366f1",
     promptTemplate: `Product context: A B2B SaaS analytics dashboard used by operations teams to monitor product usage and revenue metrics throughout the workday. Optimize for fast daily scanning, not first-time delight. Populate every metric, chart, and table row with realistic sample data (specific dollar amounts, percentages, dates, user names) — never Lorem Ipsum or generic "Value 1" placeholders.
 
+Context of use: An operations analyst or account manager opens this several times a day, usually for under a minute, on a desktop monitor with other tabs open. The task is a check-in, not an investigation: they want to know whether any headline number moved enough to act on since yesterday. The UI must make the decision "is anything off today?" answerable without clicking, filtering, or scrolling. Success: an unusual KPI trend is noticed within roughly 10 seconds of the page painting, and the activity table answers "who did what" without leaving the page.
+
 Layout: 240px left sidebar (collapses to 64px icon rail below 1280px, fully hidden behind a drawer below 768px) + sticky 64px top navbar (breadcrumb/page title left, search input center, notifications and account menu right) + main content area on a 12-column grid with 24px gutters and a 1280px max content width, 32px page padding on desktop / 16px on mobile.
 
 Visual hierarchy: Page title (text-2xl, font-semibold) sits above a single non-wrapping row of exactly 4 KPI cards on desktop — these are the primary focal point and should use the largest numerals on the page (text-3xl, tabular-nums). Charts are secondary (text-sm section labels, text-lg titles); the activity table is tertiary and scrolls independently rather than competing for vertical space. Never let body copy or table text exceed the visual weight of the KPI numbers, and never let a 5th ad-hoc card sneak into the KPI row.
@@ -111,6 +113,8 @@ Accessibility: Target WCAG AA contrast (4.5:1 body text, 3:1 large text/UI) for 
     meta: { creator: "CopyUI Studio", copies: 1204 },
     defaultPrimaryColor: "#8b5cf6",
     promptTemplate: `Product context: The above-the-fold hero section of a startup's marketing landing page. Its only job is to make a first-time visitor understand the product's value proposition and take one action within 3 seconds of landing. This is a single self-contained section — do not generate a navbar, testimonial carousel, pricing block, or footer unless explicitly asked; scope the output to exactly what's described below.
+
+Context of use: A first-time visitor who arrived from an ad, a search result, or a shared link, and who knows nothing about the product yet. They are skimming, distracted, and one keystroke from leaving. The UI must help them make a single decision — "is this for me, and what do I do next?" — using only the headline, the subtext, and one button. Success: a stranger can state what the product does and where to click after three seconds of looking, and the CTA is the first thing their eye lands on after the headline.
 
 Layout: Centered single-column hero, max-width 720px for text content, vertically centered within a full-viewport-height (min-h-screen) section. Stacking order top to bottom: eyebrow label, headline, subtext, button row, logo strip — each separated by a consistent 24px vertical rhythm, with a larger 64px gap before the logo strip to visually separate "pitch" from "proof."
 
@@ -141,6 +145,8 @@ Accessibility: The {{primaryColor}}-highlighted headline text and the primary CT
     defaultPrimaryColor: "#06b6d4",
     promptTemplate: `Product context: A SaaS pricing page section whose job is to remove decision friction — a prospective customer should be able to compare three tiers and pick one within seconds, with the recommended plan unmistakable.
 
+Context of use: A prospective buyer who has already decided they want the product and is now deciding how much to pay. They arrive mid-funnel, often comparing against a competitor tab, and frequently on the second or third visit. The UI must help them answer "which tier do I need, and what do I lose by going cheaper?" — which means feature differences between tiers must be legible without cross-referencing. Success: the visitor picks a tier and clicks its CTA without opening a separate comparison page or contacting sales.
+
 Layout: Billing-period toggle (Monthly/Yearly) centered above a three-column card grid (Starter, Pro, Enterprise), 24px gutter, equal card widths, aligned to a shared baseline. The Pro card is scaled 1.05x and shifted up 8-12px relative to the others so it visually sits "in front," with a "Most Popular" badge overlapping its top edge.
 
 Visual hierarchy: Price is the largest element in every card (text-4xl, font-bold, tabular-nums) — plan name is smaller and above it (text-sm, uppercase, muted), billing period ("/month") is smaller still and directly beside the price, never on its own line. Feature lists are body-weight text; the CTA button is the second-largest visual weight in the card after the price. On the Pro card specifically, its border/glow and badge should make it identifiable from a blurred thumbnail at a glance.
@@ -169,6 +175,8 @@ Accessibility: The billing toggle is a real button/switch, keyboard-operable (Sp
     meta: { creator: "CopyUI Studio", copies: 397 },
     defaultPrimaryColor: "#f59e0b",
     promptTemplate: `Product context: A login/signup screen for a product's authentication flow. The only success metric is completion speed — remove every element that isn't required to sign in or sign up.
+
+Context of use: A returning user typing credentials from memory or a password manager, or a new user who has just clicked "Sign up" and wants to be done with this screen. This is a friction step nobody visits on purpose. The UI must help them complete or recover: sign in, switch to signup, or reset a forgotten password — and when something goes wrong, say exactly which field is wrong and why. Success: a returning user submits without reading anything, and a failed attempt never leaves them guessing which field to fix.
 
 Layout: A single centered card, max-width 400px, vertically and horizontally centered on a plain dark background (no distracting imagery). Inside the card, top to bottom: logo/title, form heading ("Log in" or "Create account"), input fields, primary submit button, a labeled divider ("or continue with"), social auth buttons, then a single footer line linking to the alternate flow (login ↔ signup). 16-20px spacing between elements, 32px card padding.
 
@@ -199,6 +207,8 @@ Accessibility: Every input has a real, visible <label> (not a placeholder standi
     defaultPrimaryColor: "#ec4899",
     promptTemplate: `Product context: A creative portfolio page for a designer or developer, shown to potential clients or employers who will judge craft quality from the browsing experience itself, not just the projects inside it.
 
+Context of use: A hiring manager or prospective client with several portfolio tabs open and a few minutes to spend on each. They are not reading — they are pattern-matching for relevant work. The UI must help them decide "is this person's work close to what I need?" and then get into one project quickly, which is what the filter bar is for. Success: a visitor filters to a relevant category and opens a project within the first minute, and the grid itself reads as evidence of the owner's craft.
+
 Layout: A horizontal filter bar (category/tag pills) sits above a masonry-style project grid — use CSS columns (column-count) or a JS masonry approach so image cards of different aspect ratios tile without uniform-height cropping. 16-20px gap between cards, page content capped at a comfortable max-width (e.g. 1400px) with consistent side padding.
 
 Visual hierarchy: Project imagery is the entire visual hierarchy — cards have no visible chrome (no borders, titles, or tags) until hover/focus, at which point an overlay introduces title (largest), then 1-2 tags (smaller, muted), then a "View project" affordance (smallest, but with the strongest {{primaryColor}} accent) in that descending order of size. The filter bar is intentionally quiet (small pill buttons, low-contrast until active) so it never competes with the imagery below it.
@@ -227,6 +237,8 @@ Accessibility: Filter buttons expose aria-pressed for their active/selected stat
     meta: { creator: "CopyUI Studio", copies: 276 },
     defaultPrimaryColor: "#22c55e",
     promptTemplate: `Product context: A public product changelog page where users scan release history to understand what's new since they last checked in — optimize for fast top-to-bottom scanning of many entries, not deep reading of any one.
+
+Context of use: An existing customer or a developer on the product's integration, checking back after weeks away — often because something changed and they want to know when and what. They enter at the top and scroll until they recognize the last release they saw. The UI must help them answer "what shipped since I last looked, and does any of it affect me?" which makes dates, version numbers, and release-type tags the load-bearing elements. Success: a returning user locates the boundary between "new to me" and "already knew" without reading a single release note in full.
 
 Layout: A page header ("Changelog" title + optional "Subscribe to updates" CTA) above a single-column vertical timeline, max-width ~720px, left-aligned. A connector line runs down the left edge; each entry's dot sits on that line at a fixed offset, with the entry content (date, version badge, title, release notes) indented to the right of it. 40-48px vertical spacing between entries so each release reads as a distinct block, not a continuous wall of text.
 
@@ -257,6 +269,8 @@ Accessibility: Mark up the sequence of entries as a semantic ordered list (<ol>)
     defaultPrimaryColor: "#f97316",
     promptTemplate: `Product context: A creative/digital agency's homepage, meant to win discovery calls by demonstrating taste within the first scroll.
 
+Context of use: A marketing lead or founder with budget, shortlisting two or three agencies. They arrived from a referral or a portfolio link and are judging credibility, not features. The UI must help them decide "can these people do the thing I need, and have they done it before?" — which is why case-study outcome metrics carry more weight than service descriptions. Success: the visitor scrolls to a case study and clicks "Start a project" in the same session, without needing to visit an About page first.
+
 Layout: Sticky nav (logo, 4 links, "Start a project" button) + full-bleed hero (large headline + one-line services summary) + a 3-up services grid + a 2-up featured case-study row (image + result stat) + client logo strip + a closing CTA band.
 
 Visual hierarchy: The hero headline dominates (text-5xl+, tight tracking); each case study's outcome metric (e.g. "+140% signups") is the largest text within its card, bigger than the project title, since results sell more than labels.
@@ -285,6 +299,8 @@ Accessibility: Logo strip images need descriptive alt text (client name); hover-
     meta: { creator: "CopyUI Studio", copies: 967 },
     defaultPrimaryColor: "#0ea5e9",
     promptTemplate: `Product context: A conversational AI assistant product used daily for extended work sessions — prioritize readability of long message threads, fast access to past conversations, and confidence that a response is (or isn't) still streaming.
+
+Context of use: A knowledge worker or developer who keeps this open all day and returns to it dozens of times, often mid-task with a half-finished thought. Sessions are long, threads get deep, and they frequently need to find something from a conversation two days ago. The UI must help them do three things without hesitation: resume the right conversation, tell whether the assistant is still generating, and get code out of a response and into their editor. Success: a user can reopen a past thread from the sidebar in one click, always knows whether output is finished, and never has to hand-select code to copy it.
 
 Layout: 280px left sidebar (search input + "New chat" button pinned at top, conversation list grouped under "Today" / "Yesterday" / "Previous 7 days" headers below, a compact user account row pinned at the bottom) + a centered main chat column, max-width 760px, with a scrollable message list (24px vertical gap between message groups) and a composer pinned to the bottom of the viewport (auto-growing textarea supporting 1-6 visible lines, send button, model/tool selector as a small dropdown to its left).
 
@@ -315,6 +331,8 @@ Accessibility: New assistant message content is announced via aria-live="polite"
     defaultPrimaryColor: "#eab308",
     promptTemplate: `Product context: A full-screen "mission control" analytics view for an ops/monitoring team watching several live metrics simultaneously, often on a large shared display.
 
+Context of use: An on-call engineer or ops lead glancing up at a wall-mounted screen from across the room, or keeping this pinned on a second monitor during an incident. Nobody sits and studies it; they look up when something feels wrong. The UI must help them answer "is anything breaching its threshold right now, and is this data still live?" without walking over to the screen. Success: a metric entering an alert state is noticeable from several meters away, and stale data is never mistaken for current data.
+
 Layout: No sidebar — a slim top bar (title, live/paused indicator, time-range selector) above a dense responsive grid (4 columns on desktop) of independent metric panels, each a self-contained mini dashboard (chart + current value + delta).
 
 Visual hierarchy: Every panel's current value is its dominant element (text-2xl+, tabular-nums); panel titles are small and uppercase. An alert-state panel (a value breaching its threshold) is visually distinct via a {{primaryColor}} or warning-colored border, not just a text change, so it's noticeable from across a room.
@@ -343,6 +361,8 @@ Accessibility: The live/paused state change is announced via aria-live="polite";
     meta: { creator: "CopyUI Studio", copies: 703 },
     defaultPrimaryColor: "#f43f5e",
     promptTemplate: `Product context: A single product detail page for an e-commerce store, whose only job is to move a visitor from "browsing" to "add to cart" with full confidence in what they're buying.
+
+Context of use: A shopper who clicked in from a category page, search, or an ad, comparing this item against one or two alternatives. Their hesitation is rarely price — it's whether they picked the right size or color, and whether other people were happy with it. The UI must help them commit to a specific variant and add it to the cart, which means the selected variant, its availability, and the review sentiment must all be visible near the button. Success: the shopper selects a variant and adds to cart without scrolling back up to re-check what they chose, and out-of-stock combinations are obvious before the click, not after.
 
 Layout: Two-column layout above the fold — left: image gallery (large primary image + thumbnail strip); right: product title, price, variant selectors (size/color), quantity stepper, and a prominent "Add to cart" button. Below the fold: description/specs tabs, then a customer reviews section with a rating summary.
 
@@ -373,6 +393,8 @@ Accessibility: Variant swatches (color/size) need text alternatives via aria-lab
     defaultPrimaryColor: "#0d9488",
     promptTemplate: `Product context: A personal finance / fintech dashboard where a user checks account balances, recent transactions, and budget progress — trust and clarity matter more than visual excitement; never let the design feel "salesy."
 
+Context of use: An ordinary person checking their money on a phone or laptop, often briefly and often anxiously — before a purchase, after a paycheck, or when a charge looks unfamiliar. They are not analysts and will not build a report. The UI must help them answer three questions: "how much do I have," "what did I spend it on," and "am I still within budget this month?" Success: the total balance and every budget's on-track/over status are readable at a glance, and an unrecognized transaction is easy to find in the recent list without searching.
+
 Layout: Left sidebar (accounts list) + main content: a large total-balance card at top, a spending-by-category chart beside a budget-progress panel, and a recent-transactions list below.
 
 Visual hierarchy: Total balance is the single largest number on the page (text-4xl+, tabular-nums); individual transaction amounts are smaller and right-aligned in their rows; budget progress bars are the most colorful element after the balance, using {{primaryColor}} to fill only the "on track" state.
@@ -401,6 +423,8 @@ Accessibility: Over-limit budget states must include a text label ("Over budget"
     meta: { creator: "CopyUI Studio", copies: 588 },
     defaultPrimaryColor: "#3b82f6",
     promptTemplate: `Product context: A project management board (Kanban-style) used by a small team to track task status day to day; optimize for quick scanning of what's in progress and who owns it.
+
+Context of use: A team member during a standup or a quick mid-day check, plus a lead scanning for anything stuck or overdue. The board is glanced at many times a day and rearranged a few. The UI must help them answer "what is blocked, what is overdue, and who owns it?" and then move a card to its new column. Success: an overdue or urgent task is spotted while scanning a column vertically, without opening any card, and every card's owner is identifiable from its avatar alone.
 
 Layout: A top bar (board title, filter/sort controls, "Add task" button) above a horizontally-scrollable row of columns (e.g. Backlog, In Progress, In Review, Done), each column a fixed width with its own header (name + task count) and a vertically stacked list of task cards.
 
@@ -431,6 +455,8 @@ Accessibility: Provide a keyboard-operable alternative to drag-and-drop (e.g. a 
     defaultPrimaryColor: "#14b8a6",
     promptTemplate: `Product context: A product documentation / knowledge-base site used by developers integrating an API or product — the primary task is finding the right page fast and reading a technical article without losing your place.
 
+Context of use: A developer with the docs in one window and their editor in the other, mid-implementation and slightly stuck. They arrived from a search engine, deep-linked to one heading, and have no interest in reading the page top to bottom. The UI must help them locate the correct section, confirm they are on the right page, and lift a working code sample into their project. Success: search or the nav tree gets them to the right heading in one action, the table of contents always shows where they are, and every code block is copyable in one click.
+
 Layout: Three-column layout on desktop — left: collapsible nav tree grouped by section; center: article content (max-width ~720px for readability) with headings, code blocks, and inline callouts; right: an auto-generated "On this page" table of contents that highlights the currently-scrolled section.
 
 Visual hierarchy: Article headings establish a clear scale (h1 > h2 > h3, each visually distinct); code blocks are visually set apart from prose (monospace font, distinct background, copy button) so a scanning reader immediately distinguishes "read this" from "copy this."
@@ -459,6 +485,8 @@ Accessibility: Heading hierarchy must be semantically correct (no skipped levels
     meta: { creator: "CopyUI Studio", copies: 654 },
     defaultPrimaryColor: "#d946ef",
     promptTemplate: `Product context: A marketing landing page for a mobile app (iOS/Android), whose job is to communicate the app's core value and drive store downloads.
+
+Context of use: Someone who tapped a link from a social post, a podcast mention, or a friend — usually already on the phone they would install the app on. They want to see what the app looks like before committing to an install. The UI must help them decide "is this worth an install?" and then hand them the correct store for their device. Success: the phone mockup communicates the app's core screen before any copy is read, and the visitor reaches a store badge without scrolling past the fold.
 
 Layout: A centered hero with headline + subtext on one side and a large phone-frame mockup showing the app's main screen on the other (two-column on desktop, stacked on mobile with the phone mockup first); app store badges (App Store / Google Play) directly beneath the headline; a horizontal feature-highlight row below the hero.
 
@@ -489,6 +517,8 @@ Accessibility: The phone mockup's illustrative screen content is decorative rela
     defaultPrimaryColor: "#0891b2",
     promptTemplate: `Product context: A single property listing page for a real estate site — a prospective buyer/renter needs the key facts (price, beds/baths, address) immediately and an easy way to request a showing.
 
+Context of use: A buyer or renter deep in a search, with a dozen listing tabs open and a hard budget ceiling. They triage ruthlessly and close most listings within seconds. The UI must help them make one disqualifying decision fast — "does this fit my price, size, and location?" — and, if it survives, book a viewing before the tab is lost. Success: price, beds, baths, and address are all readable without scrolling, and the tour-request form stays reachable while browsing photos and amenities.
+
 Layout: A full-width photo gallery at the top (large hero image + thumbnail strip), below it a two-column layout — left: price, address, a key-facts grid (beds/baths/sqft), description, amenities list; right: a sticky "Request a tour" contact card (agent info + inquiry form).
 
 Visual hierarchy: Price is the largest text element on the page (text-3xl+, font-bold); address is secondary but still prominent (text-lg); the key-facts grid uses equally-weighted icons + numbers so no single fact dominates over the others.
@@ -517,6 +547,8 @@ Accessibility: Gallery thumbnails and the lightbox are keyboard-operable (arrow 
     meta: { creator: "CopyUI Studio", copies: 241 },
     defaultPrimaryColor: "#ca8a04",
     promptTemplate: `Product context: A restaurant's digital menu page, viewed mostly on mobile by a diner deciding what to order — prioritize fast scanning of dish names, prices, and dietary info over marketing copy.
+
+Context of use: A diner already seated at the table, holding a phone, sometimes ordering for other people at the same time. Lighting is poor, patience is short, and someone at the table has a dietary restriction. The UI must help them pick a dish, know its price, and confirm it is safe to eat. Success: a diner jumps to a course, pairs each dish name with its price on one line, and identifies vegetarian, vegan, gluten-free, or spicy items without tapping anything.
 
 Layout: A short header (restaurant name/logo, a category jump-nav) above a single-column list of menu sections (e.g. Starters, Mains, Desserts, Drinks), each section a heading followed by dish rows (name, short description, price, dietary tag icons).
 
@@ -547,6 +579,8 @@ Accessibility: Dietary tag icons must have text alternatives (aria-label or visu
     defaultPrimaryColor: "#ea580c",
     promptTemplate: `Product context: A landing page for a conference/event, meant to drive ticket registrations by communicating date, lineup, and schedule credibility at a glance.
 
+Context of use: A potential attendee deciding whether to spend a ticket price and two days away from work, often needing to check the date against their calendar and justify the trip to a manager. They visit more than once before buying. The UI must help them answer "when is it, who is speaking, and is the programme worth my time?" and then register before tickets tier up. Success: date, location, and the registration CTA are visible without scrolling, the countdown creates real urgency, and a visitor can find what happens at a given hour on a given day in one tab switch.
+
 Layout: A hero with event name, date/location, and a "Get tickets" CTA plus a live countdown timer; below it, a speaker lineup grid (photo, name, title); below that, a day-by-day schedule (tabs per day, session list with time/title/speaker); a ticket-tiers section near the bottom.
 
 Visual hierarchy: The countdown timer and "Get tickets" CTA are the two most visually dominant elements in the hero; speaker photos dominate the lineup section over their name/title text; schedule session times align in a consistent column so the eye can scan "what's at 2pm" across days.
@@ -575,6 +609,8 @@ Accessibility: The live-updating countdown should not aggressively interrupt scr
     meta: { creator: "CopyUI Studio", copies: 812 },
     defaultPrimaryColor: "#c026d3",
     promptTemplate: `Product context: A single "link in bio" page for a content creator, linked from their social media profiles — visitors arrive with high intent to find a specific piece of content or link within seconds, on a phone.
+
+Context of use: A follower who just tapped the bio link inside a social app's in-app browser, one-handed, moments after seeing the creator mention something. They came for one specific destination — the new video, the shop, the newsletter — and will bounce back to the feed within seconds either way. The UI must help them recognize the creator, spot the thing that was just mentioned, and tap it accurately with a thumb. Success: the featured link is unmistakable among the others, and every link is tappable one-handed on the first attempt.
 
 Layout: A mobile-first single centered column (works identically on desktop, just centered with side margins): profile photo/avatar, name and short bio at top, followed by a vertically stacked list of full-width link buttons, with a row of small social-icon links at the very bottom.
 

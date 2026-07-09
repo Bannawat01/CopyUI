@@ -74,7 +74,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 465.5
+    "width": 200
   },
   "right": {
     "id": "aa20e8819c803b6e",
@@ -178,6 +178,7 @@
   },
   "active": "0910b915ddec9ad5",
   "lastOpenFiles": [
+    "pages/prompt-system.md.tmp.39728.d3ea02773ad4",
     "log.md.tmp.39728.2617b2590cc0",
     "raw/clips/Maximizing outputs with v0 From UI generation to code creation.md",
     "raw/clips/Navigation bar – Material Design 3 1.md",
@@ -204,7 +205,6 @@
     "pages/motion-inspiration.md",
     "pages/known-issues.md",
     "pages/detail-page.md",
-    "log.md.tmp.12440.a186bafcbcce",
     "pages/production-readiness.md",
     "shadcn.md",
     "log.md",
