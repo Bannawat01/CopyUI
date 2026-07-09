@@ -98,6 +98,7 @@ describe("POST /api/prompts/[slug]/build", () => {
     const { json } = await postJson(SLUG, { toolMode: "v0" });
     // The built `text` is the product; no raw template field may ride along.
     expect(Object.keys(json).sort()).toEqual([
+      "actionStyle",
       "promptIntent",
       "text",
       "themeMode",
@@ -167,5 +168,48 @@ describe("POST /api/prompts/[slug]/build", () => {
     expect(text).toContain("Secondary color #222222");
     expect(text).toContain("prefers-color-scheme");
     expect(text).toContain("Product context:");
+  });
+
+  it("accepts actionStyle and echoes it; invalid values fall back to null", async () => {
+    const { json: apply } = await postJson(SLUG, {
+      promptIntent: "retheme",
+      actionStyle: "apply",
+    });
+    expect(apply.actionStyle).toBe("apply");
+    expect(apply.text).toContain("APPLY THE CHANGES DIRECTLY");
+    expect(apply.text).toContain("Do you want me to apply this retheme now?");
+
+    const { json: instruct } = await postJson(SLUG, {
+      actionStyle: "instruct",
+    });
+    expect(instruct.actionStyle).toBe("instruct");
+    expect(instruct.text).toContain("INSTRUCTIONS ONLY");
+
+    const { json: bad } = await postJson(SLUG, { actionStyle: "advise" });
+    expect(bad.actionStyle).toBeNull();
+    expect(bad.text).not.toContain("Execution mode:");
+  });
+
+  it("supports the new coding-tool modes with distinct framing", async () => {
+    const modes = ["vscode", "claude-code", "windsurf"] as const;
+    const results = await Promise.all(
+      modes.map(async (toolMode) => (await postJson(SLUG, { toolMode })).json),
+    );
+    expect(results[0].text).toContain("GitHub Copilot");
+    expect(results[1].text).toContain("Claude Code");
+    expect(results[2].text).toContain("Windsurf");
+    for (const [i, r] of results.entries()) {
+      expect(r.toolMode).toBe(modes[i]);
+      expect(r.text.indexOf("Target tool:")).toBe(0);
+      expect(r.text).toContain("Product context:");
+    }
+    expect(new Set(results.map((r) => r.text)).size).toBe(modes.length);
+  });
+
+  it("light theme mode via API is fixed, not adaptive", async () => {
+    const { json } = await postJson(SLUG, { themeMode: "light" });
+    expect(json.text).toContain("LIGHT (fixed)");
+    expect(json.text).toContain("do NOT use prefers-color-scheme");
+    expect(json.text).not.toContain("driven by prefers-color-scheme");
   });
 });

@@ -96,6 +96,27 @@ prompt-composition architecture end-to-end. Retheme mode fixes an
 active failure users are hitting today; layout editing is an unbuilt
 wish. Deliberately deferred.
 
+### #6 refinement round (2026-07-09, tested on the live site)
+First real retheme validation (deployed saas-dashboard page) confirmed
+the direction (three-color selection works and is useful; retheme
+direction is useful; advice-style output acceptable when the user only
+wants guidance) and surfaced four issues, all now addressed:
+1. **Light mode behaved like System** (result followed the browser
+   theme) → light/dark are now explicitly fixed themes; only System is
+   adaptive.
+2. **Tool coverage too narrow** → added VS Code / Copilot, Claude Code,
+   and Windsurf tool modes (framing only, no integrations).
+3. **Cursor gave advice instead of applying the retheme** → new Action
+   Style option ("Apply changes directly" / "Instructions only"), with
+   inspect-first + confirm-if-risky + preserve-behavior rules for
+   direct application.
+4. **Detail page required scrolling between colors and Copy** → one
+   compact sticky Customize & Copy panel with collapsed advanced
+   options.
+Figma-style drag-to-arrange remains deferred (see #7 below) — the fixes
+above again reused the existing prompt-composition architecture, while
+a layout editor would still be a new product surface.
+
 ## 7. Layout presets (future, before any Figma-style editor)
 A middle step worth evaluating before ever considering a drag-and-drop
 editor: offer 2-3 named layout *presets* per theme (e.g. "sidebar left /

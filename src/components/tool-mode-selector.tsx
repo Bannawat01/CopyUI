@@ -17,7 +17,7 @@ export function ToolModeSelector({
       <div
         role="radiogroup"
         aria-labelledby="tool-mode-label"
-        className="inline-flex w-fit rounded-lg border border-white/10 bg-white/5 p-1"
+        className="inline-flex w-fit flex-wrap gap-y-1 rounded-lg border border-white/10 bg-white/5 p-1"
       >
         {TOOL_MODES.map(({ value: mode, label }) => {
           const selected = value === mode;

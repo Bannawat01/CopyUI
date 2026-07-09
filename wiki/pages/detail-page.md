@@ -92,6 +92,21 @@ referenced directly inside a Server Component file; see
   and behavior."), defaulting to Build. All six values POST to the build
   API — see [copy-mechanism.md](copy-mechanism.md) and
   [prompt-system.md](prompt-system.md) for what each does to the text.
+- **Compact sticky panel + Action Style + more tools** (2026-07-09,
+  refinement from live-site feedback: "I have to scroll up and down to
+  adjust colors and then copy"): the two right-column cards (color panel
+  + copy panel) were merged into **one "Customize & Copy" panel** that is
+  **sticky on desktop** (`md:sticky md:top-6`, with its own internal
+  scroll if taller than the viewport). Secondary/Accent colors and Theme
+  Mode moved into a native `<details>` **"Advanced theme options"**
+  disclosure (collapsed by default) so the common path — primary color →
+  intent → tool → Copy — fits in one view. New **Action Style**
+  radiogroup ("Apply changes directly" default / "Instructions only") —
+  added after Cursor testing showed retheme prompts produced advice
+  instead of edits. Tool Mode grew to six options (v0.dev, Cursor,
+  VS Code / Copilot, Claude Code, Windsurf, GenVibe; the radiogroup now
+  wraps). Mobile keeps the single-panel flow — fewer separated cards
+  means less scroll distance to the button.
 - **Prompt Quality Checklist** (production pass, 2026-07-09): a small
   static trust panel (`src/components/quality-checklist.tsx`) below the
   Copy button lists what every hidden template covers (Product context,

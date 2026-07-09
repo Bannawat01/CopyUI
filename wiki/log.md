@@ -788,3 +788,53 @@
 - Wiki: prompt-system.md, copy-mechanism.md, detail-page.md,
   feature-ideas.md (#6 shipped + #7 layout presets), next-actions.md
   (item 4), this entry.
+
+## [2026-07-09] retheme-refine | Fixes from first live retheme validation
+- **Real feedback** (tested on the deployed saas-dashboard page): 3-color
+  selection works and is useful; retheme direction is useful; advice
+  output acceptable when guidance is the goal. Four problems: (1) Light
+  mode still followed the browser/system theme; (2) tool modes too
+  narrow — users want VS Code/Copilot, Claude Code, Windsurf; (3) Cursor
+  gave advice instead of applying the retheme; (4) the detail page
+  required scrolling between color controls and the Copy button.
+- **Theme mode fix** (`prompt-options.ts`): light and dark directives
+  rewritten as explicitly FIXED themes — "do NOT use
+  prefers-color-scheme, do NOT follow the browser or OS theme,
+  regardless of their system setting"; `system` is now labeled the ONLY
+  adaptive mode; mono also states it doesn't follow the OS theme.
+- **Action Style** (new, `prompt-options.ts` + `action-style-selector.tsx`):
+  `"apply"` (default in UI) — for retheme: inspect files first, ask
+  "Do you want me to apply this retheme now?" if broad/risky, then apply
+  only visual/theme changes preserving routes/functions/state/API
+  calls/handlers/behavior, no disconnected page; for build: create/edit
+  real files with a brief plan. `"instruct"` — no file edits, precise
+  file-level guidance. Omitted actionStyle adds nothing (backward
+  compatible). Cursor framing updated to obey the stated execution mode.
+- **Tool modes** (`tool-modes.ts`): added `vscode` (VS Code / GitHub
+  Copilot), `claude-code`, `windsurf` — framing + captions only, no
+  integrations. Selector now wraps (6 options).
+- **Detail page UX** (`prompt-detail.tsx`): merged the color and copy
+  cards into one "Customize & Copy" panel, sticky on desktop
+  (`md:sticky md:top-6`, internal scroll if taller than viewport);
+  Secondary/Accent/Theme Mode collapsed into a native `<details>`
+  "Advanced theme options" disclosure; tightened control gaps. Common
+  path (primary color → intent → tool → copy) now fits one view.
+- **API**: accepts + validates `actionStyle`; response adds
+  `actionStyle` (null when omitted).
+- Tests: theme-mode distinction pinned (fixed modes must not carry the
+  positive adaptive instructions — first attempt asserted the raw
+  substring "prefers-color-scheme" and failed because fixed modes
+  legitimately *negate* it; reworked to assert intent), action styles
+  (retheme-apply confirm flow, instruct no-edit, build-apply without
+  retheme wording), new tool modes distinct via API, light-via-API
+  fixed. Suite now **5 files / 55 tests**, all passing.
+- Security: leak check clean (no "Product context:"/"RETHEME
+  ONLY"/"Execution mode:" in detail HTML); live API POST
+  (claude-code + retheme + apply + light) returns all sections.
+- `rtk npm test` 55/55; `rtk npm run lint` clean; `rtk npm run build`
+  clean (27 routes).
+- Figma-style drag layout **still deferred** — this round again fit the
+  existing prompt-composition architecture; layout presets
+  (feature-ideas #7) remain the recorded middle step.
+- Remaining: re-test retheme+apply against real Cursor/Claude
+  Code/Windsurf; sticky-panel behavior not checked in a real browser.

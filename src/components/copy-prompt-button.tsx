@@ -19,7 +19,11 @@ import {
   getToolModeLabel,
   type ToolMode,
 } from "@/lib/tool-modes";
-import type { PromptIntent, ThemeMode } from "@/lib/prompt-options";
+import type {
+  ActionStyle,
+  PromptIntent,
+  ThemeMode,
+} from "@/lib/prompt-options";
 
 type CopyState = "idle" | "loading" | "success" | "error";
 
@@ -30,6 +34,7 @@ export function CopyPromptButton({
   accentColor,
   themeMode,
   promptIntent,
+  actionStyle,
   toolMode,
 }: {
   slug: string;
@@ -38,6 +43,7 @@ export function CopyPromptButton({
   accentColor?: string;
   themeMode?: ThemeMode;
   promptIntent?: PromptIntent;
+  actionStyle?: ActionStyle;
   toolMode: ToolMode;
 }) {
   const [state, setState] = useState<CopyState>("idle");
@@ -61,6 +67,7 @@ export function CopyPromptButton({
           accentColor,
           themeMode,
           promptIntent,
+          actionStyle,
           toolMode,
         }),
       });

@@ -96,10 +96,38 @@ a disconnected new page), and wanted two- or three-color pages.
   and a "primary stays dominant" rule. Omitted entirely when neither is
   set, so single-color prompts are unchanged.
 
-`applyPromptOptions()` composes: retheme rules → palette → theme
-directive → base prompt; the API then wraps with the tool-mode framing
-(so "Target tool:" is always the first line). The base `promptTemplate`
-and `{{primaryColor}}` substitution are untouched.
+`applyPromptOptions()` composes: retheme rules → action style →
+palette → theme directive → base prompt; the API then wraps with the
+tool-mode framing (so "Target tool:" is always the first line). The
+base `promptTemplate` and `{{primaryColor}}` substitution are untouched.
+
+### Refinements from real retheme testing (2026-07-09, live site)
+Validation on the deployed saas-dashboard page surfaced two prompt bugs:
+- **Light mode behaved like System**: the generated result still
+  followed the browser theme. Directives rewritten — light and dark are
+  now explicitly **fixed** themes ("do NOT use prefers-color-scheme, do
+  NOT follow the browser or OS theme, regardless of their system
+  setting"); only `system` carries adaptive instructions. Tests pin the
+  distinction (fixed modes must not contain the positive "driven by
+  prefers-color-scheme"/"implement BOTH" instructions).
+- **Cursor gave advice instead of applying the retheme**. Added
+  **`ActionStyle`** (`"apply"` | `"instruct"`, optional — omitted means
+  no directive, backward compatible). `apply` + retheme instructs:
+  inspect existing files first → ask "Do you want me to apply this
+  retheme now?" if broad/risky → on confirmation apply only
+  visual/theme changes while preserving routes/functions/state/API
+  calls/handlers/behavior. `apply` + build says create/edit real files
+  with a brief plan first. `instruct` forbids file edits and demands
+  precise file-level guidance (advice-style output stays available for
+  users who want it — feedback said it's acceptable when guidance is
+  the goal). Cursor's framing also now tells it to follow the stated
+  execution mode.
+
+### Tool modes expanded (same pass)
+Users asked for more coding tools. Added `vscode` (VS Code / GitHub
+Copilot), `claude-code`, and `windsurf` framings + captions in
+`src/lib/tool-modes.ts` — prompt framing only, no integrations. All
+three reference the execution mode so ActionStyle carries through.
 
 ### Tool-mode-adaptive copy button
 `CopyPromptButton` reads `toolMode` to drive three things: its idle

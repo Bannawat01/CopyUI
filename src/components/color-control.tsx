@@ -25,14 +25,14 @@ export function ColorControl({
   onClear?: () => void;
 }) {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       <span id={`${id}-label`} className="text-sm font-medium text-foreground">
         {label}
       </span>
       <div
         role="group"
         aria-labelledby={`${id}-label`}
-        className="flex flex-wrap items-center gap-2.5"
+        className="flex flex-wrap items-center gap-2"
       >
         {SWATCHES.map((swatch) => {
           const selected = value?.toLowerCase() === swatch;

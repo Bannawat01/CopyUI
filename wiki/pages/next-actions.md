@@ -35,13 +35,20 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
    expect to browse, before treating it as final.
 4. Customizable variables beyond `primaryColor`: **partially done
    (2026-07-09)** — secondary/accent colors, theme mode
-   (dark/light/system/mono), and prompt intent (build/retheme) shipped
-   from real user feedback. Still open: font, border radius, layout
-   density. Next in this direction: **layout presets** (2-3 named
-   arrangements per theme as a prompt option) as the deliberate middle
-   step before ever considering a Figma-style drag-and-drop editor —
-   see [feature-ideas.md](feature-ideas.md) items #6/#7 for why retheme
-   was prioritized over layout editing.
+   (dark/light/system/mono), prompt intent (build/retheme), and — after
+   live-site retheme testing — action style (apply/instruct) plus three
+   new tool modes (VS Code / Copilot, Claude Code, Windsurf) shipped
+   from real user feedback. Light/dark are now explicitly fixed themes;
+   only System follows prefers-color-scheme. Still open: font, border
+   radius, layout density. Next in this direction: **layout presets**
+   (2-3 named arrangements per theme as a prompt option) as the
+   deliberate middle step before ever considering a Figma-style
+   drag-and-drop editor — see [feature-ideas.md](feature-ideas.md)
+   items #6/#7 for why retheme was prioritized over layout editing.
+   **[uncertain]** The refined retheme+apply prompt and the three new
+   tool framings have not yet been re-tested against real tools — the
+   fix responds to observed Cursor behavior, but "apply" compliance is
+   unverified until someone runs it again.
 5. Automated tests: a **Vitest smoke suite now exists** — `npm test`,
    **28/28 passing** across 4 files — covering prompt data, the
    hidden-template guarantee, `buildPrompt()`/`applyToolMode()`,

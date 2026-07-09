@@ -3,6 +3,7 @@ import { buildPrompt, getPromptBySlug } from "@/lib/prompts";
 import { applyToolMode, isToolMode } from "@/lib/tool-modes";
 import {
   applyPromptOptions,
+  isActionStyle,
   isPromptIntent,
   isThemeMode,
 } from "@/lib/prompt-options";
@@ -36,6 +37,9 @@ export async function POST(
   const promptIntent = isPromptIntent(body.promptIntent)
     ? body.promptIntent
     : "build";
+  const actionStyle = isActionStyle(body.actionStyle)
+    ? body.actionStyle
+    : undefined;
 
   const base = buildPrompt(prompt.promptTemplate, { primaryColor });
   const withOptions = applyPromptOptions(base, {
@@ -43,6 +47,7 @@ export async function POST(
     accentColor,
     themeMode,
     promptIntent,
+    actionStyle,
   });
   const text = applyToolMode(withOptions, toolMode);
 
@@ -51,5 +56,6 @@ export async function POST(
     toolMode: toolMode ?? null,
     themeMode: themeMode ?? null,
     promptIntent,
+    actionStyle: actionStyle ?? null,
   });
 }

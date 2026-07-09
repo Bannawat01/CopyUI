@@ -67,18 +67,69 @@ Strict preservation rules (non-negotiable):
 
 What you SHOULD change: visual styling only — theme tokens/CSS variables, color values, typography, spacing, border radii, shadows/elevation, and other presentation-layer details, guided by the design brief below. Treat the brief's structural/layout sections as a description of the visual style to apply, not as instructions to rebuild the layout.`;
 
+/**
+ * Light and dark are FIXED themes — only "system" may follow the
+ * browser/OS preference. Written after real-output feedback where a
+ * Light selection still produced a system-following theme.
+ */
 const THEME_DIRECTIVES: Record<ThemeMode, string> = {
-  dark: `Theme mode: dark. Use the dark styling exactly as described in the brief below.`,
-  light: `Theme mode: LIGHT. Override the dark-mode styling described below: render on light backgrounds (near-white base, subtle gray surfaces one step darker for cards) with dark text, while keeping the same visual hierarchy, elevation logic (surface shifts + 1px borders, not heavy shadows), accent-color placement rules, and WCAG contrast ratios. Do not simply invert colors — re-derive them for a light surface system.`,
-  system: `Theme mode: system/adaptive. Implement BOTH a dark and a light theme driven by the user's OS preference (prefers-color-scheme), with the dark variant following the brief below and the light variant re-derived for light surfaces (not naive inversion). Define colors as theme tokens/CSS variables so both modes share one structure, and keep contrast ratios valid in both.`,
-  mono: `Theme mode: monochrome. Render the design in a strict black/white/gray palette: use shades of a single neutral scale for all surfaces, text, and borders. Where the brief assigns an accent color to an element, use the strongest neutral contrast (pure white or near-black) plus weight/size instead of hue to create emphasis. Color may only be used for functional states (errors, success) if omitting it would harm usability.`,
+  dark: `Theme mode: DARK (fixed). Use the dark styling exactly as described in the brief below, as a single permanent theme. Do NOT add a light variant, do NOT use prefers-color-scheme, and do NOT follow the browser or OS theme — the UI must render dark for every user.`,
+  light: `Theme mode: LIGHT (fixed). Render a single permanent light theme: near-white base background, subtle gray surfaces one step darker for cards, dark text — keeping the brief's visual hierarchy, elevation logic (surface shifts + 1px borders, not heavy shadows), accent-color placement rules, and WCAG contrast ratios, re-derived for light surfaces rather than naively inverted. This is NOT adaptive: do NOT use prefers-color-scheme, do NOT follow the browser or OS theme, and do NOT include a dark variant — the UI must render light for every user regardless of their system setting.`,
+  system: `Theme mode: system/adaptive. This is the ONLY mode that follows the user's OS/browser preference: implement BOTH a dark and a light theme driven by prefers-color-scheme, with the dark variant following the brief below and the light variant re-derived for light surfaces (not naive inversion). Define colors as theme tokens/CSS variables so both modes share one structure, and keep contrast ratios valid in both.`,
+  mono: `Theme mode: monochrome (fixed). Render the design in a strict black/white/gray palette: use shades of a single neutral scale for all surfaces, text, and borders. Where the brief assigns an accent color to an element, use the strongest neutral contrast (pure white or near-black) plus weight/size instead of hue to create emphasis. Color may only be used for functional states (errors, success) if omitting it would harm usability. Do not follow the browser or OS theme.`,
 };
+
+export type ActionStyle = "instruct" | "apply";
+
+export const ACTION_STYLES: {
+  value: ActionStyle;
+  label: string;
+  description: string;
+}[] = [
+  {
+    value: "apply",
+    label: "Apply changes directly",
+    description:
+      "The tool should inspect the code, confirm, then make the edits itself.",
+  },
+  {
+    value: "instruct",
+    label: "Instructions only",
+    description: "The tool should explain the changes without editing files.",
+  },
+];
+
+export function isActionStyle(value: unknown): value is ActionStyle {
+  return value === "instruct" || value === "apply";
+}
+
+/**
+ * Written after Cursor testing: a retheme prompt produced advice instead
+ * of edits. "apply" makes direct application explicit (inspect first,
+ * confirm if risky, then edit); "instruct" makes advice-only explicit.
+ */
+function actionStyleDirective(
+  actionStyle: ActionStyle,
+  promptIntent: PromptIntent | undefined,
+): string {
+  if (actionStyle === "instruct") {
+    return `Execution mode: INSTRUCTIONS ONLY. Do not edit any files. Explain the exact changes as precise, file-level guidance (which files, which tokens/classes/values to change and to what) so a developer can apply them manually.`;
+  }
+  if (promptIntent === "retheme") {
+    return `Execution mode: APPLY THE CHANGES DIRECTLY. Do not stop at advice — make the edits yourself, in this order:
+1. First inspect the existing files and components involved, so changes are grounded in the real code.
+2. If the change set is broad or risky, ask for confirmation first: "Do you want me to apply this retheme now?"
+3. Once confirmed (or if the changes are small and safe), apply ONLY the visual/theme changes — while preserving all routes, functions, state logic, API calls, event handlers, and component behavior, and without replacing the app with a disconnected new page.`;
+  }
+  return `Execution mode: APPLY THE CHANGES DIRECTLY. Do not stop at advice — create and edit the actual files in the workspace. If the change set is large, state a brief file-level plan first, then implement it.`;
+}
 
 export type PromptOptions = {
   secondaryColor?: string;
   accentColor?: string;
   themeMode?: ThemeMode;
   promptIntent?: PromptIntent;
+  actionStyle?: ActionStyle;
 };
 
 function paletteDirective(
@@ -117,6 +168,12 @@ export function applyPromptOptions(
 
   if (options.promptIntent === "retheme") {
     sections.push(RETHEME_RULES);
+  }
+
+  if (options.actionStyle) {
+    sections.push(
+      actionStyleDirective(options.actionStyle, options.promptIntent),
+    );
   }
 
   const palette = paletteDirective(options.secondaryColor, options.accentColor);

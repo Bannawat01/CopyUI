@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
+  ACTION_STYLES,
   applyPromptOptions,
+  isActionStyle,
   isPromptIntent,
   isThemeMode,
   PROMPT_INTENTS,
@@ -85,16 +87,88 @@ describe("theme modes", () => {
     }
   });
 
-  it("light mode overrides dark styling; mono restricts to neutrals", () => {
-    expect(applyPromptOptions(BASE, { themeMode: "light" })).toContain(
-      "Override the dark-mode styling",
+  it("light is a FIXED theme that explicitly forbids adaptive behavior", () => {
+    const light = applyPromptOptions(BASE, { themeMode: "light" });
+    expect(light).toContain("LIGHT (fixed)");
+    expect(light).toContain("regardless of their system setting");
+    expect(light).toContain("This is NOT adaptive");
+    expect(light).toContain("do NOT use prefers-color-scheme");
+    expect(light).toContain("do NOT follow the browser or OS theme");
+    // Must never carry the system mode's positive adaptive instructions.
+    expect(light).not.toContain("driven by prefers-color-scheme");
+    expect(light).not.toContain("implement BOTH");
+  });
+
+  it("dark is a FIXED theme that explicitly forbids adaptive behavior", () => {
+    const dark = applyPromptOptions(BASE, { themeMode: "dark" });
+    expect(dark).toContain("DARK (fixed)");
+    expect(dark).toContain("do NOT use prefers-color-scheme");
+    expect(dark).not.toContain("driven by prefers-color-scheme");
+    expect(dark).not.toContain("implement BOTH");
+  });
+
+  it("system is the only mode that follows prefers-color-scheme", () => {
+    const system = applyPromptOptions(BASE, { themeMode: "system" });
+    expect(system).toContain("system/adaptive");
+    expect(system).toContain("driven by prefers-color-scheme");
+    expect(system).toContain("ONLY mode that follows");
+    expect(system).toContain("implement BOTH");
+  });
+
+  it("mono restricts to neutrals and does not follow the OS theme", () => {
+    const mono = applyPromptOptions(BASE, { themeMode: "mono" });
+    expect(mono).toContain("black/white/gray");
+    expect(mono).toContain("Do not follow the browser or OS theme");
+  });
+});
+
+describe("action style", () => {
+  it("validator accepts only known styles", () => {
+    expect(isActionStyle("apply")).toBe(true);
+    expect(isActionStyle("instruct")).toBe(true);
+    expect(isActionStyle("advise")).toBe(false);
+    expect(isActionStyle(undefined)).toBe(false);
+  });
+
+  it("retheme + apply demands direct edits with inspect-confirm-preserve", () => {
+    const out = applyPromptOptions(BASE, {
+      promptIntent: "retheme",
+      actionStyle: "apply",
+    });
+    expect(out).toContain("APPLY THE CHANGES DIRECTLY");
+    expect(out).toContain("First inspect the existing files");
+    expect(out).toContain("Do you want me to apply this retheme now?");
+    expect(out).toContain(
+      "preserving all routes, functions, state logic, API calls, event handlers, and component behavior",
     );
-    expect(applyPromptOptions(BASE, { themeMode: "system" })).toContain(
-      "prefers-color-scheme",
-    );
-    expect(applyPromptOptions(BASE, { themeMode: "mono" })).toContain(
-      "black/white/gray",
-    );
+    expect(out).toContain("without replacing the app");
+    // Both the retheme rules and the execution mode are present.
+    expect(out).toContain("RETHEME ONLY");
+  });
+
+  it("instruct forbids file edits", () => {
+    const out = applyPromptOptions(BASE, { actionStyle: "instruct" });
+    expect(out).toContain("INSTRUCTIONS ONLY");
+    expect(out).toContain("Do not edit any files");
+  });
+
+  it("build + apply is direct but without retheme confirmation wording", () => {
+    const out = applyPromptOptions(BASE, {
+      promptIntent: "build",
+      actionStyle: "apply",
+    });
+    expect(out).toContain("APPLY THE CHANGES DIRECTLY");
+    expect(out).not.toContain("retheme now?");
+  });
+
+  it("no directive when actionStyle is omitted (backward compatible)", () => {
+    expect(applyPromptOptions(BASE, {})).toBe(BASE);
+  });
+
+  it("UI copy exposes both styles", () => {
+    const labels = ACTION_STYLES.map((s) => s.label);
+    expect(labels).toContain("Apply changes directly");
+    expect(labels).toContain("Instructions only");
   });
 });
 
