@@ -548,3 +548,31 @@
 - Going forward, further prompt-template work should be driven by real
   failed outputs or specific observed quality gaps from testing, not
   speculative refinement.
+
+## [2026-07-09] production-readiness | SEO, robots/sitemap, homepage clarity, checklist, README
+- SEO: `src/lib/site.ts` (new — SITE_URL from `NEXT_PUBLIC_SITE_URL`,
+  name/tagline/description constants); `layout.tsx` gained metadataBase,
+  title template, canonical, OG + Twitter tags; detail pages gained
+  `generateMetadata` (per-theme title/description/canonical/OG from
+  public data only).
+- `src/app/robots.ts` (new): allow all, disallow `/api/`, sitemap link.
+  `src/app/sitemap.ts` (new): homepage + all 18 detail routes from local
+  prompt data.
+- Homepage: hero retitled to "Production-ready UI prompts for v0,
+  Cursor, and GenVibe" + clearer subtext; added a 3-step "How it works"
+  strip (pick → customize → copy) between hero and gallery toolbar.
+- Detail page: added `QualityChecklist` (new component) below the Copy
+  button — static list of the six template section names; reads no
+  prompt data.
+- README.md: rewritten for GitHub (overview, features, stack, dev
+  commands, hidden-prompt security note, limitations, roadmap,
+  deployment); removed create-next-app boilerplate.
+- Verified via `next start` + `curl`: no "Product context:"/"Target
+  tool:" in gallery or detail HTML; titles/canonical/OG/sitemap/robots
+  all render. Lint + build clean (24 routes incl. robots.txt +
+  sitemap.xml).
+- Wiki: updated overview, gallery-page, detail-page, prompt-system,
+  copy-mechanism, next-actions, index; created production-readiness.md.
+  styling.md untouched — no styling-convention changes this pass.
+- Remaining gaps: no OG image, `NEXT_PUBLIC_SITE_URL` must be set when
+  deploying, default favicon, no analytics/monitoring/tests.

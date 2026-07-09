@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -7,6 +8,35 @@ import { DetailHeader } from "@/components/detail-header";
 
 export function generateStaticParams() {
   return prompts.map((p) => ({ slug: p.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const prompt = getPromptBySlug(slug);
+  if (!prompt) return {};
+
+  const title = `${prompt.title} UI Prompt`;
+  const description = `${prompt.description} Customize the color and tool mode, then copy a production-ready prompt for v0.dev, Cursor, or GenVibe.`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `/prompts/${prompt.slug}` },
+    openGraph: {
+      title,
+      description,
+      url: `/prompts/${prompt.slug}`,
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
+    },
+  };
 }
 
 export default async function PromptDetailPage({

@@ -159,6 +159,12 @@ requirement:
   text. The label/caption changes are presentation-only — no new prop
   or data ever carries `promptTemplate` client-side.
 
+## Quality checklist (detail page)
+The detail page's `QualityChecklist` panel (production pass, 2026-07-09)
+advertises the six template section names as a trust signal. It's a
+hardcoded static list in `src/components/quality-checklist.tsx` — it does
+not read `promptTemplate` or any prompt data, so it can't leak anything.
+
 ## Real-world validation
 The AI Chat Interface template (v0.dev tool mode) was tested against
 actual v0.dev output for the first time on 2026-07-07 — prior passes had

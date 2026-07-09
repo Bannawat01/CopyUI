@@ -34,6 +34,13 @@
    `aria-live` region — it doesn't change with copy state, only with the
    selected tool mode.
 
+## Quality checklist beside the copy area
+The production pass (2026-07-09) added a static `QualityChecklist` panel
+(`src/components/quality-checklist.tsx`) below the Copy button listing
+the six section names every template covers. It's a trust signal only —
+pure presentation, reads no prompt data, changes nothing about the flow
+above.
+
 ## Visual redesign impact
 The gallery/detail visual redesign (bigger preview, template-tile cards,
 premium dark styling) is presentation-only — it did not touch this flow.

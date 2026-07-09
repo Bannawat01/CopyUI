@@ -42,7 +42,12 @@ screenshot-like preview mockup. The Gallery page now has category-pill
 filtering (All/Landing/Dashboard/SaaS/Ecommerce/AI/Portfolio/Docs) working
 alongside search, a full motion/interaction pass, and a **Tool Mode**
 selector on the Detail page (v0.dev / Cursor / GenVibe) that tailors the
-hidden, server-built prompt to the target AI tool. `npm run lint` and
+hidden, server-built prompt to the target AI tool. A production-readiness
+pass (2026-07-09) added full SEO metadata (OG/Twitter/canonical via
+`NEXT_PUBLIC_SITE_URL`), `robots.ts` + `sitemap.ts`, a homepage
+"How it works" strip, a Prompt Quality Checklist on the detail page, and
+a real GitHub README — see
+[production-readiness.md](production-readiness.md). `npm run lint` and
 `npm run build` both pass clean.
 
 ## Not yet built

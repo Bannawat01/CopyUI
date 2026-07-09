@@ -6,6 +6,7 @@ import { PromptPreview } from "@/components/prompt-preview";
 import { ColorControl } from "@/components/color-control";
 import { ToolModeSelector } from "@/components/tool-mode-selector";
 import { CopyPromptButton } from "@/components/copy-prompt-button";
+import { QualityChecklist } from "@/components/quality-checklist";
 import type { PromptTheme } from "@/lib/prompts";
 import type { ToolMode } from "@/lib/tool-modes";
 
@@ -63,6 +64,7 @@ export function PromptDetail({ prompt }: { prompt: PromptDetailData }) {
             primaryColor={primaryColor}
             toolMode={toolMode}
           />
+          <QualityChecklist />
         </motion.div>
       </div>
     </div>

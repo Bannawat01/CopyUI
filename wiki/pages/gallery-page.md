@@ -71,6 +71,18 @@
   `onClearQuery` callback shared with the empty state's "Clear filters"
   button.
 
+- Marketplace controls (later pass): each category pill now shows a
+  count badge (computed client-side from the prompt list), and a native
+  `<select>` sort control (Most Copied / Newest / A-Z) sits next to the
+  search input — search, category, and sort compose in one `useMemo`
+  (filter first, then sort). All client-side, no data changes.
+- Production pass (2026-07-09): hero headline changed to
+  "Production-ready UI prompts for v0, Cursor, and GenVibe" with a
+  what/how subtext, and a compact 3-step "How it works" strip (Pick a
+  UI prompt → Customize it → Copy and paste) now sits between the hero
+  and the Browse Templates toolbar, so first-time visitors get the
+  product in one glance.
+
 ## Data source
 `getPublicPrompts()` in `src/lib/prompts.ts` — a version of the mock prompt
 dataset with `promptTemplate` stripped out, so the hidden prompt text is never

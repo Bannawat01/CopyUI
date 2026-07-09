@@ -79,6 +79,15 @@ referenced directly inside a Server Component file; see
   the main button instead (see above). A true "Open in v0" deep link
   remains investigated-and-deferred, not faked — see
   [copy-mechanism.md](copy-mechanism.md).
+- **Prompt Quality Checklist** (production pass, 2026-07-09): a small
+  static trust panel (`src/components/quality-checklist.tsx`) below the
+  Copy button lists what every hidden template covers (Product context,
+  Layout direction, Component requirements, Responsive behavior,
+  Accessibility notes, Tool-specific framing) — section *names* only,
+  never template content, so the hidden-prompt guarantee is untouched.
+- **SEO**: the page now exports `generateMetadata` — per-theme title
+  ("{Title} UI Prompt"), description, canonical `/prompts/[slug]`, and
+  OG/Twitter tags built from the same public (template-free) data.
 - Unknown slugs render Next's `notFound()` → 404.
 
 ## Variable customization

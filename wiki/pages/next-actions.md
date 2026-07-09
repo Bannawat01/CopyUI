@@ -3,7 +3,8 @@
 **Status: [MVP done + UX/QA polish done + prompt content/preview pass done +
 prompt output-quality refinement done + premium marketplace visual
 redesign done + 18-theme dataset expansion done + motion/interaction pass
-done + Tool Mode feature done]**
+done + Tool Mode feature done + marketplace controls (sort/counts) done +
+production-readiness pass done (2026-07-09)]**
 
 The MVP described in CLAUDE.md is implemented, polished, has
 production-ready prompt content, a premium dark template-marketplace
@@ -86,5 +87,11 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
     something else, or if hosting the built prompt as a
     registry-item-shaped public JSON endpoint is ever judged worth the
     added architecture (out of this task's scope).
+
+13. From the production-readiness pass (see
+    [production-readiness.md](production-readiness.md)): add an OG image
+    (`opengraph-image`) so link previews have a visual; set
+    `NEXT_PUBLIC_SITE_URL` in the deployment environment; consider a
+    branded favicon. Analytics/error monitoring remain unaddressed.
 
 This list should be revised as decisions are made — do not treat it as fixed.

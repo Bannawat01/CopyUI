@@ -13,6 +13,7 @@ Status legend: **[implemented]** / **[planned]** / **[stub]**
 
 ## Cross-cutting
 - [styling.md](pages/styling.md) — Tailwind, shadcn/ui, Framer Motion conventions. **[implemented]**
+- [production-readiness.md](pages/production-readiness.md) — SEO metadata, robots/sitemap, README, remaining gaps. **[implemented]**
 
 ## Research (from clipped sources in wiki/raw/clips)
 - [competitor-inspiration.md](pages/competitor-inspiration.md) — 21st.dev, Cult UI, Shadcnblocks, Origin UI, awesome-shadcn-ui. **[new]**
