@@ -42,3 +42,43 @@ When writing or modifying code for this project, you must adhere to the followin
 - Do not use raw `tree`, broad `cat`, or large unfiltered logs unless necessary.
 - If RTK output is insufficient for a precise bug fix, read only the exact relevant file or function in full.
 - After each task, check `rtk gain` to confirm actual savings.
+
+## Token Budget Rules
+
+Default to small scoped tasks.
+
+Before reading files, identify the minimum files needed. Do not scan the whole repo. Do not read `wiki/raw`, `.next`, `node_modules`, build output, generated files, or unrelated tests unless explicitly needed.
+
+Use RTK for noisy commands:
+- `rtk tree`
+- `rtk read <file>`
+- `rtk rg "<term>" .`
+- `rtk git diff`
+- `rtk npm test`
+- `rtk npm run lint`
+- `rtk npm run build`
+
+For small UI/code changes:
+- Do not update the wiki.
+- Do not read all wiki pages.
+- Do not run full build unless the task touches routing, metadata, API routes, or production behavior.
+- Prefer editing only 1–3 files.
+
+For medium changes:
+- Update only the most relevant wiki page or `wiki/log.md`.
+
+For large feature or architecture changes:
+- Read `wiki/index.md` and only relevant wiki pages.
+- Update relevant wiki pages concisely.
+- Record decisions, not full code or logs.
+
+Validation rules:
+- Pure function change: run `rtk npm test`.
+- Small component/UI change: run `rtk npm run lint`.
+- Route/API/metadata/security change: run `rtk npm test`, `rtk npm run lint`, and `rtk npm run build`.
+
+After each final response, include:
+- files changed
+- commands run
+- whether wiki was updated
+- next smallest useful task
