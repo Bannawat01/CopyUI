@@ -76,10 +76,14 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
    all 18 hidden templates — is now done (2026-07-09)**; each template
    states who uses the UI, what moment they're in, what decision it must
    support, and what success looks like. See
-   [prompt-system.md](prompt-system.md). **[uncertain]** Not yet tested
-   against a real tool — whether richer user context measurably improves
-   output is the open question, and it should be judged on real output,
-   not by reading the templates.
+   [prompt-system.md](prompt-system.md). **Confirmed non-breaking on v0
+   (2026-07-10)** — Startup Landing Hero / Build / Dark / Mobile App
+   Layout still renders the phone-like app screen, so the added prose
+   does not crowd out the final overrides. **[uncertain]** Still open,
+   and the more important question: whether the richer context actually
+   *improved* the headline/value-proposition copy, or merely failed to
+   hurt it. Compare the new output side by side with the pre-context run
+   before treating this pass as a win.
 5. Automated tests: a **Vitest smoke suite now exists** — `npm test`,
    **98/98 passing** across 6 files — covering prompt data, the
    hidden-template guarantee, `buildPrompt()`/`applyToolMode()`,

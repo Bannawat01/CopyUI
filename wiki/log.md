@@ -1095,3 +1095,23 @@
 - Validation: `rtk npm test` 98/98 across 6 files, `rtk npm run lint` clean.
   No build run — data-only change, no route or type behavior touched.
 - Wiki: prompt-system.md (template anatomy), this entry.
+
+## [2026-07-10] v0-validation-4 | Context-of-use guidance is non-breaking (docs only)
+- No app code changed. First real v0 run since the 18 templates gained their
+  `Context of use:` paragraph.
+- Tested: Startup Landing Hero / v0.dev / Build / Dark / Mobile App Layout —
+  the same combination as `v0-validation-2`, chosen so the two are comparable.
+- **Result: non-breaking.** The added context did not derail the prompt, and
+  the output still renders the phone-like Mobile App Layout. The longer
+  opening did not crowd out the final theme/layout overrides — the main risk
+  of adding text ahead of the base brief.
+- **[uncertain] Not yet judged**: whether the value proposition and headline
+  copy *improved*, stayed similar, or regressed versus the pre-context run.
+  Non-breaking is not the same as beneficial, and the whole justification for
+  the context-of-use pass rests on this question. Compare side by side against
+  the `v0-validation-2` output before treating the pass as a win.
+- **[uncertain] Not yet re-checked**: whether partner logos still render as
+  tappable buttons rather than quiet wordmarks. The wording fix was never
+  made, so the defect is presumed present until observed otherwise.
+- Wiki: prompt-system.md (validation section), next-actions.md (item 4),
+  this entry.

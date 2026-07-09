@@ -414,6 +414,42 @@ describe("mobile app layout compliance (from real v0 output)", () => {
     expect(mobileBuild).toContain("horizontal logo strip");
     expect(mobileBuild).toContain("desktop-style top nav dressed up as a tab bar");
   });
+
+  // Real v0 output rendered partner logos as tappable buttons.
+  it("requires partner logos to read as quiet wordmarks, not buttons", () => {
+    expect(mobileBuild).toContain("proof marks, not controls");
+    expect(mobileBuild).toContain("quiet wordmarks");
+    expect(mobileBuild).toContain("must NOT look like tappable buttons");
+    expect(mobileBuild).toContain("visually subordinate and non-interactive");
+    expect(mobileBuild).toContain("never use them as app navigation");
+  });
+
+  it("names the button chrome the logo strip must not have", () => {
+    for (const chrome of [
+      "no filled background",
+      "no pill",
+      "no border",
+      "no card",
+      "no shadow",
+      "no rounded button chrome",
+      "no hover or pressed styling",
+    ]) {
+      expect(mobileBuild).toContain(chrome);
+    }
+  });
+
+  it("leaves retheme untouched — no logo-strip mandate", () => {
+    const retheme = applyPromptOptions(BASE, {
+      promptIntent: "retheme",
+      layoutPreset: "mobile-app",
+      themeMode: "dark",
+    });
+    expect(retheme).not.toContain("Mobile App Layout — hard requirements");
+    expect(retheme).not.toContain("proof marks, not controls");
+    expect(retheme).not.toContain("quiet wordmarks");
+    expect(retheme).toContain("ADVISORY ONLY");
+    expect(retheme).toContain("do NOT restructure the existing page");
+  });
 });
 
 describe("headline highlight contrast", () => {

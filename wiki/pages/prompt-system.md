@@ -348,6 +348,21 @@ describes who is looking at it and what they're trying to decide — the
 missing basis for the tradeoffs the rest of the brief demands. The
 wording is deliberately theme-neutral (no light/dark or color language)
 so the light-mode sanitizer and the final overrides are unaffected.
+
+**2026-07-10 — first post-context-of-use v0 run: non-breaking.** Startup
+Landing Hero / v0.dev / Build / Dark / Mobile App Layout (deliberately the
+same combination as the earlier validation, so the two are comparable) still
+produces the phone-like Mobile App Layout. The extra opening text did not
+crowd out the final theme/layout overrides — the main risk of adding prose
+ahead of the base brief.
+
+Two things remain unjudged, and both matter more than "non-breaking":
+- **[uncertain]** Whether headline and value-proposition copy *improved*,
+  stayed similar, or regressed versus the pre-context output. The entire
+  justification for the context-of-use pass rests on this, and it has not
+  been compared side by side.
+- **[uncertain]** Whether partner logos still render as tappable buttons.
+  The wording fix was never made, so assume the defect persists.
 The AI Chat Interface template (v0.dev tool mode) was tested against
 actual v0.dev output for the first time on 2026-07-07 — prior passes had
 only been judged by reading the template text. Result: it worked
