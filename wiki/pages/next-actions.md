@@ -40,11 +40,11 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
    new tool modes (VS Code / Copilot, Claude Code, Windsurf) shipped
    from real user feedback. Light/dark are now explicitly fixed themes;
    only System follows prefers-color-scheme. Still open: font, border
-   radius, layout density. Next in this direction: **layout presets**
-   (2-3 named arrangements per theme as a prompt option) as the
-   deliberate middle step before ever considering a Figma-style
-   drag-and-drop editor — see [feature-ideas.md](feature-ideas.md)
-   items #6/#7 for why retheme was prioritized over layout editing.
+   radius, layout density. **Layout presets shipped (2026-07-09)** — 9
+   options, structural in Build mode and advisory-only in Retheme mode;
+   the deliberate middle step before any Figma-style drag-and-drop
+   editor, which **remains deferred**. See
+   [feature-ideas.md](feature-ideas.md) items #6/#7.
    **[uncertain]** The refined retheme+apply prompt and the three new
    tool framings have not yet been re-tested against real tools — the
    fix responds to observed Cursor behavior, but "apply" compliance is

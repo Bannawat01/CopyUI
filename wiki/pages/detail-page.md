@@ -107,6 +107,14 @@ referenced directly inside a Server Component file; see
   VS Code / Copilot, Claude Code, Windsurf, GenVibe; the radiogroup now
   wraps). Mobile keeps the single-panel flow — fewer separated cards
   means less scroll distance to the button.
+- **Layout Preset** (2026-07-09): a native `<select>` (9 options — too
+  many for a segmented control) inside the disclosure, now titled
+  "Advanced theme **& layout** options", so the compact panel and its
+  scroll budget are unchanged. Defaults to "Auto / Best fit". When
+  Prompt Intent is Retheme, a caption appears under the select
+  explaining the preset is advisory only and existing page structure is
+  preserved — the UI mirrors what the prompt actually says. See
+  [prompt-system.md](prompt-system.md).
 - **Prompt Quality Checklist** (production pass, 2026-07-09): a small
   static trust panel (`src/components/quality-checklist.tsx`) below the
   Copy button lists what every hidden template covers (Product context,

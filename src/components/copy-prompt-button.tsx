@@ -21,6 +21,7 @@ import {
 } from "@/lib/tool-modes";
 import type {
   ActionStyle,
+  LayoutPreset,
   PromptIntent,
   ThemeMode,
 } from "@/lib/prompt-options";
@@ -35,6 +36,7 @@ export function CopyPromptButton({
   themeMode,
   promptIntent,
   actionStyle,
+  layoutPreset,
   toolMode,
 }: {
   slug: string;
@@ -44,6 +46,7 @@ export function CopyPromptButton({
   themeMode?: ThemeMode;
   promptIntent?: PromptIntent;
   actionStyle?: ActionStyle;
+  layoutPreset?: LayoutPreset;
   toolMode: ToolMode;
 }) {
   const [state, setState] = useState<CopyState>("idle");
@@ -68,6 +71,7 @@ export function CopyPromptButton({
           themeMode,
           promptIntent,
           actionStyle,
+          layoutPreset,
           toolMode,
         }),
       });

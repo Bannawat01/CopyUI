@@ -99,6 +99,7 @@ describe("POST /api/prompts/[slug]/build", () => {
     // The built `text` is the product; no raw template field may ride along.
     expect(Object.keys(json).sort()).toEqual([
       "actionStyle",
+      "layoutPreset",
       "promptIntent",
       "text",
       "themeMode",
@@ -204,6 +205,41 @@ describe("POST /api/prompts/[slug]/build", () => {
       expect(r.text).toContain("Product context:");
     }
     expect(new Set(results.map((r) => r.text)).size).toBe(modes.length);
+  });
+
+  it("accepts a layoutPreset and adds the matching directive", async () => {
+    const { json } = await postJson(SLUG, {
+      layoutPreset: "docs-layout",
+      promptIntent: "build",
+    });
+    expect(json.layoutPreset).toBe("docs-layout");
+    expect(json.text).toContain("Layout preset: build the interface as");
+    expect(json.text).toContain("three-column documentation layout");
+    expect(json.text).toContain("Product context:");
+  });
+
+  it("defaults to auto for a missing or invalid layoutPreset", async () => {
+    const { json: omitted } = await postJson(SLUG, {});
+    const { json: bogus } = await postJson(SLUG, {
+      layoutPreset: "figma-canvas",
+    });
+    for (const r of [omitted, bogus]) {
+      expect(r.layoutPreset).toBe("auto");
+      expect(r.text).not.toContain("Layout preset:");
+      expect(r.text).not.toContain("ADVISORY ONLY");
+    }
+  });
+
+  it("retheme keeps the layout preset advisory via the API", async () => {
+    const { json } = await postJson(SLUG, {
+      promptIntent: "retheme",
+      layoutPreset: "split-hero",
+    });
+    expect(json.layoutPreset).toBe("split-hero");
+    expect(json.text).toContain("Layout preference (ADVISORY ONLY)");
+    expect(json.text).toContain("do NOT restructure the existing page");
+    expect(json.text).not.toContain("required structural arrangement");
+    expect(json.text).toContain("RETHEME ONLY");
   });
 
   it("light theme mode via API is fixed, not adaptive", async () => {

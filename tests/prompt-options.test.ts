@@ -3,8 +3,10 @@ import {
   ACTION_STYLES,
   applyPromptOptions,
   isActionStyle,
+  isLayoutPreset,
   isPromptIntent,
   isThemeMode,
+  LAYOUT_PRESETS,
   PROMPT_INTENTS,
   THEME_MODES,
 } from "@/lib/prompt-options";
@@ -169,6 +171,70 @@ describe("action style", () => {
     const labels = ACTION_STYLES.map((s) => s.label);
     expect(labels).toContain("Apply changes directly");
     expect(labels).toContain("Instructions only");
+  });
+});
+
+describe("layout presets", () => {
+  it("validator accepts all nine presets and rejects unknown values", () => {
+    expect(LAYOUT_PRESETS).toHaveLength(9);
+    for (const p of LAYOUT_PRESETS) expect(isLayoutPreset(p.value)).toBe(true);
+    expect(isLayoutPreset("figma-canvas")).toBe(false);
+    expect(isLayoutPreset(undefined)).toBe(false);
+  });
+
+  it("auto adds no layout directive", () => {
+    expect(applyPromptOptions(BASE, { layoutPreset: "auto" })).toBe(BASE);
+  });
+
+  it("each non-auto preset adds a distinct directive in build mode", () => {
+    const presets = LAYOUT_PRESETS.filter((p) => p.value !== "auto");
+    const outputs = presets.map((p) =>
+      applyPromptOptions(BASE, {
+        layoutPreset: p.value,
+        promptIntent: "build",
+      }),
+    );
+    expect(new Set(outputs).size).toBe(presets.length);
+    for (const out of outputs) {
+      expect(out).toContain("Layout preset: build the interface as");
+      expect(out).toContain("required structural arrangement");
+      expect(out).toContain(BASE);
+    }
+  });
+
+  it("build mode guides structure strongly", () => {
+    const out = applyPromptOptions(BASE, {
+      layoutPreset: "sidebar-dashboard",
+      promptIntent: "build",
+    });
+    expect(out).toContain("persistent left sidebar");
+    expect(out).toContain("required structural arrangement");
+    expect(out).not.toContain("ADVISORY ONLY");
+  });
+
+  it("retheme mode keeps the preset advisory and preserves structure", () => {
+    const out = applyPromptOptions(BASE, {
+      layoutPreset: "bento-grid",
+      promptIntent: "retheme",
+    });
+    expect(out).toContain("Layout preference (ADVISORY ONLY)");
+    expect(out).toContain("bento-box grid");
+    expect(out).toContain("do NOT restructure the existing page");
+    expect(out).toContain("preservation rules above take precedence");
+    expect(out).toContain(
+      "Only change the actual layout if the user explicitly asks",
+    );
+    // Must not read as a structural mandate.
+    expect(out).not.toContain("required structural arrangement");
+    // The retheme rules themselves still lead.
+    expect(out).toContain("RETHEME ONLY");
+    expect(out.indexOf("RETHEME ONLY")).toBeLessThan(
+      out.indexOf("ADVISORY ONLY"),
+    );
+  });
+
+  it("omitted layoutPreset adds nothing (backward compatible)", () => {
+    expect(applyPromptOptions(BASE, { promptIntent: "build" })).toBe(BASE);
   });
 });
 

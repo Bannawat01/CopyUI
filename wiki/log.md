@@ -838,3 +838,41 @@
   (feature-ideas #7) remain the recorded middle step.
 - Remaining: re-test retheme+apply against real Cursor/Claude
   Code/Windsurf; sticky-panel behavior not checked in a real browser.
+
+## [2026-07-09] layout-presets | Layout Presets (middle step, not a canvas editor)
+- Users asked for Figma-style drag-to-arrange; too large for the MVP.
+  Shipped **Layout Presets** instead — the middle step recorded in
+  feature-ideas #7. Drag-and-drop / canvas editing **remains deferred**
+  (new product surface; presets reuse existing prompt composition).
+- `prompt-options.ts`: `LayoutPreset` = `auto` (default, adds nothing) +
+  centered-hero, split-hero, bento-grid, sidebar-dashboard, pricing-grid,
+  card-grid, docs-layout, mobile-app. One structural description per
+  preset, wrapped by an intent-dependent directive.
+- **Build vs Retheme** (the load-bearing distinction): Build → "required
+  structural arrangement", overriding the brief's layout. Retheme →
+  "Layout preference (ADVISORY ONLY) … do NOT restructure the existing
+  page … preservation rules above take precedence … only change layout
+  if the user explicitly asks". Composed after the theme directive so it
+  sits below the retheme rules it defers to. Without this split a preset
+  would have re-created the exact "AI replaced my page" failure retheme
+  mode exists to prevent.
+- API: validates `layoutPreset` via `isLayoutPreset()`, invalid/missing
+  → `"auto"`; response adds `layoutPreset`.
+- UI: `layout-preset-selector.tsx` (new) — a native `<select>` (9 options
+  is too many for a segmented control), placed inside the disclosure,
+  now "Advanced theme **& layout** options", so panel height/scroll are
+  unchanged. In Retheme mode a caption states the preset is advisory.
+- Tests: validator/9 presets, auto adds nothing, 8 distinct build
+  directives, build strong vs retheme advisory (incl. ordering: RETHEME
+  rules precede the advisory note), omitted = no-op; API accepts preset,
+  defaults bad values to auto, retheme stays advisory. Suite **5 files /
+  64 tests**, all passing.
+- Security: no "Product context:", "Layout preset:", or "ADVISORY ONLY"
+  in gallery/detail HTML; live API confirmed build vs retheme wording.
+- `rtk npm test` 64/64; `rtk npm run lint` clean; `rtk npm run build`
+  clean (27 routes).
+- Wiki: prompt-system.md, copy-mechanism.md, detail-page.md,
+  feature-ideas.md (#7 shipped), next-actions.md (item 4), this entry.
+- Remaining: presets are one global list, not per-theme (e.g. "Pricing
+  Grid" on the docs theme is user-allowed but odd); no real-tool test of
+  preset compliance; select not checked in a real browser.

@@ -9,12 +9,14 @@ import { ToolModeSelector } from "@/components/tool-mode-selector";
 import { ThemeModeSelector } from "@/components/theme-mode-selector";
 import { PromptIntentSelector } from "@/components/prompt-intent-selector";
 import { ActionStyleSelector } from "@/components/action-style-selector";
+import { LayoutPresetSelector } from "@/components/layout-preset-selector";
 import { CopyPromptButton } from "@/components/copy-prompt-button";
 import { QualityChecklist } from "@/components/quality-checklist";
 import type { PromptTheme } from "@/lib/prompts";
 import type { ToolMode } from "@/lib/tool-modes";
 import type {
   ActionStyle,
+  LayoutPreset,
   PromptIntent,
   ThemeMode,
 } from "@/lib/prompt-options";
@@ -31,6 +33,7 @@ export function PromptDetail({ prompt }: { prompt: PromptDetailData }) {
   const [themeMode, setThemeMode] = useState<ThemeMode>("dark");
   const [promptIntent, setPromptIntent] = useState<PromptIntent>("build");
   const [actionStyle, setActionStyle] = useState<ActionStyle>("apply");
+  const [layoutPreset, setLayoutPreset] = useState<LayoutPreset>("auto");
   const [toolMode, setToolMode] = useState<ToolMode>("v0");
 
   return (
@@ -77,7 +80,7 @@ export function PromptDetail({ prompt }: { prompt: PromptDetailData }) {
 
         <details className="group rounded-lg border border-white/10 bg-white/[0.03]">
           <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-white/70 outline-none transition-colors hover:text-white focus-visible:ring-3 focus-visible:ring-ring/50 [&::-webkit-details-marker]:hidden">
-            Advanced theme options
+            Advanced theme &amp; layout options
             <ChevronDown
               className="h-4 w-4 text-white/40 transition-transform group-open:rotate-180"
               aria-hidden="true"
@@ -99,6 +102,11 @@ export function PromptDetail({ prompt }: { prompt: PromptDetailData }) {
               onClear={() => setAccentColor(undefined)}
             />
             <ThemeModeSelector value={themeMode} onChange={setThemeMode} />
+            <LayoutPresetSelector
+              value={layoutPreset}
+              onChange={setLayoutPreset}
+              advisory={promptIntent === "retheme"}
+            />
           </div>
         </details>
 
@@ -114,6 +122,7 @@ export function PromptDetail({ prompt }: { prompt: PromptDetailData }) {
           themeMode={themeMode}
           promptIntent={promptIntent}
           actionStyle={actionStyle}
+          layoutPreset={layoutPreset}
           toolMode={toolMode}
         />
         <QualityChecklist />

@@ -10,23 +10,26 @@
    flips to a `loading` state (spinner icon, button `disabled` +
    `aria-busy="true"` to prevent double submits) and POSTs
    `{ primaryColor, secondaryColor, accentColor, themeMode, promptIntent,
-   actionStyle, toolMode }` to `POST /api/prompts/[slug]/build`.
-   (Retheme/theme/palette pass + action-style refinement, 2026-07-09 —
-   the route validates each field independently and ignores anything
-   invalid, so older/partial clients still work.)
+   actionStyle, layoutPreset, toolMode }` to
+   `POST /api/prompts/[slug]/build`. (Retheme/theme/palette pass +
+   action-style refinement + layout presets, 2026-07-09 — the route
+   validates each field independently and ignores anything invalid, so
+   older/partial clients still work.)
 3. The route handler (`src/app/api/prompts/[slug]/build/route.ts`) looks up
    the prompt server-side, validates `primaryColor` against a hex-color
    regex (falls back to the theme's default if invalid/missing),
    `secondaryColor`/`accentColor` against the same regex (dropped if
    invalid), `toolMode` via `isToolMode()`, `themeMode` via
    `isThemeMode()`, `promptIntent` via `isPromptIntent()` (defaults
-   to `"build"`), and `actionStyle` via `isActionStyle()` (dropped if
-   invalid). It calls `buildPrompt()` to substitute
+   to `"build"`), `actionStyle` via `isActionStyle()` (dropped if
+   invalid), and `layoutPreset` via `isLayoutPreset()` (defaults to
+   `"auto"`). It calls `buildPrompt()` to substitute
    `{{primaryColor}}`, then `applyPromptOptions()` (retheme rules →
-   action style → palette → theme directive — see
+   action style → palette → theme directive → layout directive — see
    [prompt-system.md](prompt-system.md)),
    then `applyToolMode()` to prepend the tool framing, and returns
-   `{ text, toolMode, themeMode, promptIntent, actionStyle }` as JSON.
+   `{ text, toolMode, themeMode, promptIntent, actionStyle,
+   layoutPreset }` as JSON.
 4. The client calls `navigator.clipboard.writeText(text)`.
 5. Button label animates to Copied!/Copy failed (Framer Motion
    `AnimatePresence`), and a color-coded status line below the button

@@ -117,14 +117,26 @@ Figma-style drag-to-arrange remains deferred (see #7 below) — the fixes
 above again reused the existing prompt-composition architecture, while
 a layout editor would still be a new product surface.
 
-## 7. Layout presets (future, before any Figma-style editor)
-A middle step worth evaluating before ever considering a drag-and-drop
-editor: offer 2-3 named layout *presets* per theme (e.g. "sidebar left /
-sidebar right / top-nav" for the dashboard) as another prompt option —
-same select-a-value → server-composed-directive pattern as theme mode,
-no visual editor needed. **Effort**: moderate (needs per-theme preset
-copy). Unblocks most of the "arrange it differently" demand without a
-new architecture.
+## 7. Layout presets — SHIPPED (2026-07-09)
+Built as the deliberate middle step before any Figma-style editor:
+a **Layout Preset** option — Auto/Best fit (default) plus Centered Hero,
+Split Hero, Bento Grid, Sidebar Dashboard, Pricing Grid, Card Grid, Docs
+Layout, Mobile App Layout — using the same select-a-value →
+server-composed-directive pattern as theme mode. Shipped as one global
+preset list rather than per-theme presets (simpler, and the descriptions
+generalize); no visual editor, no new architecture.
+
+**Build vs Retheme is the important distinction**: in Build new UI the
+preset is the *required structural arrangement*; in Retheme it is
+**advisory only** — it explicitly must not restructure the existing page,
+defers to the preservation rules, and only hints at how styling should
+lean. Otherwise a preset would have re-introduced exactly the "AI
+replaced my page" failure retheme mode exists to prevent.
+
+**Drag-and-drop / Figma-style canvas editing remains deferred** — it's a
+new product surface (visual editor, its own state model, likely
+persistence), whereas layout presets reuse the existing prompt
+composition end to end. Revisit only if presets prove insufficient.
 
 ## Explicitly not recommended
 - Paid/premium tiers (Shadcnblocks pattern) — blocked by CLAUDE.md's

@@ -79,6 +79,75 @@ const THEME_DIRECTIVES: Record<ThemeMode, string> = {
   mono: `Theme mode: monochrome (fixed). Render the design in a strict black/white/gray palette: use shades of a single neutral scale for all surfaces, text, and borders. Where the brief assigns an accent color to an element, use the strongest neutral contrast (pure white or near-black) plus weight/size instead of hue to create emphasis. Color may only be used for functional states (errors, success) if omitting it would harm usability. Do not follow the browser or OS theme.`,
 };
 
+/**
+ * Layout Presets — the deliberate middle step before any Figma-style
+ * drag-and-drop editor: a named structural arrangement, composed
+ * server-side like every other prompt option. "auto" adds nothing.
+ */
+export type LayoutPreset =
+  | "auto"
+  | "centered-hero"
+  | "split-hero"
+  | "bento-grid"
+  | "sidebar-dashboard"
+  | "pricing-grid"
+  | "card-grid"
+  | "docs-layout"
+  | "mobile-app";
+
+export const LAYOUT_PRESETS: { value: LayoutPreset; label: string }[] = [
+  { value: "auto", label: "Auto / Best fit" },
+  { value: "centered-hero", label: "Centered Hero" },
+  { value: "split-hero", label: "Split Hero" },
+  { value: "bento-grid", label: "Bento Grid" },
+  { value: "sidebar-dashboard", label: "Sidebar Dashboard" },
+  { value: "pricing-grid", label: "Pricing Grid" },
+  { value: "card-grid", label: "Card Grid" },
+  { value: "docs-layout", label: "Docs Layout" },
+  { value: "mobile-app", label: "Mobile App Layout" },
+];
+
+export function isLayoutPreset(value: unknown): value is LayoutPreset {
+  return LAYOUT_PRESETS.some((p) => p.value === value);
+}
+
+/** Structural description per preset, shared by build and retheme modes. */
+const LAYOUT_DESCRIPTIONS: Record<
+  Exclude<LayoutPreset, "auto">,
+  string
+> = {
+  "centered-hero":
+    "a centered single-column hero — content stacked and horizontally centered within a constrained max-width (around 720px), with generous vertical rhythm and the primary action directly beneath the headline",
+  "split-hero":
+    "a split two-column hero — copy and the primary call to action on one side, a visual (product shot, mockup, or illustration) on the other, balanced on a shared vertical center, collapsing to a single stacked column on mobile with the visual first",
+  "bento-grid":
+    "a bento-box grid — tiles of deliberately varied sizes (some spanning two columns or two rows) packed into a dense, asymmetric but aligned grid, each tile a self-contained unit with its own heading and content",
+  "sidebar-dashboard":
+    "an application shell — a persistent left sidebar for navigation plus a top bar, with the main content on a multi-column grid; the sidebar collapses to an icon rail on medium screens and a drawer on mobile",
+  "pricing-grid":
+    "a tier comparison grid — equal-width plan cards aligned to a shared baseline in a single row, with the recommended tier visually elevated, and a billing-period toggle above them",
+  "card-grid":
+    "a uniform responsive card grid — equally sized cards flowing across 3 columns on desktop, 2 on tablet, and 1 on mobile, with consistent gutters and no masonry offsets",
+  "docs-layout":
+    "a three-column documentation layout — a navigation tree on the left, article content in a readable centered column (around 720px), and an 'on this page' table of contents on the right that collapses on smaller screens",
+  "mobile-app":
+    "a mobile-first app layout — a narrow centered column sized for a phone viewport, a fixed bottom navigation bar or tab bar, large touch targets (44px minimum), and thumb-reachable primary actions",
+};
+
+function layoutDirective(
+  preset: LayoutPreset,
+  promptIntent: PromptIntent | undefined,
+): string | null {
+  if (preset === "auto") return null;
+  const description = LAYOUT_DESCRIPTIONS[preset];
+
+  if (promptIntent === "retheme") {
+    return `Layout preference (ADVISORY ONLY): the user's preferred arrangement is ${description}. Because this is a retheme, do NOT restructure the existing page to match it — the preservation rules above take precedence. Treat this only as a hint for how visual styling (spacing rhythm, alignment, density, emphasis) should lean within the structure that already exists. Only change the actual layout if the user explicitly asks for layout changes.`;
+  }
+
+  return `Layout preset: build the interface as ${description}. This is the required structural arrangement — where the brief below describes a different layout, follow this preset for structure and use the brief for everything else (components, states, hierarchy, styling, accessibility).`;
+}
+
 export type ActionStyle = "instruct" | "apply";
 
 export const ACTION_STYLES: {
@@ -130,6 +199,7 @@ export type PromptOptions = {
   themeMode?: ThemeMode;
   promptIntent?: PromptIntent;
   actionStyle?: ActionStyle;
+  layoutPreset?: LayoutPreset;
 };
 
 function paletteDirective(
@@ -181,6 +251,11 @@ export function applyPromptOptions(
 
   if (options.themeMode) {
     sections.push(THEME_DIRECTIVES[options.themeMode]);
+  }
+
+  if (options.layoutPreset) {
+    const layout = layoutDirective(options.layoutPreset, options.promptIntent);
+    if (layout) sections.push(layout);
   }
 
   sections.push(basePrompt);

@@ -4,6 +4,7 @@ import { applyToolMode, isToolMode } from "@/lib/tool-modes";
 import {
   applyPromptOptions,
   isActionStyle,
+  isLayoutPreset,
   isPromptIntent,
   isThemeMode,
 } from "@/lib/prompt-options";
@@ -40,6 +41,9 @@ export async function POST(
   const actionStyle = isActionStyle(body.actionStyle)
     ? body.actionStyle
     : undefined;
+  const layoutPreset = isLayoutPreset(body.layoutPreset)
+    ? body.layoutPreset
+    : "auto";
 
   const base = buildPrompt(prompt.promptTemplate, { primaryColor });
   const withOptions = applyPromptOptions(base, {
@@ -48,6 +52,7 @@ export async function POST(
     themeMode,
     promptIntent,
     actionStyle,
+    layoutPreset,
   });
   const text = applyToolMode(withOptions, toolMode);
 
@@ -57,5 +62,6 @@ export async function POST(
     themeMode: themeMode ?? null,
     promptIntent,
     actionStyle: actionStyle ?? null,
+    layoutPreset,
   });
 }

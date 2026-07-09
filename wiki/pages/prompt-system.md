@@ -123,6 +123,28 @@ Validation on the deployed saas-dashboard page surfaced two prompt bugs:
   the goal). Cursor's framing also now tells it to follow the stated
   execution mode.
 
+### Layout Presets (2026-07-09)
+**`LayoutPreset`** in `prompt-options.ts`: `auto` (default, adds
+nothing) plus 8 named arrangements — centered-hero, split-hero,
+bento-grid, sidebar-dashboard, pricing-grid, card-grid, docs-layout,
+mobile-app. Each has one structural description reused by both intents;
+the *directive around it* differs:
+- **Build new UI** → "Layout preset: build the interface as {description}.
+  This is the **required structural arrangement** — where the brief
+  describes a different layout, follow this preset for structure and use
+  the brief for everything else."
+- **Retheme existing UI** → "Layout preference (**ADVISORY ONLY**) … do
+  NOT restructure the existing page to match it — the preservation rules
+  above take precedence. Treat this only as a hint for how visual
+  styling should lean within the structure that already exists. Only
+  change the actual layout if the user explicitly asks."
+
+Composed after the theme directive (so it sits below the retheme rules
+it defers to). Invalid/missing values fall back to `auto`. This is the
+deliberate **middle step before any Figma-style drag-and-drop editor**
+— a select-a-value → server-composed-directive option, reusing the
+existing architecture, no visual editor. Drag-to-arrange stays deferred.
+
 ### Tool modes expanded (same pass)
 Users asked for more coding tools. Added `vscode` (VS Code / GitHub
 Copilot), `claude-code`, and `windsurf` framings + captions in
