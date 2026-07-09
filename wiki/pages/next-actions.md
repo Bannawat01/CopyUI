@@ -49,10 +49,6 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
    de-emphasized). The deliberate middle step before any Figma-style
    drag-and-drop editor, which **remains deferred**. See
    [feature-ideas.md](feature-ideas.md) items #6/#7.
-   **[uncertain]** The refined retheme+apply prompt and the three new
-   tool framings have not yet been re-tested against real tools — the
-   fix responds to observed Cursor behavior, but "apply" compliance is
-   unverified until someone runs it again.
    **Conflict-safe composition (2026-07-09)**: real v0 output showed
    Light theme and Mobile App Layout both being overridden by the base
    template's own dark/hero wording, because options were only
@@ -63,10 +59,19 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
    app screen with a readable CTA and accent highlight — the
    desktop-hero regression is fixed. First confirmation that appending
    final overrides *after* the base brief beats the template's own
-   conflicting wording in a real tool. Remaining: partner logos render
-   as tappable buttons rather than quiet wordmarks (small wording fix).
-   Still untested on v0: Light mode, other presets, and the three
-   newer tool framings (VS Code / Claude Code / Windsurf).
+   conflicting wording in a real tool.
+   **First prompt-option validation pass CLOSED (2026-07-09)** — all
+   three priority cases passed against real tools: Startup Landing Hero
+   / Light / Mobile App Layout; Analytics Dashboard / Dark / Sidebar
+   Dashboard; and Retheme / Light / Apply Directly in a Cursor or
+   Claude Code style workflow. Theme Mode works across the tested cases
+   (Light is now a real fixed theme), Mobile App Layout reliably
+   produces a phone-like app screen, Sidebar Dashboard works for
+   dashboard prompts, and Retheme preserves existing structure while
+   applying the intended visual changes. Remaining: partner logos
+   render as tappable buttons rather than quiet wordmarks (small
+   wording fix). Still untested: the other 6 layout presets and the
+   VS Code / Windsurf tool framings.
 5. Automated tests: a **Vitest smoke suite now exists** — `npm test`,
    **72/72 passing** across 6 files — covering prompt data, the
    hidden-template guarantee, `buildPrompt()`/`applyToolMode()`,

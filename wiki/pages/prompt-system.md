@@ -309,6 +309,31 @@ tappable buttons rather than quiet wordmarks.
 This is the first validation confirming that **final overrides appended
 after the base brief** actually beat the template's own conflicting
 language in a real tool, not just in tests.
+
+**2026-07-09 — all three priority cases PASSED. This closes the first
+major prompt-option validation pass.**
+
+| Case | Result |
+| --- | --- |
+| Startup Landing Hero / Light / Mobile App Layout | PASSED |
+| Analytics Dashboard / Dark / Sidebar Dashboard | PASSED |
+| Retheme existing UI / Light / Apply Directly (Cursor / Claude Code style workflow) | PASSED |
+
+What this establishes:
+- **Theme Mode now works across the tested cases** — Light is honored as
+  a fixed theme, closing the original failure where it behaved like
+  System. The light-mode dark-phrase sanitizer and the final theme
+  override are confirmed in real output, not only in tests.
+- **Mobile App Layout produces a phone-like app screen** rather than a
+  desktop hero — now confirmed under Light as well as Dark.
+- **Sidebar Dashboard** yields the correct structure for dashboard-style
+  prompts, so layout presets generalize beyond `mobile-app`.
+- **Retheme Mode preserves existing structure** while applying the
+  intended visual changes.
+
+The conflict-safe composition order (retheme rules → action style →
+palette → theme → layout → sanitized base brief → final overrides) is
+now validated end-to-end rather than assumed.
 The AI Chat Interface template (v0.dev tool mode) was tested against
 actual v0.dev output for the first time on 2026-07-07 — prior passes had
 only been judged by reading the template text. Result: it worked

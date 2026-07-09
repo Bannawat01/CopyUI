@@ -1050,3 +1050,27 @@
   its "not yet re-tested on v0" caveat was stale), this entry.
 - Still untested on v0: Light mode end-to-end, the other 7 layout
   presets, and the VS Code / Claude Code / Windsurf tool framings.
+## [2026-07-09] v0-validation-3 | First prompt-option validation pass CLOSED (docs only)
+- No app code changed. Recording the latest real validation run.
+- **All 3 priority cases PASSED:**
+  1. Startup Landing Hero + Light + Mobile App Layout
+  2. Analytics Dashboard + Dark + Sidebar Dashboard
+  3. Retheme existing UI + Light + Apply Directly (Cursor / Claude Code
+     style workflow)
+- **Theme Mode now works across the tested cases.** Light is honored as a
+  fixed theme — the original failure (Light behaving like System) is
+  closed. The light-mode dark-phrase sanitizer plus the final theme
+  override are now confirmed in real output, not only in tests.
+- **Mobile App Layout produces a phone-like app screen** instead of a
+  desktop hero, now confirmed under Light as well as Dark.
+- **Sidebar Dashboard works** for dashboard-style prompts — layout
+  presets generalize beyond `mobile-app`.
+- **Retheme Mode preserves existing structure better** and applies the
+  visual changes as intended; Action Style `apply` produced edits rather
+  than advice.
+- **This closes the first major prompt-option validation pass.** The
+  conflict-safe composition order is validated end-to-end.
+- Wiki: prompt-system.md (validation section), next-actions.md (item 4),
+  this entry.
+- Remaining: partner-logo wording fix; the other 6 layout presets and the
+  VS Code / Windsurf tool framings are still untested.
