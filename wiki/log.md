@@ -1074,3 +1074,24 @@
   this entry.
 - Remaining: partner-logo wording fix; the other 6 layout presets and the
   VS Code / Windsurf tool framings are still untested.
+
+## [2026-07-09] context-of-use | Every template now states who/when/decision/success
+- Follows the closed validation pass (see v0-validation-3 above), which named
+  this as the next task.
+- `src/lib/prompts.ts`: added one `Context of use:` paragraph to each of the
+  18 hidden `promptTemplate`s, directly after `Product context:`. Each names
+  four things: **who** uses the UI, **what moment/task** they're in, **what
+  decision or action** the UI must support, and **what success looks like**
+  as an observable outcome.
+- Why: `Product context:` said what the screen *is*. It never said who is
+  looking at it or what they're trying to decide, so the AI had no basis for
+  the tradeoffs the rest of the brief asks it to make.
+- Deliberately theme-neutral wording — no light/dark or color language — so
+  the light-mode sanitizer and the final theme/layout overrides keep working
+  untouched. No option behavior changed.
+- Hidden-template guarantee holds: the new text lives inside `promptTemplate`,
+  which `getPublicPrompts()` still strips; the "no raw template content leaks"
+  test greps serialized public data for `Product context:` and passes.
+- Validation: `rtk npm test` 98/98 across 6 files, `rtk npm run lint` clean.
+  No build run — data-only change, no route or type behavior touched.
+- Wiki: prompt-system.md (template anatomy), this entry.

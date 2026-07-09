@@ -72,8 +72,16 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
    render as tappable buttons rather than quiet wordmarks (small
    wording fix). Still untested: the other 6 layout presets and the
    VS Code / Windsurf tool framings.
+   The follow-up this pass recommended — **context-of-use guidance in
+   all 18 hidden templates — is now done (2026-07-09)**; each template
+   states who uses the UI, what moment they're in, what decision it must
+   support, and what success looks like. See
+   [prompt-system.md](prompt-system.md). **[uncertain]** Not yet tested
+   against a real tool — whether richer user context measurably improves
+   output is the open question, and it should be judged on real output,
+   not by reading the templates.
 5. Automated tests: a **Vitest smoke suite now exists** — `npm test`,
-   **72/72 passing** across 6 files — covering prompt data, the
+   **98/98 passing** across 6 files — covering prompt data, the
    hidden-template guarantee, `buildPrompt()`/`applyToolMode()`,
    prompt options (intent/theme/action style/layout presets), layout
    recommendations, sitemap/robots, a homepage render, and the

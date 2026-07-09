@@ -334,6 +334,20 @@ What this establishes:
 The conflict-safe composition order (retheme rules → action style →
 palette → theme → layout → sanitized base brief → final overrides) is
 now validated end-to-end rather than assumed.
+
+## Context of use (2026-07-09)
+Every one of the 18 hidden templates opens with `Product context:` and
+then a `Context of use:` paragraph naming four things: **who** uses the
+UI, **what moment or task** they're in, **what decision or action** the
+UI must support, and **what success looks like** as an observable
+outcome (e.g. "an unusual KPI trend is noticed within roughly 10 seconds
+of the page painting").
+
+`Product context:` describes what the screen *is*. `Context of use:`
+describes who is looking at it and what they're trying to decide — the
+missing basis for the tradeoffs the rest of the brief demands. The
+wording is deliberately theme-neutral (no light/dark or color language)
+so the light-mode sanitizer and the final overrides are unaffected.
 The AI Chat Interface template (v0.dev tool mode) was tested against
 actual v0.dev output for the first time on 2026-07-07 — prior passes had
 only been judged by reading the template text. Result: it worked
