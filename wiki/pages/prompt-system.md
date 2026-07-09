@@ -145,6 +145,19 @@ deliberate **middle step before any Figma-style drag-and-drop editor**
 — a select-a-value → server-composed-directive option, reusing the
 existing architecture, no visual editor. Drag-to-arrange stays deferred.
 
+#### Per-theme recommendations
+`src/lib/layout-recommendations.ts` maps each theme's `preview.kind`
+(one per theme, so no new `PromptTheme` field and nothing extra shipped
+to the client) to its suitable presets — e.g. dashboard →
+sidebar-dashboard/bento-grid/card-grid, pricing → pricing-grid/card-grid,
+docs → docs-layout, linkbio → mobile-app/centered-hero.
+`getGroupedLayoutPresets(kind)` returns `{ auto, recommended, other }`
+for the selector. **Recommendations are a hint, not a restriction**:
+every preset stays selectable (tests assert recommended + other + auto
+equals the full list), so advanced users keep the odd pairings the
+mapping merely de-emphasizes. Purely presentational — the built prompt
+text is unchanged by this mapping.
+
 ### Tool modes expanded (same pass)
 Users asked for more coding tools. Added `vscode` (VS Code / GitHub
 Copilot), `claude-code`, and `windsurf` framings + captions in

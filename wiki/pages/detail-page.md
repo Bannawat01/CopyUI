@@ -115,6 +115,15 @@ referenced directly inside a Server Component file; see
   explaining the preset is advisory only and existing page structure is
   preserved — the UI mirrors what the prompt actually says. See
   [prompt-system.md](prompt-system.md).
+- **Per-theme recommendations** (same day): the select now groups options
+  with native `<optgroup>`s — "Auto / Best fit" first, then
+  "Recommended for this theme" (from
+  `getGroupedLayoutPresets(prompt.preview.kind)`), then "Other layouts".
+  `optgroup` was chosen over badges/reordering because it marks and
+  ranks recommendations with **zero added height**, keeping the panel
+  compact. Nothing is blocked — every preset stays selectable, so the
+  Docs theme still *allows* Pricing Grid, it just no longer leads with
+  it. Presentational only; the built prompt is unaffected.
 - **Prompt Quality Checklist** (production pass, 2026-07-09): a small
   static trust panel (`src/components/quality-checklist.tsx`) below the
   Copy button lists what every hidden template covers (Product context,

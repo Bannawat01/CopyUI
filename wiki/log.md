@@ -876,3 +876,36 @@
 - Remaining: presets are one global list, not per-theme (e.g. "Pricing
   Grid" on the docs theme is user-allowed but odd); no real-tool test of
   preset compliance; select not checked in a real browser.
+
+## [2026-07-09] preset-recommendations | Per-theme recommended layout presets
+- Closes the "Pricing Grid on the docs theme" oddity flagged in the
+  previous entry — without blocking anything.
+- `src/lib/layout-recommendations.ts` (new): maps each theme's
+  `preview.kind` (one per theme → no new `PromptTheme` field, nothing
+  extra shipped to the client) to its suitable presets.
+  `getRecommendedLayoutPresets()`, `isRecommendedLayoutPreset()`, and
+  `getGroupedLayoutPresets()` → `{ auto, recommended, other }`.
+- `layout-preset-selector.tsx`: options now grouped with native
+  `<optgroup>` — "Auto / Best fit" first, then "Recommended for this
+  theme", then "Other layouts". Chose optgroup over badges/reordering
+  because it marks *and* ranks recommendations at **zero added height**,
+  honoring the compact-panel constraint. `prompt-detail.tsx` passes
+  `prompt.preview.kind`.
+- **Nothing is blocked**: every preset stays selectable; a test asserts
+  auto + recommended + other equals the full preset list for all 18
+  themes. Purely presentational — the built prompt text is unchanged, so
+  no API or prompt-composition change.
+- Tests: new `tests/layout-recommendations.test.ts` (8) — all 18 kinds
+  covered, recommendations are real non-auto presets with no duplicates,
+  sensible picks per representative theme (and docs does *not* recommend
+  pricing-grid), curated order preserved, auto never inside a group,
+  completeness. Suite **6 files / 72 tests**, all passing.
+- Verified via `next start` + `curl`: dashboard theme leads with Sidebar
+  Dashboard and demotes Docs Layout to "Other"; docs theme leads with
+  Docs Layout; no "Product context:" leak.
+- `rtk npm test` 72/72; `rtk npm run lint` clean; `rtk npm run build`
+  clean (27 routes).
+- Wiki: prompt-system.md, detail-page.md, next-actions.md, this entry.
+- Remaining: recommendations are hand-curated judgment calls, unvalidated
+  against real user preference; optgroup styling not checked in a real
+  browser (native selects style inconsistently across OSes).

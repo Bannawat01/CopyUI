@@ -105,6 +105,7 @@ export function PromptDetail({ prompt }: { prompt: PromptDetailData }) {
             <LayoutPresetSelector
               value={layoutPreset}
               onChange={setLayoutPreset}
+              previewKind={prompt.preview.kind}
               advisory={promptIntent === "retheme"}
             />
           </div>

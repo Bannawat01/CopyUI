@@ -41,9 +41,11 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
    from real user feedback. Light/dark are now explicitly fixed themes;
    only System follows prefers-color-scheme. Still open: font, border
    radius, layout density. **Layout presets shipped (2026-07-09)** — 9
-   options, structural in Build mode and advisory-only in Retheme mode;
-   the deliberate middle step before any Figma-style drag-and-drop
-   editor, which **remains deferred**. See
+   options, structural in Build mode and advisory-only in Retheme mode,
+   now with **per-theme recommendations** (grouped `<optgroup>`s driven
+   by `preview.kind`; nothing blocked, odd pairings merely
+   de-emphasized). The deliberate middle step before any Figma-style
+   drag-and-drop editor, which **remains deferred**. See
    [feature-ideas.md](feature-ideas.md) items #6/#7.
    **[uncertain]** The refined retheme+apply prompt and the three new
    tool framings have not yet been re-tested against real tools — the
