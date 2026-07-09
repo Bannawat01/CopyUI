@@ -58,9 +58,15 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
    template's own dark/hero wording, because options were only
    prepended. Fixed with final theme/layout overrides appended *after*
    the base brief, a light-mode dark-phrase sanitizer, and per-theme
-   contrast rules. **[uncertain]** Not yet re-tested on v0 — the
-   composition is verified by tests and by inspecting the built text,
-   not by regenerating real UI output.
+   contrast rules. **VALIDATED on v0 (2026-07-09)**: Startup Landing
+   Hero / Build / Dark / Mobile App Layout now produces a phone-like
+   app screen with a readable CTA and accent highlight — the
+   desktop-hero regression is fixed. First confirmation that appending
+   final overrides *after* the base brief beats the template's own
+   conflicting wording in a real tool. Remaining: partner logos render
+   as tappable buttons rather than quiet wordmarks (small wording fix).
+   Still untested on v0: Light mode, other presets, and the three
+   newer tool framings (VS Code / Claude Code / Windsurf).
 5. Automated tests: a **Vitest smoke suite now exists** — `npm test`,
    **72/72 passing** across 6 files — covering prompt data, the
    hidden-template guarantee, `buildPrompt()`/`applyToolMode()`,

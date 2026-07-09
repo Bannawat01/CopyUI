@@ -1025,3 +1025,28 @@
   (`Navigation bar – Material Design 3.md`, 564B, and
   `… 3 1.md`, 340B) — both frontmatter/stub only, still `unprocessed`.
   Superseded by this note; safe to delete.
+
+## [2026-07-09] v0-validation-2 | Mobile App Layout PASSES on v0 (docs only)
+- No app code changed. Recording the third real v0 test.
+- **Startup Landing Hero / v0.dev / Build / Dark / Mobile App Layout →
+  PASSED.** Dark theme held; the output now visually reads as a phone/app
+  screen at first glance: visible phone-like frame, narrow mobile
+  viewport, mobile-first vertical composition, clear CTA, readable accent
+  highlight. Major improvement over the earlier desktop-centered hero.
+- **What this proves**: appending final theme/layout overrides *after*
+  the base brief actually beats the template's own conflicting wording in
+  a real tool — previously verified only by tests and by reading the
+  built text. The conflict-safe composition lesson holds.
+- No bottom tab bar appeared. Judged **acceptable, arguably correct**: a
+  single-section landing hero has no genuine top-level destinations, and
+  the prompt now explicitly forbids inventing fake ones (bottom nav
+  carries destinations, not actions; no logo strips as fake navigation).
+  The destination rules did their job by *suppressing* a bad bar, not by
+  forcing an empty one.
+- Remaining refinement: partner logos render as tappable buttons rather
+  than quiet wordmarks — small template/preset wording fix, not a
+  composition bug.
+- Wiki: prompt-system.md (validation section), next-actions.md (item 4 —
+  its "not yet re-tested on v0" caveat was stale), this entry.
+- Still untested on v0: Light mode end-to-end, the other 7 layout
+  presets, and the VS Code / Claude Code / Windsurf tool framings.

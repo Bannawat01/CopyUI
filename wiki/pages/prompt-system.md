@@ -292,6 +292,23 @@ hardcoded static list in `src/components/quality-checklist.tsx` — it does
 not read `promptTemplate` or any prompt data, so it can't leak anything.
 
 ## Real-world validation
+**2026-07-09 — Startup Landing Hero / v0.dev / Build / Dark / Mobile App
+Layout: PASSED.** The conflict-safe composition works. Dark theme held,
+and the output now visually reads as a phone/app screen at first glance
+— visible phone-like frame, narrow mobile viewport, mobile-first vertical
+composition, clear CTA, readable accent highlight. A major improvement
+over the earlier desktop-centered hero.
+
+No bottom tab bar appeared, which is **acceptable and arguably correct**
+here: a single-section landing hero has no real top-level app
+destinations, and the prompt now forbids inventing fake ones (nav bars
+carry destinations, not actions — see the Mobile App Layout hard
+requirements). Minor refinement outstanding: partner logos render as
+tappable buttons rather than quiet wordmarks.
+
+This is the first validation confirming that **final overrides appended
+after the base brief** actually beat the template's own conflicting
+language in a real tool, not just in tests.
 The AI Chat Interface template (v0.dev tool mode) was tested against
 actual v0.dev output for the first time on 2026-07-07 — prior passes had
 only been judged by reading the template text. Result: it worked
