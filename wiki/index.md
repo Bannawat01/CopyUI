@@ -19,7 +19,7 @@ Status legend: **[implemented]** / **[planned]** / **[stub]**
 - [competitor-inspiration.md](pages/competitor-inspiration.md) — 21st.dev, Cult UI, Shadcnblocks, Origin UI, awesome-shadcn-ui. **[new]**
 - [shadcn-patterns.md](pages/shadcn-patterns.md) — shadcn/ui docs, registry schema, token conventions. **[new]**
 - [motion-inspiration.md](pages/motion-inspiration.md) — thin source material; Magic UI/Aceternity UI/Motion-Primitives not found in clips. **[new, gap noted]**
-- [prompt-quality.md](pages/prompt-quality.md) — thin source material; Superdesign UI Design Prompts not found in clips. **[new, gap noted]**
+- [prompt-quality.md](pages/prompt-quality.md) — v0 prompting (Vercel), Superdesign context block, WCAG contrast, Apple tab bars. **[synthesized]**
 - [feature-ideas.md](pages/feature-ideas.md) — concrete, source-backed feature ideas to evaluate. **[new]**
 
 ## Tracking
