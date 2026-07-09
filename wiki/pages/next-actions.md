@@ -36,12 +36,15 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
 4. Add more customizable variables beyond `primaryColor` (e.g. font, border
    radius, layout density) — extends [prompt-system.md](prompt-system.md)
    and the Detail page controls.
-5. Automated tests: a **Vitest smoke suite now exists** (`npm test`, 20
-   tests) covering `buildPrompt()`, `applyToolMode()`, the hidden-template
-   guarantee, sitemap/robots, and a homepage render — see
-   [production-readiness.md](production-readiness.md). Still untested: the
-   `/api/prompts/[slug]/build` route handler end-to-end, and the
-   search/category-filter/empty-state and copy-feedback UI interactions.
+5. Automated tests: a **Vitest smoke suite now exists** — `npm test`,
+   **28/28 passing** across 4 files — covering prompt data, the
+   hidden-template guarantee, `buildPrompt()`/`applyToolMode()`,
+   sitemap/robots, a homepage render, and the
+   `/api/prompts/[slug]/build` route handler. See
+   [production-readiness.md](production-readiness.md). Remaining gaps:
+   browser clipboard behavior, component interactions (color picker,
+   tool-mode selector, copy-button states), detail-page render tests,
+   and runtime checks of the OG/icon image routes.
 6. **[uncertain]** Verify real-browser/keyboard behavior for the polish-pass,
    category-pill, and now motion-pass changes (stretched-link cards,
    focus-visible rings, aria-live copy status, aria-pressed pills, the new

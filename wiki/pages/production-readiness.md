@@ -121,7 +121,9 @@ testing-library, no Playwright**. Config: `vitest.config.ts` (node
 environment, `@/*` alias mirroring tsconfig). Run with **`npm test`**
 (`vitest run`).
 
-28 tests across 4 files, all under ~1.5s:
+**Status: 28/28 passing**, 4 files, all under ~1.5s. Coverage: prompt
+data, metadata (sitemap/robots), homepage render, and the prompt build
+API route.
 - `tests/prompts.test.ts` — 18 unique, resolvable slugs; unknown slug
   returns undefined; **`getPublicPrompts()` strips `promptTemplate`** and
   its serialized output contains no "Product context:", "Target tool:",
@@ -152,8 +154,14 @@ the Next runtime. `npm run build` already proves they compile and
 prerender, which is the check that matters.
 
 ## Remaining production gaps
-- Verify `NEXT_PUBLIC_SITE_URL` took effect in production (see above).
+**Next priority is production verification on the deployed Vercel site**,
+not more local work:
+- Confirm `NEXT_PUBLIC_SITE_URL` took effect — check the live
+  `/sitemap.xml`, `/robots.txt`, and the canonical / `og:url` tags show
+  the real domain, not `localhost:3000`.
 - Enable/confirm Vercel Analytics; let Speed Insights accumulate visits.
+
+Then:
 - No error monitoring (Sentry or similar).
 - Test gaps: no component interaction tests (color picker, tool-mode
   selector, copy-button loading/success/error states); no browser/E2E

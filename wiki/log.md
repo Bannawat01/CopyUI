@@ -727,3 +727,19 @@
   tool-mode selector, copy-button states); no browser coverage of the
   real clipboard write; detail pages not render-tested; OG/icon routes
   covered only by `npm run build`.
+
+## [2026-07-09] test-status | Test suite summary (docs only)
+- No app code changed. Consolidating where testing stands:
+- CopyUI now has a **Vitest smoke suite: 28/28 passing**, 4 files,
+  covering prompt data, metadata (sitemap/robots), the homepage render,
+  and the `/api/prompts/[slug]/build` route handler. Run with `npm test`.
+- Remaining test gaps: browser clipboard behavior, component
+  interactions, detail-page render tests, and runtime checks of the
+  OG/icon image routes.
+- **Next priority is production verification**, not more local work:
+  confirm sitemap/robots/canonical/OG URLs on the deployed Vercel site
+  resolve to the real domain, then Analytics and Speed Insights.
+- Wiki: production-readiness.md (test status line, gaps section now leads
+  with the production-verification priority), next-actions.md (item 5 —
+  it still said 20 tests and listed the API route as untested), this
+  entry.
