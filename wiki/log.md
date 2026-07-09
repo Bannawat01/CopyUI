@@ -576,3 +576,19 @@
   styling.md untouched — no styling-convention changes this pass.
 - Remaining gaps: no OG image, `NEXT_PUBLIC_SITE_URL` must be set when
   deploying, default favicon, no analytics/monitoring/tests.
+
+## [2026-07-09] og-image | Social preview image via ImageResponse
+- `src/app/opengraph-image.tsx` (new): dynamic 1200×630 PNG via Next's
+  `ImageResponse` — dark premium background with radial glows, CopyUI
+  wordmark + mark, tagline, a pick/customize/copy pill, and a 2×2
+  template-card grid motif. `src/app/twitter-image.tsx` (new) re-exports
+  the same image. Chose dynamic generation over a static PNG so the art
+  stays in-repo as code (no design-tool asset pipeline needed).
+- Both routes prerender statically at build; verified via `next start` +
+  `curl` (200, image/png, ~53KB) and a visual check of the rendered PNG.
+- Lint + build clean (26 routes, now incl. /opengraph-image and
+  /twitter-image). No app-feature, data, or prompt-flow changes.
+- Wiki: production-readiness.md updated (OG-image gap closed, section
+  added); this log entry.
+- Remaining gaps: `NEXT_PUBLIC_SITE_URL` in deploy env, default favicon,
+  no analytics/monitoring/tests.

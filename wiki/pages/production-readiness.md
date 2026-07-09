@@ -44,9 +44,18 @@ search engines expect. This pass added:
   XML, and robots.txt all render correctly; checklist and How-it-works
   sections present in HTML.
 
+## Social preview image (added 2026-07-09, same-day follow-up)
+`src/app/opengraph-image.tsx` — a dynamic 1200×630 PNG generated at
+build time via Next's `ImageResponse` (App Router file convention, no
+static asset to maintain): near-black background with subtle
+indigo/sky radial glows, CopyUI wordmark + logo mark, the tagline, a
+"Pick a theme · Set your color · Copy the prompt" pill, and a 2×2
+template-card grid motif echoing the gallery previews.
+`src/app/twitter-image.tsx` re-exports the same image for Twitter/X.
+Both render statically at build (`/opengraph-image`, `/twitter-image`)
+and were visually verified from the served PNG.
+
 ## Remaining production gaps
-- **No OG image** — Twitter card is `summary_large_image` but no
-  `opengraph-image` asset exists yet; link previews show no visual.
 - **`NEXT_PUBLIC_SITE_URL` must be set** in the deployment env or all
   canonical/sitemap URLs say localhost.
 - No favicon branding pass (still the default `favicon.ico`).

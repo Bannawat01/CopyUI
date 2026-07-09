@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "129536fb4a5f8497",
+        "id": "1be9e18c0c9d0bdc",
         "type": "tabs",
         "children": [
           {
-            "id": "119b02cea4465d68",
+            "id": "0910b915ddec9ad5",
             "type": "leaf",
             "state": {
               "type": "graph",
@@ -176,8 +176,14 @@
       "bases:Create new base": false
     }
   },
-  "active": "119b02cea4465d68",
+  "active": "0910b915ddec9ad5",
   "lastOpenFiles": [
+    "raw/clips/birobirobiroawesome-shadcn-ui A curated list of awesome things related to shadcnui.md",
+    "pages/shadcn-patterns.md",
+    "pages/overview.md",
+    "pages/motion-inspiration.md",
+    "pages/known-issues.md",
+    "pages/detail-page.md",
     "log.md.tmp.12440.a186bafcbcce",
     "pages/production-readiness.md",
     "shadcn.md",
@@ -189,13 +195,11 @@
     "raw/clips/serafimcloud21st npm for design engineers largest marketplace of shadcnui-based React Tailwind components, blocks and hooks.md",
     "raw/clips/Components.md",
     "raw/clips/21st.dev - Crafted React components and templates, not AI slop.md",
-    "pages/motion-inspiration.md",
     "pages/copy-mechanism.md.tmp.40420.8e2e3c4ff885",
     "pages/copy-mechanism.md.tmp.40420.242edb08c19e",
     "pages/prompt-system.md.tmp.40420.d514afd5d8e8",
     "pages/detail-page.md.tmp.40420.98b5bee4833b",
     "log.md.tmp.46216.8de05da07533",
-    "pages/detail-page.md",
     "raw/clips/UI Design Prompts 11 Copy-Paste Prompts That Work (2026).md",
     "raw/clips/Motion-Primitives - UI kit to make beautiful, animated interfaces, faster.md",
     "raw/clips/UI library for Design Engineers.md",
@@ -211,10 +215,6 @@
     "pages/detail-page.md.tmp.46216.f3f1fe9bbe97",
     "pages/feature-ideas.md",
     "pages/prompt-quality.md",
-    "pages/prompt-quality.md.tmp.46216.e05b3329f962",
-    "pages/shadcn-patterns.md",
-    "pages/competitor-inspiration.md",
-    "index.md",
-    "pages/copy-mechanism.md"
+    "pages/competitor-inspiration.md"
   ]
 }
