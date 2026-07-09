@@ -86,10 +86,27 @@ validation policy asks for. Caveat: GitHub silently drops `labels`
 values that don't already exist in the repo — `enhancement` and `bug`
 are GitHub defaults, so they apply as long as they haven't been deleted.
 
+## Analytics + Speed Insights (added 2026-07-09, same-day follow-up)
+`@vercel/analytics` and `@vercel/speed-insights` installed; `<Analytics />`
+and `<SpeedInsights />` mounted once in `src/app/layout.tsx`, as siblings
+of `MotionProvider` inside `<body>` (outside it, so they never sit in the
+animated tree). Zero config, zero app-feature change — both are client
+components that inject their script on mount and only report once
+deployed to Vercel.
+
+Note for verification: the scripts do **not** appear in server-rendered
+HTML (`curl` shows nothing), because injection happens client-side after
+hydration. Confirmed instead by finding both in the built client chunk.
+Real data only appears after deploying and enabling Analytics / Speed
+Insights in the Vercel project settings — installing the packages alone
+is not sufficient.
+
 ## Remaining production gaps
 - **`NEXT_PUBLIC_SITE_URL` must be set** in the deployment env or all
   canonical/sitemap URLs say localhost.
-- No analytics, no error monitoring, no automated tests.
+- Analytics + Speed Insights are wired but **must still be enabled in the
+  Vercel project settings** to collect anything.
+- No error monitoring (Sentry or similar), no automated tests.
 - No structured data (JSON-LD) — optional, low priority at this scale.
 
 ## Related

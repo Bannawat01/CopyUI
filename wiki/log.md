@@ -638,3 +638,22 @@
   apply unless deleted.
 - Remaining gaps: `NEXT_PUBLIC_SITE_URL` in deploy env (now the single
   most important one), no analytics/monitoring/tests, no JSON-LD.
+
+## [2026-07-09] analytics | Vercel Analytics + Speed Insights
+- Installed `@vercel/analytics` (^2.0.1) and `@vercel/speed-insights`
+  (^2.0.0). Mounted `<Analytics />` and `<SpeedInsights />` once in
+  `src/app/layout.tsx`, as siblings of `MotionProvider` inside `<body>`
+  (deliberately outside the motion tree). Zero config.
+- No app-feature, data, prompt-flow, or component changes; two imports
+  and two self-closing tags.
+- Verification note: neither script appears in server-rendered HTML —
+  both are client components that inject their script after hydration,
+  so `curl` correctly shows nothing. Confirmed instead that both are
+  present in the built client chunk. Also re-checked: no "Product
+  context:" leak, footer still renders.
+- Lint + build clean (27 routes, unchanged).
+- Wiki: production-readiness.md (analytics section + gap list updated),
+  next-actions.md (item 13), this log entry.
+- Remaining gaps: `NEXT_PUBLIC_SITE_URL` in deploy env; Analytics/Speed
+  Insights must still be **enabled in Vercel project settings** to
+  collect data; no error monitoring; no tests; no JSON-LD.

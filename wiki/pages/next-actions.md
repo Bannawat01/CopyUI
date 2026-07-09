@@ -93,8 +93,10 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
     branded favicon/app icons are now **done** (generated via
     `ImageResponse`). Still open: **set `NEXT_PUBLIC_SITE_URL` in the
     deployment environment** — until then canonical, sitemap, and OG
-    image URLs all resolve against localhost. Analytics/error monitoring
-    remain unaddressed.
+    image URLs all resolve against localhost. Vercel Analytics + Speed
+    Insights are now installed and mounted, but must be **enabled in the
+    Vercel project settings** before they collect anything. Error
+    monitoring (Sentry or similar) remains unaddressed.
 14. Feedback links (Request a prompt / Report bad output / Suggest
     improvement) now ship in the site footer as prefilled GitHub Issues
     links. This closes the loop on item #7's gap — real user reports of
