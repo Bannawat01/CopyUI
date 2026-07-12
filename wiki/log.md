@@ -1325,3 +1325,29 @@ extracted rules, for a later task:
 - `<html lang>` accessibility bug fixed: the client now syncs the DOM attribute
   from the resolved locale after hydration and on locale changes.
 - Remaining launch items: Copy button contrast, README update, final QA rerun.
+
+## [2026-07-10] readme | README rewritten for launch accuracy (docs only)
+- No app code changed. The README was the **last stale surface** in the repo,
+  and the most public one — it is what a GitHub visitor reads first.
+- It was badly out of date, in ways that undersold and misrepresented the
+  product:
+  - Headline and Tool Mode section advertised only **v0 / Cursor / GenVibe**
+    (3 of the 6 supported tools).
+  - Claimed **"No automated tests yet"** — there are **137**.
+  - Claimed **"Only one prompt template has been validated"** — the first
+    validation pass closed with 3 priority cases passing.
+  - Documented **none** of Theme Mode, Retheme Mode, Action Style, Layout
+    Presets, context-of-use templates, the trust FAQ, or localization.
+- Rewritten: all 6 tool modes named; every current feature listed; a new
+  **"What to expect from AI output"** section carrying the same honest hedges
+  as the in-product trust copy (not deterministic, direction is what holds
+  steady, commit/branch and review the diff before accepting a Retheme, use
+  Instructions Only on risky codebases); a new **"Copied prompts stay in
+  English"** section explaining the token-efficiency/reliability rationale.
+- No overpromising: no "guaranteed", no "always identical", no "never deletes
+  code". The README now matches the honesty bar the UI copy is held to.
+- Limitations section now states the real open gaps: English-only SEO metadata
+  and unreviewed Thai/Chinese translations.
+- Kept concise — no architecture dump, no prompt templates pasted.
+- Wiki: next-actions.md, this entry.
+- **Next: final production QA rerun** before launch.

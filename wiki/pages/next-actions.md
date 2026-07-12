@@ -227,4 +227,19 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
     theme toggle** remains a later task (see item 16), untouched by this
     work.
 
+19. **README updated for launch accuracy (2026-07-10)** — it was the last
+    stale surface in the repo and the most public one. It had advertised
+    only 3 of 6 tool modes, claimed "No automated tests yet" (there are
+    137), claimed only one template had been validated (the first
+    validation pass closed with 3 cases), and documented none of Theme
+    Mode, Retheme Mode, Action Style, Layout Presets, context-of-use
+    templates, the trust FAQ, or localization. Now accurate, and it
+    carries the same honest hedges as the in-product trust copy.
+    **Remaining before launch**: (a) **final production QA rerun**
+    (test + lint + build, plus a re-audit of the surfaces changed since
+    the last audit); (b) **set `NEXT_PUBLIC_SITE_URL` in Vercel** — the
+    only true blocker, and a settings change, not code; (c) the **CTA
+    contrast bug** (white text on a user-chosen `primaryColor` fails
+    WCAG on light colors) is the last defect with real user impact.
+
 This list should be revised as decisions are made — do not treat it as fixed.
