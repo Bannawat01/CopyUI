@@ -145,13 +145,11 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
 13. From the production-readiness pass (see
     [production-readiness.md](production-readiness.md)): the OG image and
     branded favicon/app icons are now **done** (generated via
-    `ImageResponse`). Still open: **set `NEXT_PUBLIC_SITE_URL` in the
-    deployment environment** — and then **verified in production**: check
-    the deployed `/sitemap.xml`, `/robots.txt`, and the canonical/OG tags
-    show the real domain, not localhost. Speed Insights is now **enabled**
-    (data needs real visits before it appears); Vercel **Analytics still
-    needs enabling/confirming** in the project settings. Error monitoring
-    (Sentry or similar) remains unaddressed.
+    `ImageResponse`). `NEXT_PUBLIC_SITE_URL` is **verified fixed
+    externally**: production `/sitemap.xml` and `/robots.txt` no longer
+    contain localhost. Remaining launch items: **Copy button contrast**,
+    **README update**, and **final QA rerun**.
+
 14. Feedback links (Request a prompt / Report bad output / Suggest
     improvement) now ship in the site footer as prefilled GitHub Issues
     links. This closes the loop on item #7's gap — real user reports of

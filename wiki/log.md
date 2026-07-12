@@ -1318,3 +1318,10 @@ extracted rules, for a later task:
   lint` clean, `rtk npm run build` clean (27 routes).
 - Prompt builder untouched; no locale reaches the API.
 - Wiki: next-actions.md (item 18), this entry.
+
+## [2026-07-12] launch-blockers | SITE_URL verified, html lang a11y fixed
+- External production check complete: `NEXT_PUBLIC_SITE_URL` is fixed in deploy
+  env; production `/sitemap.xml` and `/robots.txt` no longer contain localhost.
+- `<html lang>` accessibility bug fixed: the client now syncs the DOM attribute
+  from the resolved locale after hydration and on locale changes.
+- Remaining launch items: Copy button contrast, README update, final QA rerun.
