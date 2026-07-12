@@ -12,6 +12,7 @@ import { ActionStyleSelector } from "@/components/action-style-selector";
 import { LayoutPresetSelector } from "@/components/layout-preset-selector";
 import { CopyPromptButton } from "@/components/copy-prompt-button";
 import { QualityChecklist } from "@/components/quality-checklist";
+import { RethemeSafetyNote } from "@/components/retheme-safety-note";
 import type { PromptTheme } from "@/lib/prompts";
 import type { ToolMode } from "@/lib/tool-modes";
 import type {
@@ -112,6 +113,7 @@ export function PromptDetail({ prompt }: { prompt: PromptDetailData }) {
         </details>
 
         <PromptIntentSelector value={promptIntent} onChange={setPromptIntent} />
+        {promptIntent === "retheme" && <RethemeSafetyNote />}
         <ActionStyleSelector value={actionStyle} onChange={setActionStyle} />
         <ToolModeSelector value={toolMode} onChange={setToolMode} />
 

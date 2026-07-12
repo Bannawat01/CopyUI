@@ -178,4 +178,18 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
     Do not run any compression tool over CLAUDE.md, wiki pages, or
     source files without a Git backup and a diff review first.
 
+16. **Trust copy shipped (2026-07-10)** — early users asked whether the
+    same prompt reproduces the same page, and whether Retheme Mode is
+    safe on an existing codebase. Both are now answered in-product: a
+    collapsed FAQ on the homepage and a Retheme-only safety note in the
+    detail panel, all sourced from `src/lib/trust-copy.ts`. The wording
+    is deliberately non-committal (AI output is not deterministic;
+    Retheme is "designed to preserve", not "safe"), and
+    `tests/trust-copy.test.ts` fails if overpromising language ever
+    creeps in. **Still open**: a **site appearance / theme toggle** —
+    users observed CopyUI itself is dark-only. This is a real UX gap but
+    a separate task; note that `dark` is currently hardcoded on `<html>`
+    in `src/app/layout.tsx`, so it is a genuine change, not a switch
+    flip. Deferred, not rejected.
+
 This list should be revised as decisions are made — do not treat it as fixed.

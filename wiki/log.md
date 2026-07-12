@@ -1159,3 +1159,37 @@ extracted rules, for a later task:
    Worth adding regardless of whether Caveman is ever installed; it is a good
    rule on its own.
 - Wiki: next-actions.md (new item), this entry. Clip marked `processed`.
+
+## [2026-07-10] trust-copy | In-product answers to the two questions users actually ask
+- Early users asked two things repeatedly: **(1)** will the same prompt produce
+  the same page every run? **(2)** will Retheme Mode delete good existing code?
+  Both were answered nowhere in the product. Now they are.
+- New `src/lib/trust-copy.ts` holds all trust copy as data — one source for the
+  homepage FAQ, the detail-page retheme note, and the tests. Splitting the
+  wording across components would have let the honest phrasing drift.
+- `src/components/trust-faq.tsx`: collapsed-by-default accordion at the foot of
+  the homepage, 4 questions. `src/components/retheme-safety-note.tsx`: amber
+  callout in the detail panel, rendered **only** when Retheme Mode is selected
+  (so the Build path is not crowded by a warning that does not apply to it).
+- **Honesty was the design constraint, not a caveat on it.** The copy states
+  plainly that AI UI tools are not deterministic and that pixels will vary; what
+  the prompts hold steady is *direction* (layout intent, hierarchy, component
+  choices, constraints, style guidance). Retheme is described as "designed to
+  preserve" routes/logic/state/API calls/handlers/behavior — never "safe" or
+  "will not delete code" — and it tells users to commit or branch first and
+  review the diff, because that is their real safety net, not our wording.
+- `tests/trust-copy.test.ts` enforces this: it fails the build if the words
+  "guaranteed", "always identical", "never delete", "100% deterministic", or
+  "pixel-identical" ever appear in the copy, and asserts the honest hedges
+  ("designed to", "usually", "can still make mistakes") are present. A
+  reassuring lie here would cost more trust than it buys, so the guard is
+  automated rather than left to review.
+- Validation: `rtk npm test` 113/113 across 7 files (was 101/6), `rtk npm run
+  lint` clean, `rtk npm run build` clean (27 routes). Build run because this
+  adds components to two routes.
+- Hidden template untouched: the new copy is static strings, reads no prompt
+  data, and the homepage HTML test still greps for `Product context:` and finds
+  nothing.
+- **Not done, deliberately**: a site-wide appearance/theme toggle. Users noted
+  CopyUI itself is dark-only. Logged as a later UX task, not bundled here.
+- Wiki: next-actions.md (new item 16), this entry.

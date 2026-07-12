@@ -32,4 +32,28 @@ describe("homepage", () => {
     expect(html).not.toContain("Target tool:");
     expect(html).not.toContain("{{primaryColor}}");
   });
+
+  // Early users asked whether output is repeatable and whether Retheme is
+  // safe on an existing codebase. Both answers must be on the page.
+  it("renders the trust FAQ answering consistency and retheme safety", () => {
+    expect(html).toContain("What to expect from AI output");
+    expect(html).toContain(
+      "If I run the same prompt 10 times, do I get the same page?",
+    );
+    expect(html).toContain("Will Retheme Mode delete my existing code?");
+    expect(html).toContain("not deterministic");
+    expect(html).toContain("review the diff");
+  });
+
+  it("does not overpromise determinism or safety in the FAQ", () => {
+    const lower = html.toLowerCase();
+    for (const overpromise of [
+      "always identical",
+      "guaranteed",
+      "never delete",
+      "100% deterministic",
+    ]) {
+      expect(lower).not.toContain(overpromise);
+    }
+  });
 });

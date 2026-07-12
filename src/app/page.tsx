@@ -1,5 +1,6 @@
 import { LayoutTemplate, Palette, ClipboardCopy } from "lucide-react";
 import { GallerySearch } from "@/components/gallery-search";
+import { TrustFaq } from "@/components/trust-faq";
 import { getPublicPrompts } from "@/lib/prompts";
 
 const HOW_IT_WORKS = [
@@ -64,6 +65,8 @@ export default function GalleryPage() {
       </section>
 
       <GallerySearch prompts={prompts} />
+
+      <TrustFaq />
     </main>
   );
 }
