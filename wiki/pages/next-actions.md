@@ -163,4 +163,19 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
     which give required fields and dropdowns instead of a plain
     prefilled body.
 
+15. **Agent workflow / token budget (2026-07-10)**: the Caveman
+    token-compression skill was processed as a **reference only — not
+    installed, not run, not adopted**. See [log.md](../log.md) for the
+    principles extracted and the risks. Two safe gaps to close in
+    CLAUDE.md when someone picks this up: (a) the required
+    final-response format omits **result**, and (b) there is **no rule
+    protecting exact technical content** (code, commands, file paths,
+    error messages, test output, commit messages) from being paraphrased
+    or compressed — worth adding on its own merits, independent of
+    Caveman. **[uncertain]** Whether to ever install it is unresolved;
+    four risks are recorded and *none has been tested*: Windows install,
+    UTF-8/Thai safety, over-compression, and exact-command corruption.
+    Do not run any compression tool over CLAUDE.md, wiki pages, or
+    source files without a Git backup and a diff review first.
+
 This list should be revised as decisions are made — do not treat it as fixed.

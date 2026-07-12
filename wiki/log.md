@@ -1115,3 +1115,47 @@
   made, so the defect is presumed present until observed otherwise.
 - Wiki: prompt-system.md (validation section), next-actions.md (item 4),
   this entry.
+
+## [2026-07-10] caveman | Token-compression skill processed as reference (docs only)
+- Source: [Caveman - Token Compression Skill](raw/clips/Caveman%20-%20Token%20Compression%20Skill.md)
+  (github.com/juliusbrussee/caveman). Read as a reference. **Not installed, not
+  run, not adopted.**
+- Scope note: this is an *agent-workflow* reference, not a prompt-system one. It
+  governs how Claude writes responses back to the user, not the hidden templates
+  CopyUI sends to v0/Cursor. prompt-system.md was deliberately left untouched.
+
+### Safe principles extracted
+- **Cut filler, not substance.** No motivational framing, repeated summaries,
+  pasted logs, or narration. Short is the goal; vague is not.
+- **Never compress exact technical content.** Code, CLI commands, error
+  messages, file paths, API names, package names, test output, and commit
+  messages are reproduced verbatim — always. Compression applies to prose only.
+- **Keep the CopyUI final-response format**: files changed / commands run /
+  result / wiki updated or not / next smallest useful task.
+- **Never auto-compress Thai or non-ASCII notes.** The wiki contains Thai-language
+  material; a lossy pass over it is unrecoverable.
+- **Never run a memory-compression tool without a Git backup and a diff review
+  first.** Not on CLAUDE.md, not on wiki pages, not on source files.
+
+### Risks recorded (why it stays a reference)
+- **Windows**: install path unverified on this machine; the project runs on
+  Windows 11 with PowerShell + Git Bash. Untested.
+- **UTF-8 / Thai text**: unknown whether compression is encoding-safe. The wiki
+  has non-ASCII content, so a bad pass corrupts source material silently.
+- **Over-compression**: a terser agent that drops the *why* behind a change is a
+  net loss, not a saving. Token cost is not the only cost.
+- **Exact-content corruption**: the highest-severity risk. A compressor that
+  rewrites a command, path, or error message produces confidently wrong output
+  that reads as correct.
+- Every one of these is a *check to run before installing*, not a resolved
+  question. None has been tested.
+
+### CLAUDE.md
+Not modified in this pass (the task scoped it out). Two real gaps against the
+extracted rules, for a later task:
+1. The required final-response format omits **result** — it lists files changed,
+   commands run, wiki updated, next task.
+2. There is **no rule protecting exact technical content** from paraphrase.
+   Worth adding regardless of whether Caveman is ever installed; it is a good
+   rule on its own.
+- Wiki: next-actions.md (new item), this entry. Clip marked `processed`.
