@@ -130,12 +130,12 @@ export type TranslationKey = keyof typeof en;
 const th: Partial<Record<TranslationKey, string>> = {
   "lang.label": "ภาษา",
   "lang.note":
-    "ข้อความ Prompt ที่คัดลอกจะยังเป็นภาษาอังกฤษ เพื่อความแม่นยำของเครื่องมือ AI และประหยัด token",
+    "เปลี่ยนเฉพาะภาษาของเว็บไซต์ Prompt ที่คัดลอกจะยังเป็นภาษาอังกฤษ เพื่อให้เครื่องมือ AI ทำงานได้เสถียรกว่าและประหยัด token",
 
-  "home.badge": "ตลาด Prompt",
+  "home.badge": "แหล่งรวม Prompt",
   "home.headline": "Prompt UI พร้อมใช้งานจริงสำหรับ {tools}",
   "home.subhead":
-    "เลือกธีม UI ตั้งค่าสีแบรนด์ของคุณ แล้วคัดลอก prompt ที่ปรับให้เข้ากับเครื่องมือ AI ของคุณ — ไม่ต้องเขียน prompt เอง",
+    "เลือกธีม UI ตั้งสีแบรนด์ แล้วคัดลอก prompt ที่ปรับมาให้เข้ากับเครื่องมือ AI ของคุณ — ไม่ต้องเขียน prompt เอง",
   "home.howItWorks": "วิธีใช้งาน",
   "home.step1.title": "เลือก Prompt UI",
   "home.step1.desc":
@@ -152,7 +152,7 @@ const th: Partial<Record<TranslationKey, string>> = {
   "gallery.sortAria": "เรียงลำดับเทมเพลต",
   "gallery.sort.mostCopied": "คัดลอกมากที่สุด",
   "gallery.sort.newest": "ใหม่ล่าสุด",
-  "gallery.sort.az": "ก-ฮ / A-Z",
+  "gallery.sort.az": "A-Z",
   "gallery.count": "{shown} จาก {total}",
   "gallery.filterAria": "กรองตามหมวดหมู่",
   "gallery.empty": "ไม่มีเทมเพลตที่จะแสดง",
@@ -168,35 +168,35 @@ const th: Partial<Record<TranslationKey, string>> = {
   "category.Portfolio": "พอร์ตโฟลิโอ",
   "category.Docs": "เอกสาร",
 
-  "detail.back": "กลับไปที่แกลเลอรี",
+  "detail.back": "กลับไปหน้ารวม",
   "detail.panelTitle": "ปรับแต่งและคัดลอก",
   "detail.panelNote":
-    "Prompt ฉบับเต็มจะถูกซ่อนไว้ — ตัวเลือกของคุณด้านล่างจะถูกนำไปสร้างเป็น prompt เฉพาะบนเซิร์ฟเวอร์ แล้วคัดลอกไปยังคลิปบอร์ด",
+    "Prompt ฉบับเต็มถูกซ่อนไว้ — ตัวเลือกด้านล่างจะถูกนำไปสร้างเป็น prompt เฉพาะของคุณบนเซิร์ฟเวอร์ แล้วคัดลอกลงคลิปบอร์ด",
   "detail.advanced": "ตัวเลือกธีมและเลย์เอาต์ขั้นสูง",
   "detail.primaryColor": "สีหลัก",
   "detail.secondaryColor": "สีรอง",
   "detail.accentColor": "สีเน้น",
 
-  "intent.label": "จุดประสงค์ของ Prompt",
+  "intent.label": "เป้าหมายของ Prompt",
   "intent.build.label": "สร้าง UI ใหม่",
   "intent.build.desc": "สร้างหน้าจอใหม่ทั้งหมดจาก prompt นี้",
-  "intent.retheme.label": "เปลี่ยนธีม UI เดิม",
+  "intent.retheme.label": "Retheme UI เดิม",
   "intent.retheme.desc":
-    "นำสไตล์นี้ไปใช้กับ frontend ที่มีอยู่ โดยคงตรรกะและการทำงานเดิมไว้",
+    "นำสไตล์นี้ไปใช้กับ frontend เดิม โดยคงตรรกะและการทำงานเดิมไว้",
   "theme.label": "โหมดธีม",
   "theme.dark": "มืด",
   "theme.light": "สว่าง",
   "theme.system": "ตามระบบ",
   "theme.mono": "ขาวดำ",
   "action.label": "รูปแบบการทำงาน",
-  "action.apply.label": "แก้ไขไฟล์ให้เลย",
-  "action.apply.desc": "ให้เครื่องมือแก้ไขไฟล์ด้วยตัวเอง",
+  "action.apply.label": "แก้ไขไฟล์เลย",
+  "action.apply.desc": "ให้เครื่องมือแก้ไขไฟล์ให้อัตโนมัติ",
   "action.instruct.label": "บอกวิธีเท่านั้น",
-  "action.instruct.desc": "ให้เครื่องมืออธิบายการเปลี่ยนแปลงโดยไม่แก้ไขไฟล์",
+  "action.instruct.desc": "ให้เครื่องมืออธิบายสิ่งที่ต้องแก้ โดยไม่แตะไฟล์",
   "tool.label": "โหมดเครื่องมือ",
   "layout.label": "เลย์เอาต์สำเร็จรูป",
   "layout.advisory":
-    "ในโหมดเปลี่ยนธีม นี่เป็นเพียงคำแนะนำ — โครงสร้างหน้าเดิมของคุณจะถูกคงไว้",
+    "ในโหมด Retheme นี่เป็นเพียงคำแนะนำ — โครงสร้างหน้าเดิมของคุณจะถูกคงไว้",
   "layout.recommended": "แนะนำสำหรับธีมนี้",
   "layout.other": "เลย์เอาต์อื่น ๆ",
 
@@ -218,12 +218,12 @@ const th: Partial<Record<TranslationKey, string>> = {
 const zhCN: Partial<Record<TranslationKey, string>> = {
   "lang.label": "语言",
   "lang.note":
-    "复制的提示词仍为英文，以提高 AI 工具的可靠性并节省 token。",
+    "仅切换网站界面语言。复制的提示词仍为英文，以提升 AI 工具的稳定性并节省 token。",
 
   "home.badge": "提示词市场",
   "home.headline": "面向 {tools} 的生产级 UI 提示词",
   "home.subhead":
-    "选择一个 UI 主题，设置品牌色，即可复制一份为你的 AI 工具量身定制的提示词——无需自己撰写。",
+    "选择 UI 主题，设置品牌色，即可复制一份为你的 AI 工具定制的提示词 — 无需自己撰写。",
   "home.howItWorks": "使用方法",
   "home.step1.title": "选择 UI 提示词",
   "home.step1.desc": "浏览 18 个生产级 UI 主题，从仪表盘到落地页。",
@@ -257,7 +257,7 @@ const zhCN: Partial<Record<TranslationKey, string>> = {
   "detail.back": "返回图库",
   "detail.panelTitle": "自定义并复制",
   "detail.panelNote":
-    "完整提示词保持隐藏——你的选择将在服务端构建为定制提示词，并复制到剪贴板。",
+    "完整提示词保持隐藏 — 你的选择会在服务端构建为定制提示词，并复制到剪贴板。",
   "detail.advanced": "高级主题与布局选项",
   "detail.primaryColor": "主色",
   "detail.secondaryColor": "辅助色",
@@ -266,7 +266,7 @@ const zhCN: Partial<Record<TranslationKey, string>> = {
   "intent.label": "提示词意图",
   "intent.build.label": "构建新界面",
   "intent.build.desc": "根据此提示词生成全新的界面。",
-  "intent.retheme.label": "为现有界面换主题",
+  "intent.retheme.label": "现有界面换主题",
   "intent.retheme.desc": "将此风格应用到现有前端，同时保留逻辑与行为。",
   "theme.label": "主题模式",
   "theme.dark": "深色",
@@ -277,24 +277,24 @@ const zhCN: Partial<Record<TranslationKey, string>> = {
   "action.apply.label": "直接修改",
   "action.apply.desc": "让工具自行编辑文件。",
   "action.instruct.label": "仅给出说明",
-  "action.instruct.desc": "让工具说明改动，但不编辑文件。",
+  "action.instruct.desc": "让工具说明要改什么，但不动文件。",
   "tool.label": "工具模式",
   "layout.label": "布局预设",
   "layout.advisory": "在换主题模式下这仅为建议——你现有的页面结构会被保留。",
   "layout.recommended": "推荐用于此主题",
   "layout.other": "其他布局",
 
-  "copy.idle": "复制到 {tool}",
+  "copy.idle": "复制 {tool} 提示词",
   "copy.copying": "复制中...",
   "copy.copied": "已复制！",
   "copy.failed": "复制失败",
   "copy.building": "正在生成 {tool} 提示词…",
-  "copy.success": "已复制——已为 {tool} 定制",
+  "copy.success": "已复制 — 已为 {tool} 定制",
   "copy.error": "复制提示词失败，请重试。",
 
   "footer.heading": "缺少某个提示词，或效果不理想？",
   "footer.blurb":
-    "CopyUI 开源开发。反馈将直接提交到 GitHub Issues——除 GitHub 外无需注册，也没有表单。",
+    "CopyUI 开源开发。反馈直接提交到 GitHub Issues — 除 GitHub 外无需注册，也没有表单。",
   "footer.tagline": "CopyUI — 面向 {tools} 的生产级 UI 提示词。",
   "footer.source": "在 GitHub 上查看源码",
 };

@@ -1,8 +1,10 @@
 import { ImageResponse } from "next/og";
-import { SITE_NAME } from "@/lib/site";
+import { SITE_NAME, SITE_TAGLINE } from "@/lib/site";
+import { toolModeShortList } from "@/lib/tool-modes";
 
-export const alt =
-  "CopyUI — Production-ready UI prompts for v0, Cursor, and GenVibe";
+// Derived from TOOL_MODES — this card is the first thing a shared link shows,
+// so it must not outlive the tool list the way the old hardcoded copy did.
+export const alt = SITE_TAGLINE;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -68,7 +70,7 @@ export default function OpengraphImage() {
               color: "rgba(255,255,255,0.75)",
             }}
           >
-            Production-ready UI prompts for v0, Cursor, and GenVibe
+            {`Production-ready UI prompts for ${toolModeShortList(3)}`}
           </div>
           <div
             style={{

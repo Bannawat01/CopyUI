@@ -198,9 +198,17 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
     detail-page metadata, prefilled GitHub issue bodies) is now
     **derived from `TOOL_MODES`** via `toolModeList()` /
     `toolModeShortList()`, and tests fail if any list is hardcoded
-    again. Nothing left to do here — but note the root cause was five
-    independent hardcoded lists, so apply the same derive-don't-repeat
-    rule to any new tool-facing copy.
+    again. **Follow-up sweep (2026-07-10)** caught one survivor the first
+    pass missed: `src/app/opengraph-image.tsx` (and `twitter-image.tsx`,
+    which re-exports it) still hardcoded "v0, Cursor, and GenVibe" in
+    both the `alt` text and the card art — the first thing any shared
+    link renders, and the only launch-facing surface with **no test**.
+    Now derived and covered. Localized copy needed no change: all three
+    locales interpolate `{tools}`. Nothing left open here — but the root
+    cause was six independent hardcoded lists, so apply the same
+    derive-don't-repeat rule to any new tool-facing copy, and remember
+    that `next/og` routes are only exercised by `npm run build`, never
+    by `npm test`.
 
 18. **UI localization shipped (2026-07-10)** — early users requested Thai
     and Simplified Chinese. CopyUI now treats **website UI language as

@@ -1258,3 +1258,31 @@ extracted rules, for a later task:
 - Validation: `rtk npm test` 131/131 across 8 files (was 118/7), `rtk npm run
   lint` clean, `rtk npm run build` clean (27 routes).
 - Wiki: next-actions.md (item 18), this entry.
+
+## [2026-07-10] og-card-drift | The last hardcoded 3-tool list, in the social card
+- Follow-up sweep on the tool-mode copy drift fixed in `tool-mode-copy` above.
+  The homepage, SEO description, footer, detail metadata, and GitHub issue
+  bodies were already derived from `TOOL_MODES`. A grep for stale lists found
+  **one survivor**: `src/app/opengraph-image.tsx`, which hardcoded
+  "v0, Cursor, and GenVibe" in both its `alt` text and the rendered card art —
+  and `twitter-image.tsx` re-exports it, so both social cards were wrong.
+- This was the worst place for it to hide: the OG card is the *first* thing
+  anyone sees from a shared link, and it had **no test at all**, which is
+  precisely why it outlived the sweep that fixed everything else.
+- Fix: `alt` is now `SITE_TAGLINE` (already derived), and the card art uses
+  `toolModeShortList(3)`. Both now track `TOOL_MODES`.
+- **Localized copy needed no change** — `en`/`th`/`zh-CN` all interpolate
+  `{tools}`, so they inherit the derived list. Verified by grep, not assumed.
+- Tests: two new in `tests/metadata.test.ts` — the OG `alt` must equal
+  `SITE_TAGLINE` and must not contain the old 3-tool string; the Twitter alt
+  must equal the OG alt. The social card now has coverage for the first time.
+- **The build caught a bug the tests could not.** Interpolating as
+  `text {expr}` gave the tagline `<div>` two children, and Satori (next/og)
+  requires an explicit `display` on any multi-child div — `npm test` passed
+  while `/twitter-image` failed to prerender. Collapsed to a single template
+  string. A reminder that OG routes are only exercised at build time.
+- Validation: `rtk npm test` 133/133 across 8 files, `rtk npm run lint` clean,
+  `rtk npm run build` clean (27 routes, both image routes prerender).
+- Prompt behavior untouched; no tools added.
+- **Still deferred**: site appearance / theme toggle (next-actions item 16).
+- Wiki: next-actions.md (item 17), this entry.
