@@ -1351,3 +1351,35 @@ extracted rules, for a later task:
 - Kept concise — no architecture dump, no prompt templates pasted.
 - Wiki: next-actions.md, this entry.
 - **Next: final production QA rerun** before launch.
+
+## [2026-07-10] cta-contrast | Copy button foreground now derived from primaryColor
+- **The last known user-facing defect.** The Copy button painted the
+  user-chosen `primaryColor` as its background with a hardcoded `text-white`
+  label. Flagged in three successive audits and carried forward each time.
+- New `src/lib/color-contrast.ts`: `parseHex()` (3- and 6-digit, with or
+  without `#`, null on garbage), `relativeLuminance()` (WCAG sRGB
+  linearization), `contrastRatio()`, and `readableForeground()` which returns
+  whichever of near-black (`#0c0c0e`) or white contrasts better. Invalid colors
+  fall back to white — the previous behavior — rather than rendering something
+  unexpected. `copy-prompt-button.tsx` now sets `color` from it and drops
+  `text-white`.
+- **The tests found a second bug I was not looking for.** I asserted `#8b5cf6`
+  (the Startup Landing Hero default) should keep white text. It failed. White
+  on that violet is only **4.23:1 — below the 4.5:1 WCAG AA floor for normal
+  text**; near-black reaches 4.61:1 and passes. So the hardcoded white was
+  quietly non-compliant on the *default* theme too, not only on the yellow one
+  that exposed the issue. The maximize-contrast rule is simply more correct
+  than the convention. Expectation corrected, and the surprise recorded in the
+  test so nobody "fixes" it back.
+- Added a dataset-wide guard: **all 18 shipped `defaultPrimaryColor` values**
+  now clear 3:1 against their derived foreground. A future theme with a bad
+  brand color fails the suite instead of shipping.
+- 13 new tests (150 total, 9 files). Prompt output, i18n, tool/theme modes, and
+  the hidden-template guarantee are untouched and still green.
+- Also corrected the **stale `next-actions.md` status header** — it was dated
+  2026-07-09, still described Tool Mode as "v0.dev / Cursor / GenVibe", and
+  stopped at layout presets. It now reflects six tool modes, context-of-use
+  templates, the trust FAQ, localization, the closed validation pass, verified
+  `NEXT_PUBLIC_SITE_URL`, and this fix.
+- Validation: `rtk npm test` 150/150, `rtk npm run lint` clean, `rtk npm run
+  build` clean (27 routes).

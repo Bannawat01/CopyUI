@@ -1,20 +1,35 @@
 # Next Actions
 
-**Status: [MVP done + UX/QA polish done + prompt content/preview pass done +
-prompt output-quality refinement done + premium marketplace visual
-redesign done + 18-theme dataset expansion done + motion/interaction pass
-done + Tool Mode feature done + marketplace controls (sort/counts) done +
-production-readiness pass done + Retheme Mode / multi-color / theme modes
-done + layout presets (with per-theme recommendations) done
-(2026-07-09)]**
+**Status: [LAUNCH-READY — no known user-facing defects (2026-07-10)]**
 
-The MVP described in CLAUDE.md is implemented, polished, has
-production-ready prompt content, a premium dark template-marketplace
-visual identity, a large dataset (**18 themes across 12 categories**), a
-full motion/interaction pass, and now a **Tool Mode** selector (v0.dev /
-Cursor / GenVibe) that tailors the hidden, server-built prompt to the
-target AI tool via a tool-specific framing prefix. Passes `npm run build` /
-`npm run lint`. Suggested next steps, in rough order:
+CopyUI is an AI UI prompt marketplace: **18 themes across 12 categories**,
+each with a hidden `promptTemplate` built server-side on copy. Shipped
+since the last header rewrite:
+
+- **Six tool modes** — v0.dev, Cursor, VS Code / Copilot, Claude Code,
+  Windsurf, GenVibe (not three; all launch copy now *derives* from
+  `TOOL_MODES` so it cannot drift again).
+- **Prompt options** — Theme Mode (dark/light/system/mono), Prompt Intent
+  (build/retheme), Action Style (apply/instruct), and 9 Layout Presets
+  with per-theme recommendations, composed conflict-safely (final
+  overrides appended *after* the base brief).
+- **Context-of-use templates** — all 18 state who uses the UI, what moment
+  they are in, what decision it must support, and what success looks like.
+- **Trust FAQ + Retheme safety note** — honest, hedged copy; a test fails
+  the build if it ever claims guaranteed or deterministic output.
+- **UI localization** — en / th / zh-CN. Copied prompts stay **English**
+  (token efficiency + AI-tool reliability), enforced by tests.
+- **First prompt-option validation pass CLOSED** — all 3 priority cases
+  passed against real tools (see item 4).
+- **`NEXT_PUBLIC_SITE_URL` set in Vercel and verified** — production
+  sitemap/robots/canonical/OG carry the real domain, no localhost.
+- **CTA contrast fixed (2026-07-10)** — the Copy button now derives a
+  readable foreground from the user's `primaryColor`. This was the last
+  known user-facing defect.
+
+Passes `npm test` (**150 tests, 9 files**), `npm run lint`, `npm run
+build` (27 routes). Remaining items below are enhancements and accepted
+trade-offs, not blockers — in rough order:
 
 1. Consider replacing the hand-built CSS/div screenshot mockups with real
    thumbnail images, rendered screenshots, or live-rendered component

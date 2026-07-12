@@ -15,6 +15,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check, Copy, Loader2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocale } from "@/components/locale-provider";
+import { readableForeground } from "@/lib/color-contrast";
 import {
   getToolModeCaption,
   getToolModeLabel,
@@ -53,6 +54,8 @@ export function CopyPromptButton({
   const { t } = useLocale();
   const [state, setState] = useState<CopyState>("idle");
   const tool = getToolModeLabel(toolMode);
+  // primaryColor is user-chosen, so the label color has to follow it.
+  const foreground = readableForeground(primaryColor);
 
   const statusText: Record<CopyState, string> = {
     idle: "",
@@ -102,8 +105,8 @@ export function CopyPromptButton({
           onClick={handleCopy}
           disabled={state === "loading"}
           aria-busy={state === "loading"}
-          style={{ backgroundColor: primaryColor }}
-          className="gap-2 text-white shadow-lg transition-colors hover:opacity-90 disabled:opacity-80"
+          style={{ backgroundColor: primaryColor, color: foreground }}
+          className="gap-2 shadow-lg transition-colors hover:opacity-90 disabled:opacity-80"
         >
           <AnimatePresence mode="wait" initial={false}>
             {state === "loading" ? (
