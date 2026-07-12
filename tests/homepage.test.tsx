@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import GalleryPage from "@/app/page";
+import { LocaleProvider } from "@/components/locale-provider";
+import { TOOL_MODE_LABELS, toolModeShortList } from "@/lib/tool-modes";
+import { t } from "@/lib/i18n";
 
 /**
  * Renders the homepage Server Component to static markup — no jsdom or
@@ -8,12 +11,38 @@ import GalleryPage from "@/app/page";
  * re-asserts the hidden-template guarantee at the HTML level.
  */
 describe("homepage", () => {
-  const html = renderToStaticMarkup(<GalleryPage />);
+  // Localized UI lives in client components, so the page needs its provider.
+  // Static render = default locale (English), which is what SSR/SEO sees.
+  const html = renderToStaticMarkup(
+    <LocaleProvider>
+      <GalleryPage />
+    </LocaleProvider>,
+  );
 
   it("renders the positioning headline", () => {
-    expect(html).toContain(
+    expect(html).toContain("Production-ready UI prompts for");
+    expect(html).toContain(toolModeShortList(2));
+  });
+
+  it("renders default-locale (English) UI labels", () => {
+    expect(html).toContain(t("en", "gallery.heading"));
+    expect(html).toContain(t("en", "home.step1.title"));
+    expect(html).toContain(t("en", "lang.note"));
+  });
+
+  // The site advertised 3 tools long after it supported 6. Copy is now
+  // derived from TOOL_MODES; this fails if anyone hardcodes a list again.
+  it("names every supported tool mode somewhere on the page", () => {
+    for (const label of TOOL_MODE_LABELS) {
+      expect(html).toContain(label);
+    }
+  });
+
+  it("does not advertise the old 3-tool-only list", () => {
+    expect(html).not.toContain(
       "Production-ready UI prompts for v0, Cursor, and GenVibe",
     );
+    expect(html).not.toContain("v0.dev, Cursor, or GenVibe");
   });
 
   it("renders the How it works steps", () => {

@@ -1,6 +1,8 @@
 "use client";
 
 import { PROMPT_INTENTS, type PromptIntent } from "@/lib/prompt-options";
+import { useLocale } from "@/components/locale-provider";
+import type { TranslationKey } from "@/lib/i18n";
 
 export function PromptIntentSelector({
   value,
@@ -9,6 +11,7 @@ export function PromptIntentSelector({
   value: PromptIntent;
   onChange: (intent: PromptIntent) => void;
 }) {
+  const { t } = useLocale();
   const selected = PROMPT_INTENTS.find((i) => i.value === value);
 
   return (
@@ -17,14 +20,14 @@ export function PromptIntentSelector({
         id="prompt-intent-label"
         className="text-sm font-medium text-foreground"
       >
-        Prompt Intent
+        {t("intent.label")}
       </span>
       <div
         role="radiogroup"
         aria-labelledby="prompt-intent-label"
         className="inline-flex w-fit rounded-lg border border-white/10 bg-white/5 p-1"
       >
-        {PROMPT_INTENTS.map(({ value: intent, label }) => {
+        {PROMPT_INTENTS.map(({ value: intent }) => {
           const active = value === intent;
           return (
             <button
@@ -37,12 +40,14 @@ export function PromptIntentSelector({
                 active ? "bg-white text-black" : "text-white/50 hover:text-white"
               }`}
             >
-              {label}
+              {t(`intent.${intent}.label` as TranslationKey)}
             </button>
           );
         })}
       </div>
-      <p className="text-xs text-muted-foreground">{selected?.description}</p>
+      <p className="text-xs text-muted-foreground">
+        {selected && t(`intent.${selected.value}.desc` as TranslationKey)}
+      </p>
     </div>
   );
 }

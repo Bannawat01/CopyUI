@@ -192,4 +192,29 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
     in `src/app/layout.tsx`, so it is a genuine change, not a switch
     flip. Deferred, not rejected.
 
+17. **Tool-mode copy drift FIXED before launch (2026-07-10)** — the site
+    advertised 3 tools while supporting 6. All launch-facing copy
+    (homepage headline, "How it works", SEO description, footer,
+    detail-page metadata, prefilled GitHub issue bodies) is now
+    **derived from `TOOL_MODES`** via `toolModeList()` /
+    `toolModeShortList()`, and tests fail if any list is hardcoded
+    again. Nothing left to do here — but note the root cause was five
+    independent hardcoded lists, so apply the same derive-don't-repeat
+    rule to any new tool-facing copy.
+
+18. **UI localization shipped (2026-07-10)** — early users requested Thai
+    and Simplified Chinese. CopyUI now treats **website UI language as
+    separate from copied prompt language**: the site translates (en / th /
+    zh-CN, plain dictionary in `src/lib/i18n.ts`, locale in
+    `localStorage`), while **copied prompts stay English** for token
+    efficiency and AI-tool reliability. Tests assert the built prompt is
+    byte-identical across locales. **Still open**: (a) **SEO metadata is
+    English-only** — the locale is client-side, so server-rendered HTML and
+    OG/title/description never localize; fixing that needs URL-based
+    routing (`/th`, `/zh-CN`), a real architecture change. (b) Translations
+    were written by the agent and have had **no native-speaker review** —
+    worth a pass before promoting the feature. (c) The **site appearance /
+    theme toggle** remains a later task (see item 16), untouched by this
+    work.
+
 This list should be revised as decisions are made — do not treat it as fixed.

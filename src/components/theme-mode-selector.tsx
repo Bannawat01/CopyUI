@@ -1,5 +1,8 @@
 "use client";
 
+import { useLocale } from "@/components/locale-provider";
+import type { TranslationKey } from "@/lib/i18n";
+
 import { THEME_MODES, type ThemeMode } from "@/lib/prompt-options";
 
 export function ThemeModeSelector({
@@ -9,20 +12,22 @@ export function ThemeModeSelector({
   value: ThemeMode;
   onChange: (mode: ThemeMode) => void;
 }) {
+  const { t } = useLocale();
+
   return (
     <div className="flex flex-col gap-2">
       <span
         id="theme-mode-label"
         className="text-sm font-medium text-foreground"
       >
-        Theme Mode
+        {t("theme.label")}
       </span>
       <div
         role="radiogroup"
         aria-labelledby="theme-mode-label"
         className="inline-flex w-fit rounded-lg border border-white/10 bg-white/5 p-1"
       >
-        {THEME_MODES.map(({ value: mode, label }) => {
+        {THEME_MODES.map(({ value: mode }) => {
           const active = value === mode;
           return (
             <button
@@ -35,7 +40,7 @@ export function ThemeModeSelector({
                 active ? "bg-white text-black" : "text-white/50 hover:text-white"
               }`}
             >
-              {label}
+              {t(`theme.${mode}` as TranslationKey)}
             </button>
           );
         })}

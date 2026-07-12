@@ -13,6 +13,7 @@ import { LayoutPresetSelector } from "@/components/layout-preset-selector";
 import { CopyPromptButton } from "@/components/copy-prompt-button";
 import { QualityChecklist } from "@/components/quality-checklist";
 import { RethemeSafetyNote } from "@/components/retheme-safety-note";
+import { useLocale } from "@/components/locale-provider";
 import type { PromptTheme } from "@/lib/prompts";
 import type { ToolMode } from "@/lib/tool-modes";
 import type {
@@ -28,6 +29,7 @@ type PromptDetailData = Pick<
 >;
 
 export function PromptDetail({ prompt }: { prompt: PromptDetailData }) {
+  const { t } = useLocale();
   const [primaryColor, setPrimaryColor] = useState(prompt.defaultPrimaryColor);
   const [secondaryColor, setSecondaryColor] = useState<string | undefined>();
   const [accentColor, setAccentColor] = useState<string | undefined>();
@@ -64,24 +66,23 @@ export function PromptDetail({ prompt }: { prompt: PromptDetailData }) {
       >
         <div>
           <h2 className="font-heading text-sm font-medium">
-            Customize &amp; Copy
+            {t("detail.panelTitle")}
           </h2>
           <p className="mt-1 text-xs text-muted-foreground">
-            The full prompt stays hidden — your choices below are built into
-            a tailored prompt server-side and copied to your clipboard.
+            {t("detail.panelNote")}
           </p>
         </div>
 
         <ColorControl
           id="primary-color"
-          label="Primary Color"
+          label={t("detail.primaryColor")}
           value={primaryColor}
           onChange={setPrimaryColor}
         />
 
         <details className="group rounded-lg border border-white/10 bg-white/[0.03]">
           <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-white/70 outline-none transition-colors hover:text-white focus-visible:ring-3 focus-visible:ring-ring/50 [&::-webkit-details-marker]:hidden">
-            Advanced theme &amp; layout options
+            {t("detail.advanced")}
             <ChevronDown
               className="h-4 w-4 text-white/40 transition-transform group-open:rotate-180"
               aria-hidden="true"
@@ -90,14 +91,14 @@ export function PromptDetail({ prompt }: { prompt: PromptDetailData }) {
           <div className="flex flex-col gap-4 px-3 pb-3 pt-1">
             <ColorControl
               id="secondary-color"
-              label="Secondary Color"
+              label={t("detail.secondaryColor")}
               value={secondaryColor}
               onChange={setSecondaryColor}
               onClear={() => setSecondaryColor(undefined)}
             />
             <ColorControl
               id="accent-color"
-              label="Accent Color"
+              label={t("detail.accentColor")}
               value={accentColor}
               onChange={setAccentColor}
               onClear={() => setAccentColor(undefined)}

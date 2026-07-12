@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import robots from "@/app/robots";
 import sitemap from "@/app/sitemap";
 import { prompts } from "@/lib/prompts";
-import { SITE_URL } from "@/lib/site";
+import { SITE_DESCRIPTION, SITE_TAGLINE, SITE_URL } from "@/lib/site";
+import { TOOL_MODE_LABELS } from "@/lib/tool-modes";
 
 describe("sitemap", () => {
   const entries = sitemap();
@@ -23,6 +24,26 @@ describe("sitemap", () => {
     const urls = entries.map((e) => e.url);
     expect(new Set(urls).size).toBe(urls.length);
     expect(JSON.stringify(entries)).not.toContain("Product context:");
+  });
+});
+
+describe("SEO copy tracks TOOL_MODES", () => {
+  it("the meta description names every supported tool", () => {
+    for (const label of TOOL_MODE_LABELS) {
+      expect(SITE_DESCRIPTION).toContain(label);
+    }
+  });
+
+  it("the tagline leads with real tools and does not claim only three", () => {
+    expect(SITE_TAGLINE).toContain(TOOL_MODE_LABELS[0]);
+    expect(SITE_TAGLINE).toContain("and more");
+    expect(SITE_TAGLINE).not.toContain("for v0, Cursor, and GenVibe");
+  });
+
+  it("no stale 3-tool list survives in site copy", () => {
+    for (const copy of [SITE_TAGLINE, SITE_DESCRIPTION]) {
+      expect(copy).not.toContain("v0.dev, Cursor, or GenVibe");
+    }
   });
 });
 

@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { MotionProvider } from "@/components/motion-provider";
+import { LocaleProvider } from "@/components/locale-provider";
+import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import {
   SITE_DESCRIPTION,
@@ -58,10 +60,13 @@ export default function RootLayout({
       className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <MotionProvider>
-          {children}
-          <SiteFooter />
-        </MotionProvider>
+        <LocaleProvider>
+          <MotionProvider>
+            <SiteHeader />
+            {children}
+            <SiteFooter />
+          </MotionProvider>
+        </LocaleProvider>
         <Analytics />
         <SpeedInsights />
       </body>

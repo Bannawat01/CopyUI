@@ -1193,3 +1193,68 @@ extracted rules, for a later task:
 - **Not done, deliberately**: a site-wide appearance/theme toggle. Users noted
   CopyUI itself is dark-only. Logged as a later UX task, not bundled here.
 - Wiki: next-actions.md (new item 16), this entry.
+
+## [2026-07-10] tool-mode-copy | Launch copy now tracks TOOL_MODES (drift fixed)
+- Found in the pre-launch QA audit: CopyUI has supported **6** tool modes
+  (v0.dev, Cursor, VS Code / Copilot, Claude Code, Windsurf, GenVibe) since the
+  retheme pass, but every user-facing string still advertised **3**. A Claude
+  Code or Windsurf user reading the homepage — or a Google result — had no way
+  to know they were supported.
+- Root cause was not the strings, it was the pattern: the homepage headline, the
+  SEO description, the footer, the detail-page metadata, and the prefilled GitHub
+  issue bodies each carried their **own hardcoded list**. Adding a 7th tool would
+  have re-broken all five.
+- Fix: copy is now **derived** from `TOOL_MODES`. New helpers in
+  `src/lib/tool-modes.ts` — `TOOL_MODE_LABELS`, `toolModeList()` (all tools, for
+  SEO and footer), `toolModeShortList(n)` (headline-safe: leads with the
+  best-known tools, "and more" carries the rest, since naming six in an h1 reads
+  as a keyword dump). All five call sites consume them.
+- Discoverability preserved: the headline stays readable while the full list
+  appears in the meta description, the "How it works" step, the footer, and the
+  tool-mode selector itself.
+- Guards added so this cannot regress: `tests/homepage.test.tsx` asserts every
+  `TOOL_MODE_LABELS` entry appears in the rendered HTML; `tests/metadata.test.ts`
+  asserts the same for `SITE_DESCRIPTION`. Both fail if anyone hardcodes a list
+  again. The old 3-tool strings are explicitly asserted absent.
+- Validation: `rtk npm test` 118/118 across 7 files (was 113), `rtk npm run lint`
+  clean, `rtk npm run build` clean (27 routes). Build run because SEO metadata
+  and two rendered routes changed.
+- Prompt behavior untouched: no tool added, no framing prefix changed, no
+  template edited. Copy only.
+- **Still deferred**: the site appearance / theme toggle (CopyUI itself is
+  dark-only). Unrelated to this pass; see next-actions item 16.
+- Wiki: next-actions.md (item 16), this entry.
+
+## [2026-07-10] i18n | UI localization (en / th / zh-CN) — prompts stay English
+- Early users asked for Thai and Simplified Chinese support for the CopyUI
+  website. Shipped as **UI-only localization**.
+- **The load-bearing distinction: site language ≠ prompt language.** The copied
+  prompt stays English in every locale, because English prompts are more
+  token-efficient and more reliable in AI UI/code tools. This is a product
+  decision, not an oversight, so it is stated in the UI (a note on the language
+  selector and a dedicated FAQ entry) and enforced in tests.
+- Approach: plain dictionary in `src/lib/i18n.ts`, no i18n framework. `LOCALES`,
+  `t(locale, key, vars)` with `{name}` interpolation, `tCategory()`, and
+  English fallback for any missing key. `LocaleProvider` exposes it via context;
+  locale persists in `localStorage` under `copyui:locale`.
+- **`useSyncExternalStore`, not an effect.** The first cut read localStorage in a
+  `useEffect` and called `setState` — lint (`react-hooks/set-state-in-effect`)
+  correctly rejected it. localStorage is an external store: the server snapshot
+  is always the default locale, so SSR and hydration agree and React swaps in
+  the stored locale without a mismatch.
+- **Known trade-off**: because the locale is client-side only, server-rendered
+  HTML and all SEO metadata (title, description, OG) remain English. Google will
+  only ever index the English site. Localizing SEO needs URL-based routing
+  (`/th`, `/zh-CN`), which is a real architecture change and was out of scope.
+- Translated: homepage hero + How it works, gallery search/sort/category/empty
+  state, detail panel labels, all five selectors, copy-button states, trust FAQ,
+  retheme safety note, footer. New minimal sticky header holds the language
+  selector (labels: English / ไทย / 中文).
+- NOT translated, deliberately: `promptTemplate`, built prompt text, API
+  response content, tool-mode names (proper nouns).
+- Guard: `tests/i18n.test.ts` posts to the build API under every locale and
+  asserts the returned text is **byte-identical** and contains no Thai or CJK
+  characters. If anyone ever wires locale into the prompt builder, it fails.
+- Validation: `rtk npm test` 131/131 across 8 files (was 118/7), `rtk npm run
+  lint` clean, `rtk npm run build` clean (27 routes).
+- Wiki: next-actions.md (item 18), this entry.

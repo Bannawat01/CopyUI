@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { SearchX } from "lucide-react";
 import { PromptCard } from "@/components/prompt-card";
+import { useLocale } from "@/components/locale-provider";
 import type { PublicPromptTheme } from "@/lib/prompts";
 
 export function PromptGrid({
@@ -14,6 +15,8 @@ export function PromptGrid({
   query?: string;
   onClearQuery?: () => void;
 }) {
+  const { t } = useLocale();
+
   if (prompts.length === 0) {
     return (
       <motion.div
@@ -25,15 +28,7 @@ export function PromptGrid({
       >
         <SearchX className="h-8 w-8 text-muted-foreground" aria-hidden="true" />
         <p className="text-sm font-medium">
-          {query ? (
-            <>No prompts match &ldquo;{query}&rdquo;.</>
-          ) : (
-            <>No prompts to show.</>
-          )}
-        </p>
-        <p className="max-w-xs text-sm text-muted-foreground">
-          Try a different keyword or tag, like &ldquo;dashboard&rdquo; or
-          &ldquo;landing&rdquo;.
+          {query ? t("gallery.emptyQuery", { query }) : t("gallery.empty")}
         </p>
         {onClearQuery && (
           <button
@@ -41,7 +36,7 @@ export function PromptGrid({
             onClick={onClearQuery}
             className="mt-1 rounded-lg text-sm font-medium text-foreground underline underline-offset-4 outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
           >
-            Clear filters
+            {t("gallery.clearFilters")}
           </button>
         )}
       </motion.div>

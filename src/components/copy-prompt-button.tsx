@@ -14,6 +14,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Copy, Loader2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLocale } from "@/components/locale-provider";
 import {
   getToolModeCaption,
   getToolModeLabel,
@@ -49,13 +50,15 @@ export function CopyPromptButton({
   layoutPreset?: LayoutPreset;
   toolMode: ToolMode;
 }) {
+  const { t } = useLocale();
   const [state, setState] = useState<CopyState>("idle");
+  const tool = getToolModeLabel(toolMode);
 
   const statusText: Record<CopyState, string> = {
     idle: "",
-    loading: `Building a ${getToolModeLabel(toolMode)} prompt…`,
-    success: `Copied — tailored for ${getToolModeLabel(toolMode)}`,
-    error: "Couldn't copy the prompt. Please try again.",
+    loading: t("copy.building", { tool }),
+    success: t("copy.success", { tool }),
+    error: t("copy.error"),
   };
 
   async function handleCopy() {
@@ -111,7 +114,7 @@ export function CopyPromptButton({
                 exit={{ opacity: 0, scale: 0.8 }}
                 className="flex items-center gap-2"
               >
-                <Loader2 className="h-4 w-4 animate-spin" /> Copying...
+                <Loader2 className="h-4 w-4 animate-spin" /> {t("copy.copying")}
               </motion.span>
             ) : state === "success" ? (
               <motion.span
@@ -122,7 +125,7 @@ export function CopyPromptButton({
                 transition={{ type: "spring", stiffness: 500, damping: 15 }}
                 className="flex items-center gap-2"
               >
-                <Check className="h-4 w-4" /> Copied!
+                <Check className="h-4 w-4" /> {t("copy.copied")}
               </motion.span>
             ) : state === "error" ? (
               <motion.span
@@ -132,7 +135,7 @@ export function CopyPromptButton({
                 exit={{ opacity: 0, scale: 0.8 }}
                 className="flex items-center gap-2"
               >
-                <X className="h-4 w-4" /> Copy failed
+                <X className="h-4 w-4" /> {t("copy.failed")}
               </motion.span>
             ) : (
               <motion.span
@@ -142,7 +145,7 @@ export function CopyPromptButton({
                 exit={{ opacity: 0, scale: 0.8 }}
                 className="flex items-center gap-2"
               >
-                <Copy className="h-4 w-4" /> Copy for {getToolModeLabel(toolMode)}
+                <Copy className="h-4 w-4" /> {t("copy.idle", { tool })}
               </motion.span>
             )}
           </AnimatePresence>

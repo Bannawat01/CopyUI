@@ -4,6 +4,8 @@
  * NOTE: labels only apply if they already exist in the repo; GitHub
  * silently drops unknown ones rather than failing the link.
  */
+import { TOOL_MODE_LABELS } from "@/lib/tool-modes";
+
 export const REPO_URL = "https://github.com/Bannawat01/CopyUI";
 
 function issueUrl({
@@ -39,7 +41,7 @@ export const FEEDBACK_LINKS: FeedbackLink[] = [
         "**What would you build with it?**",
         "",
         "",
-        "**Which tool would you use it in?** (v0.dev / Cursor / GenVibe)",
+        `**Which tool would you use it in?** (${TOOL_MODE_LABELS.join(" / ")})`,
         "",
       ].join("\n"),
     }),
@@ -54,7 +56,7 @@ export const FEEDBACK_LINKS: FeedbackLink[] = [
         "**Which prompt?** (theme name or URL)",
         "",
         "",
-        "**Which tool mode?** (v0.dev / Cursor / GenVibe)",
+        `**Which tool mode?** (${TOOL_MODE_LABELS.join(" / ")})`,
         "",
         "",
         "**What went wrong in the generated output?**",

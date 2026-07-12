@@ -3,24 +3,27 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
+import { useLocale } from "@/components/locale-provider";
 import { PromptGrid } from "@/components/prompt-grid";
 import {
   GALLERY_CATEGORIES,
   type Category as FullCategory,
   type PublicPromptTheme,
 } from "@/lib/prompts";
+import type { TranslationKey } from "@/lib/i18n";
 
 type Category = (typeof GALLERY_CATEGORIES)[number];
 
 type SortOption = "most-copied" | "newest" | "a-z";
 
-const SORT_OPTIONS: { value: SortOption; label: string }[] = [
-  { value: "most-copied", label: "Most Copied" },
-  { value: "newest", label: "Newest" },
-  { value: "a-z", label: "A-Z" },
+const SORT_OPTIONS: { value: SortOption; labelKey: TranslationKey }[] = [
+  { value: "most-copied", labelKey: "gallery.sort.mostCopied" },
+  { value: "newest", labelKey: "gallery.sort.newest" },
+  { value: "a-z", labelKey: "gallery.sort.az" },
 ];
 
 export function GallerySearch({ prompts }: { prompts: PublicPromptTheme[] }) {
+  const { t, tCategory } = useLocale();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<Category>("All");
   const [sort, setSort] = useState<SortOption>("most-copied");
@@ -64,19 +67,19 @@ export function GallerySearch({ prompts }: { prompts: PublicPromptTheme[] }) {
     <section className="mt-6 flex w-full flex-col gap-5 sm:mt-8 sm:gap-6">
       <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
         <h2 className="font-heading text-xl font-medium text-white sm:text-2xl">
-          Browse Templates
+          {t("gallery.heading")}
         </h2>
         <div className="flex w-full items-center gap-3 sm:w-auto">
           <Input
             type="search"
-            aria-label="Search prompts by title, tag, or keyword"
-            placeholder="Search templates..."
+            aria-label={t("gallery.searchAria")}
+            placeholder={t("gallery.searchPlaceholder")}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="h-10 w-full border-white/10 bg-white/5 text-white placeholder:text-white/30 sm:w-72"
           />
           <label className="sr-only" htmlFor="gallery-sort">
-            Sort templates
+            {t("gallery.sortAria")}
           </label>
           <select
             id="gallery-sort"
@@ -86,19 +89,22 @@ export function GallerySearch({ prompts }: { prompts: PublicPromptTheme[] }) {
           >
             {SORT_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value} className="bg-[#111]">
-                {opt.label}
+                {t(opt.labelKey)}
               </option>
             ))}
           </select>
           <span className="hidden shrink-0 text-sm text-white/40 sm:inline">
-            {filtered.length} of {prompts.length}
+            {t("gallery.count", {
+              shown: filtered.length,
+              total: prompts.length,
+            })}
           </span>
         </div>
       </div>
 
       <div
         role="group"
-        aria-label="Filter by category"
+        aria-label={t("gallery.filterAria")}
         className="flex flex-wrap gap-2"
       >
         {GALLERY_CATEGORIES.map((c) => {
@@ -123,7 +129,7 @@ export function GallerySearch({ prompts }: { prompts: PublicPromptTheme[] }) {
                 />
               )}
               <span className="relative inline-flex items-center gap-1.5">
-                {c}
+                {tCategory(c)}
                 <span
                   className={`text-xs ${active ? "text-black/60" : "text-white/45"}`}
                 >

@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale } from "@/components/locale-provider";
 import { TOOL_MODES, type ToolMode } from "@/lib/tool-modes";
 
 export function ToolModeSelector({
@@ -9,10 +10,12 @@ export function ToolModeSelector({
   value: ToolMode;
   onChange: (mode: ToolMode) => void;
 }) {
+  const { t } = useLocale();
+
   return (
     <div className="flex flex-col gap-2">
       <span id="tool-mode-label" className="text-sm font-medium text-foreground">
-        Tool Mode
+        {t("tool.label")}
       </span>
       <div
         role="radiogroup"

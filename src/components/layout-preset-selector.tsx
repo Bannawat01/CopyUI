@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale } from "@/components/locale-provider";
 import { type LayoutPreset } from "@/lib/prompt-options";
 import { getGroupedLayoutPresets } from "@/lib/layout-recommendations";
 import type { PreviewKind } from "@/lib/prompts";
@@ -17,6 +18,7 @@ export function LayoutPresetSelector({
   /** True in Retheme mode, where the preset only hints at styling. */
   advisory?: boolean;
 }) {
+  const { t } = useLocale();
   const { auto, recommended, other } = getGroupedLayoutPresets(previewKind);
 
   return (
@@ -25,7 +27,7 @@ export function LayoutPresetSelector({
         htmlFor="layout-preset"
         className="text-sm font-medium text-foreground"
       >
-        Layout Preset
+        {t("layout.label")}
       </label>
       <select
         id="layout-preset"
@@ -36,7 +38,7 @@ export function LayoutPresetSelector({
         <option value={auto.value} className="bg-[#111]">
           {auto.label}
         </option>
-        <optgroup label="Recommended for this theme">
+        <optgroup label={t("layout.recommended")}>
           {recommended.map((preset) => (
             <option
               key={preset.value}
@@ -47,7 +49,7 @@ export function LayoutPresetSelector({
             </option>
           ))}
         </optgroup>
-        <optgroup label="Other layouts">
+        <optgroup label={t("layout.other")}>
           {other.map((preset) => (
             <option
               key={preset.value}
@@ -60,10 +62,7 @@ export function LayoutPresetSelector({
         </optgroup>
       </select>
       {advisory && value !== "auto" && (
-        <p className="text-xs text-muted-foreground">
-          In Retheme mode this is advisory only — your existing page
-          structure is preserved.
-        </p>
+        <p className="text-xs text-muted-foreground">{t("layout.advisory")}</p>
       )}
     </div>
   );

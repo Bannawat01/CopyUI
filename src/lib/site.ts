@@ -1,3 +1,5 @@
+import { toolModeList, toolModeShortList } from "@/lib/tool-modes";
+
 /**
  * Canonical site URL for metadata, sitemap, and robots.
  * Set NEXT_PUBLIC_SITE_URL in the deployment environment (no trailing
@@ -8,8 +10,7 @@ export const SITE_URL =
 
 export const SITE_NAME = "CopyUI";
 
-export const SITE_TAGLINE =
-  "CopyUI — Production-ready UI prompts for v0, Cursor, and GenVibe.";
+export const SITE_TAGLINE = `CopyUI — Production-ready UI prompts for ${toolModeShortList(2)}.`;
 
-export const SITE_DESCRIPTION =
-  "Discover, customize, and copy production-ready UI prompts. Pick a theme, set your brand color and tool mode, and paste a tailored prompt into v0.dev, Cursor, or GenVibe.";
+/** Names every supported tool so all of them are discoverable in search. */
+export const SITE_DESCRIPTION = `Discover, customize, and copy production-ready UI prompts. Pick a theme, set your brand color and tool mode, and paste a tailored prompt into ${toolModeList()}.`;

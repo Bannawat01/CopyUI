@@ -1,19 +1,21 @@
+"use client";
+
 import { ArrowUpRight } from "lucide-react";
+import { useLocale } from "@/components/locale-provider";
 import { FEEDBACK_LINKS, REPO_URL } from "@/lib/feedback";
-import { SITE_NAME } from "@/lib/site";
+import { toolModeList } from "@/lib/tool-modes";
 
 export function SiteFooter() {
+  const { t } = useLocale();
+
   return (
     <footer className="border-t border-white/10 bg-[#050505]">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 sm:px-6 sm:py-10 lg:px-10">
         <div className="flex flex-col gap-1">
           <h2 className="font-heading text-sm font-medium text-white/90">
-            Missing a prompt, or did one fall flat?
+            {t("footer.heading")}
           </h2>
-          <p className="text-xs text-white/45">
-            {SITE_NAME} is built in the open. Feedback goes straight to GitHub
-            Issues — no account setup beyond GitHub, no forms.
-          </p>
+          <p className="text-xs text-white/45">{t("footer.blurb")}</p>
         </div>
 
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -41,17 +43,14 @@ export function SiteFooter() {
         </ul>
 
         <div className="flex flex-col gap-2 border-t border-white/5 pt-5 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
-          <span>
-            {SITE_NAME} — production-ready UI prompts for v0, Cursor, and
-            GenVibe.
-          </span>
+          <span>{t("footer.tagline", { tools: toolModeList() })}</span>
           <a
             href={REPO_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="w-fit rounded-md outline-none transition-colors hover:text-white/70 focus-visible:ring-3 focus-visible:ring-ring/50"
           >
-            View source on GitHub
+            {t("footer.source")}
           </a>
         </div>
       </div>

@@ -23,6 +23,28 @@ export function getToolModeLabel(mode: ToolMode): string {
   return TOOL_MODES.find((m) => m.value === mode)?.label ?? mode;
 }
 
+/**
+ * Marketing copy is DERIVED from TOOL_MODES, never hand-written — the site
+ * shipped claiming 3 tools long after it supported 6, because every headline,
+ * meta description, and footer line held its own hardcoded list.
+ */
+export const TOOL_MODE_LABELS: string[] = TOOL_MODES.map((m) => m.label);
+
+/** All supported tools, e.g. "v0.dev, Cursor, …, and GenVibe". */
+export function toolModeList(): string {
+  const labels = TOOL_MODE_LABELS;
+  return `${labels.slice(0, -1).join(", ")}, and ${labels.at(-1)}`;
+}
+
+/**
+ * Headline-safe form: naming all six reads as a keyword dump, so lead with
+ * the best-known ones and let "and more" carry the rest. The full list stays
+ * discoverable in the tool-mode selector and the footer.
+ */
+export function toolModeShortList(count = 3): string {
+  return `${TOOL_MODE_LABELS.slice(0, count).join(", ")}, and more`;
+}
+
 /** Short caption telling the user what to do with the copied prompt. */
 const TOOL_MODE_CAPTION: Record<ToolMode, string> = {
   v0: "Paste this into a new v0 chat.",
