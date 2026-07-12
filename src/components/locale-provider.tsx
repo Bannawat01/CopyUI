@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useCallback, useContext, useSyncExternalStore } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useSyncExternalStore,
+} from "react";
 import {
   DEFAULT_LOCALE,
   isLocale,
@@ -12,6 +18,26 @@ import {
 
 const STORAGE_KEY = "copyui:locale";
 const LOCALE_EVENT = "copyui:locale-change";
+
+/** Narrow shapes so these can be exercised without a DOM. */
+type LocaleStorage = Pick<Storage, "getItem">;
+type LangTarget = { documentElement: { lang: string } };
+
+/** Any unrecognized or absent stored value resolves to English. */
+export function readStoredLocale(storage: LocaleStorage): Locale {
+  const stored = storage.getItem(STORAGE_KEY);
+  return isLocale(stored) ? stored : DEFAULT_LOCALE;
+}
+
+/**
+ * Keeps <html lang> truthful. Serving Thai or Chinese text under lang="en"
+ * makes screen readers pronounce it with an English voice, so this must run
+ * whenever the *resolved* locale changes — not only when the user clicks the
+ * selector. A returning visitor never clicks anything.
+ */
+export function syncDocumentLang(locale: Locale, target: LangTarget): void {
+  target.documentElement.lang = locale;
+}
 
 /**
  * localStorage is an external store, so it is read through
@@ -29,8 +55,7 @@ const localeStore = {
     };
   },
   getSnapshot(): Locale {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    return isLocale(stored) ? stored : DEFAULT_LOCALE;
+    return readStoredLocale(window.localStorage);
   },
   getServerSnapshot(): Locale {
     return DEFAULT_LOCALE;
@@ -53,9 +78,14 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
     localeStore.getServerSnapshot,
   );
 
+  // Writes a DOM attribute, not React state — so it stays outside the render
+  // pass and never triggers the cascading-render lint rule.
+  useEffect(() => {
+    syncDocumentLang(locale, document);
+  }, [locale]);
+
   const setLocale = useCallback((next: Locale) => {
     window.localStorage.setItem(STORAGE_KEY, next);
-    document.documentElement.lang = next;
     window.dispatchEvent(new Event(LOCALE_EVENT));
   }, []);
 

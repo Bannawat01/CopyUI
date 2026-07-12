@@ -1286,3 +1286,35 @@ extracted rules, for a later task:
 - Prompt behavior untouched; no tools added.
 - **Still deferred**: site appearance / theme toggle (next-actions item 16).
 - Wiki: next-actions.md (item 17), this entry.
+
+## [2026-07-10] html-lang | Fixed <html lang> lying to screen readers (a11y)
+- **Bug I introduced with the i18n pass.** `document.documentElement.lang` was
+  only written inside `setLocale`, so a *returning* visitor — whose locale is
+  restored from localStorage, and who therefore never clicks the selector —
+  got Thai or Chinese text served under `<html lang="en">`. Screen readers
+  pronounce that with an English voice. Real accessibility defect, aimed
+  squarely at the users the localization was added for.
+- Fix: the lang write moved out of `setLocale` and into a `useEffect` keyed on
+  the **resolved** locale from `useSyncExternalStore`. One mechanism now covers
+  both paths (restore-on-load and explicit switch) instead of only the second.
+  The effect writes a DOM attribute, not React state, so the
+  `react-hooks/set-state-in-effect` rule that shaped the original design still
+  holds. `layout.tsx` keeps `lang="en"` as the server default — no hydration
+  mismatch.
+- Extracted `readStoredLocale(storage)` and `syncDocumentLang(locale, target)`
+  as pure helpers over narrow shapes (`Pick<Storage,"getItem">`,
+  `{documentElement:{lang}}`) so the returning-visitor path is testable in the
+  node environment. The suite still has no jsdom/testing-library dependency.
+- 4 new tests: stored `th` → `lang="th"`, stored `zh-CN` → `lang="zh-CN"`,
+  unrecognized/absent → `en`, and relabelling on *every* change, not just the
+  first. Prompt output is still asserted byte-identical across locales with no
+  Thai/CJK characters.
+- **Root-cause note for the next feature**: the original code was correct for
+  the path it was written against (user clicks selector) and wrong for the path
+  nobody tested (user returns). Client state restored from storage has two
+  entry paths; a DOM side effect must key off the resolved value, never the
+  event.
+- Validation: `rtk npm test` 137/137 across 8 files (was 133), `rtk npm run
+  lint` clean, `rtk npm run build` clean (27 routes).
+- Prompt builder untouched; no locale reaches the API.
+- Wiki: next-actions.md (item 18), this entry.

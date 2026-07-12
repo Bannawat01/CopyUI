@@ -11,6 +11,10 @@ import {
   type Locale,
 } from "@/lib/i18n";
 import { getTrustFaq, getRethemeSafetyPoints } from "@/lib/trust-copy";
+import {
+  readStoredLocale,
+  syncDocumentLang,
+} from "@/components/locale-provider";
 
 describe("locales", () => {
   it("supports en, th, and zh-CN with English as the default", () => {
@@ -80,6 +84,48 @@ describe("translations are complete enough to use", () => {
         expect(item.question.length).toBeGreaterThan(0);
         expect(item.answer.length).toBeGreaterThan(0);
       }
+    }
+  });
+});
+
+/**
+ * Regression: <html lang> stayed "en" for a returning visitor whose locale
+ * was restored from localStorage, because the attribute was only written
+ * inside setLocale. Thai/Chinese text under lang="en" makes screen readers
+ * use an English voice. The write now keys off the *resolved* locale.
+ */
+describe("<html lang> tracks the resolved locale", () => {
+  const fakeStorage = (value: string | null): Pick<Storage, "getItem"> => ({
+    getItem: () => value,
+  });
+  const fakeDoc = () => ({ documentElement: { lang: "en" } });
+
+  it("restores Thai from storage and labels the document th", () => {
+    const doc = fakeDoc();
+    const locale = readStoredLocale(fakeStorage("th"));
+    expect(locale).toBe("th");
+    syncDocumentLang(locale, doc);
+    expect(doc.documentElement.lang).toBe("th");
+  });
+
+  it("restores Chinese from storage and labels the document zh-CN", () => {
+    const doc = fakeDoc();
+    const locale = readStoredLocale(fakeStorage("zh-CN"));
+    expect(locale).toBe("zh-CN");
+    syncDocumentLang(locale, doc);
+    expect(doc.documentElement.lang).toBe("zh-CN");
+  });
+
+  it("falls back to English for empty or unrecognized stored values", () => {
+    expect(readStoredLocale(fakeStorage(null))).toBe("en");
+    expect(readStoredLocale(fakeStorage("klingon"))).toBe("en");
+  });
+
+  it("relabels the document on every locale change, not just the first", () => {
+    const doc = fakeDoc();
+    for (const locale of LOCALES) {
+      syncDocumentLang(locale, doc);
+      expect(doc.documentElement.lang).toBe(locale);
     }
   });
 });

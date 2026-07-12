@@ -216,7 +216,11 @@ target AI tool via a tool-specific framing prefix. Passes `npm run build` /
     zh-CN, plain dictionary in `src/lib/i18n.ts`, locale in
     `localStorage`), while **copied prompts stay English** for token
     efficiency and AI-tool reliability. Tests assert the built prompt is
-    byte-identical across locales. **Still open**: (a) **SEO metadata is
+    byte-identical across locales. **`<html lang>` a11y bug FIXED
+    (2026-07-10)** — it stayed `"en"` for returning visitors whose locale
+    came from localStorage, so Thai/Chinese text was announced with an
+    English screen-reader voice; the attribute now keys off the resolved
+    locale, not the click event. **Still open**: (a) **SEO metadata is
     English-only** — the locale is client-side, so server-rendered HTML and
     OG/title/description never localize; fixing that needs URL-based
     routing (`/th`, `/zh-CN`), a real architecture change. (b) Translations
