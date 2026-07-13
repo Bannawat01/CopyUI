@@ -324,6 +324,29 @@ Side effect worth recording: **Light now has two independent passing runs** and
 **Mobile App Layout has held on a second, unrelated prompt**. Both were the
 original failure cases that motivated conflict-safe composition.
 
+### Retheme + Layout Preset: advisory rule tested (2026-07-10)
+**Claude Code: Retheme layout preset advisory behavior held, n=1.**
+
+The advisory-only treatment of layout presets in Retheme mode was, until now,
+the preservation guarantee with *zero* real-world evidence. Tested by rethemeing
+CopyUI's own homepage — a wide desktop marketplace grid — with **Mobile App
+Layout** selected, deliberately the most structurally hostile preset available.
+Prompt generated through the real build API (`retheme / apply / dark /
+mobile-app / claude-code / #ca8a04`, template `restaurant-menu-page`).
+
+Result: **7-line diff, every line a `className` edit.** No JSX structure
+changes; no routes, handlers, state, API calls, i18n keys, or components
+touched. No phone frame, no 390–430px cap, no bottom tab bar — no structural
+leakage at all. Tests 160/160, lint clean. The built prompt also carried only
+the advisory hint, never the `Mobile App Layout — hard requirements` block,
+confirming the build-mode gate in `finalOverrides()` holds on the real API path.
+
+**This is charitable evidence, not proof.** The tool under test was also the
+judge: Claude Code executed a prompt it knew was a test, and the advisory
+wording was written by the same model family. It says nothing about Cursor,
+Windsurf, or VS Code / Copilot. n=1. Do not generalize this to "Retheme layout
+presets are safe" — the trust copy stays exactly as written.
+
 ## Quality checklist (detail page)
 The detail page's `QualityChecklist` panel (production pass, 2026-07-09)
 advertises the six template section names as a trust signal. It's a

@@ -87,6 +87,31 @@ trade-offs, not blockers — in rough order:
    render as tappable buttons rather than quiet wordmarks (small
    wording fix). Still untested: the other 6 layout presets and the
    VS Code / Windsurf tool framings.
+   **RETHEME VALIDATED ON REAL CODE (2026-07-10)** — an existing page was
+   rethemed from SaaS Analytics Dashboard to Analytics Command Center
+   style: only the intended page changed, light → dark held, accent
+   direction followed, structure/behavior appeared preserved. The first
+   run against real existing code; every prior run was Build mode, which
+   cannot damage anything. **[uncertain]** Not a diff audit — "appeared
+   preserved" is an observation — and the tool used was not recorded.
+   **RETHEME + LAYOUT PRESET advisory rule tested (2026-07-10)** — the one
+   preservation guarantee with no real-world evidence now has some.
+   Rethemed CopyUI's own desktop homepage with **Mobile App Layout**
+   selected (deliberately the most structurally hostile preset), prompt
+   built through the real API (`retheme / apply / dark / mobile-app /
+   claude-code / #ca8a04`, template `restaurant-menu-page`): **7-line
+   diff, every line a `className` edit**, no JSX structure change, no
+   phone frame / viewport cap / bottom tab bar — zero structural leakage.
+   Tests 160/160, lint clean. Logged precisely as **"Claude Code: Retheme
+   layout preset advisory behavior held, n=1."**
+   **[uncertain]** The tool under test was also the judge — Claude Code ran
+   a prompt it knew was a test, and the advisory wording came from the same
+   model family. Charitable evidence, not proof. **Do not generalize to
+   "Retheme layout presets are safe."** Still unvalidated: **Cursor,
+   Windsurf, VS Code / Copilot**; the **Instructions Only** action style
+   (every Retheme run so far used Apply Directly); and the **other 8 layout
+   presets** under Retheme. Trust copy stays as written — users still
+   commit/branch and review the diff.
    The follow-up this pass recommended — **context-of-use guidance in
    all 18 hidden templates — is now done (2026-07-09)**; each template
    states who uses the UI, what moment they're in, what decision it must

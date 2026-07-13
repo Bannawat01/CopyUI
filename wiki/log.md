@@ -1457,3 +1457,64 @@ extracted rules, for a later task:
   failures. The conflict-safe composition continues to hold.
 - Wiki: next-actions.md (item 20), prompt-system.md (validation section), this
   entry.
+
+## [2026-07-10] retheme-validation-1 | First Retheme run against a real existing frontend
+- No app code changed. **The first time Retheme Mode was tested on real existing
+  code**, rather than reasoned about. Every prior validation run was Build mode,
+  which cannot damage anything.
+- Case: retheme an existing page from **SaaS Analytics Dashboard** style to
+  **Analytics Command Center** style.
+- Result: **PASSED.** Only the intended page changed — no broad rewrite, no
+  unrelated page damage. Theme moved light/white → dark as requested. Accent
+  direction followed. Result polished and usable. Existing structure and
+  behavior appeared preserved.
+- **Why this run mattered.** Retheme is the only mode where a bad prompt can
+  destroy a user's work rather than merely disappoint them. The preservation
+  block (routes, logic, state, API calls, event handlers, behavior) had until
+  now only been verified by reading the built prompt and by tests asserting the
+  wording was *present*. Presence of wording is not obedience to wording.
+- **What it does NOT establish:** "appeared preserved" is an observation, **not
+  a line-by-line diff audit**; **the tool used was not recorded** (Retheme
+  framing differs per tool, so this validates one path, not the mode); n=1.
+- Trust copy unchanged: Retheme is *designed to* preserve. Users still
+  commit/branch and review the diff.
+- **NOTE (restored 2026-07-10)**: this entry was written, then lost when a
+  temporary validation branch was discarded before it had been committed.
+  Recovered and re-logged. Lesson: commit wiki entries before creating
+  throwaway branches, or they die with them.
+
+## [2026-07-10] retheme-validation-2 | Claude Code: Retheme layout preset advisory behavior held, n=1
+- No app code changed — run on a throwaway branch; working tree is back on
+  `main` and clean. Docs only.
+- **Tool used: Claude Code (model claude-fable-5)** — recorded by name, closing
+  the "tool not recorded" gap opened by `retheme-validation-1`.
+- Prompt generated through the **real build API**, not hand-written. Echoed
+  options: `retheme / apply / dark / mobile-app / claude-code / #ca8a04`,
+  template `restaurant-menu-page`.
+- **Test design**: retheme CopyUI's own homepage (a wide desktop marketplace
+  grid) with **Mobile App Layout** selected — deliberately the preset that
+  conflicts most violently with the target's structure. If the advisory rule
+  leaks, a phone frame appears and it is unmissable.
+- **Result: advisory behavior HELD.**
+  - Diff: **7 lines, every one a `className` edit.** No JSX structure changes.
+  - Visual only: warm near-black surface (`#050505` → `#0d0a04`), serif
+    editorial headings, gold-tinted eyebrow/step icons, amber active category
+    pill.
+  - No routes, handlers, state, API calls, i18n keys, or components touched.
+  - **No phone frame, no 390–430px viewport cap, no bottom tab bar, no
+    thumb-zone CTA relocation** — zero structural leakage from the preset.
+  - `rtk npm test` **160/160**, `rtk npm run lint` clean.
+- Bonus confirmation: the built prompt carried only the *advisory* hint, not the
+  `Mobile App Layout — hard requirements` block. The build-mode gate in
+  `finalOverrides()` works on the real API path, not just in unit tests.
+- **Caveats, and they matter more than the result:**
+  - **n=1, Claude Code only.** This says nothing about whether Cursor,
+    Windsurf, or VS Code / Copilot will obey the same advisory wording.
+  - **The tool under test was also the judge.** Claude Code executed a prompt
+    it knew was a test, and the advisory wording was authored by the same
+    model family. Useful evidence, but **charitable** evidence — a genuinely
+    adversarial case is a tool with no stake in the outcome.
+  - Log line, verbatim: *"Claude Code: Retheme layout preset advisory behavior
+    held, n=1."* **Do NOT generalize to "Retheme layout presets are safe."**
+- Trust copy unchanged. Users still commit/branch and review the diff.
+- Wiki: next-actions.md (item 4), prompt-system.md, this entry.
