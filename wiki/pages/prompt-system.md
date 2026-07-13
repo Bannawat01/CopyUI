@@ -347,6 +347,34 @@ wording was written by the same model family. It says nothing about Cursor,
 Windsurf, or VS Code / Copilot. n=1. Do not generalize this to "Retheme layout
 presets are safe" — the trust copy stays exactly as written.
 
+### Retheme on Cursor: partial pass, and the first real defect (2026-07-10)
+**Cursor / retheme / apply / dark / mobile-app / #ca8a04 — mostly successful,
+n=1.** The first Retheme validation on a tool with **no stake in the outcome**,
+which is what the Claude Code run could not be.
+
+Passed: the retheme applied cleanly to the existing page, theme and color
+direction followed, functionality appeared preserved, no broad rewrite, no
+unrelated damage — and the page **became usable on mobile where it previously
+was not**. The layout preset again stayed advisory and caused no restructuring,
+now confirmed on a second, independent tool.
+
+Failed, mildly: **a metric value overlapped an Alert badge** in one card at
+mobile width.
+
+**That defect is the most useful result this project has gotten from a
+validation run.** Every previous run passed clean, which left the trust copy's
+central claim — *AI tools can still make mistakes; commit, branch, review the
+diff* — true but unillustrated. Now it has a concrete instance: a competent tool,
+following the prompt faithfully, shipped a visual regression that a human catches
+instantly and no automated check would. **The safety guidance is earned, not
+defensive. Do not soften it.**
+
+**[uncertain]** The overlap *may* indicate the responsive/hierarchy rules
+under-specify collision behavior when a badge and a large numeral share a card at
+narrow widths. One instance is not a pattern — wait for a second occurrence before
+treating this as a template bug rather than a tool artifact, or it becomes exactly
+the speculative rewriting this project has repeatedly warned against.
+
 ## Quality checklist (detail page)
 The detail page's `QualityChecklist` panel (production pass, 2026-07-09)
 advertises the six template section names as a trust signal. It's a

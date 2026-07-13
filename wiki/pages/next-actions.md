@@ -112,6 +112,22 @@ trade-offs, not blockers — in rough order:
    (every Retheme run so far used Apply Directly); and the **other 8 layout
    presets** under Retheme. Trust copy stays as written — users still
    commit/branch and review the diff.
+   **CURSOR RETHEME: PARTIAL PASS (2026-07-10)** — first Retheme run on a
+   tool with no stake in the outcome (`retheme / apply / dark / mobile-app
+   / #ca8a04`). Visual retheme applied correctly, theme/color followed,
+   functionality appeared preserved, no broad rewrite, **and the page
+   became usable on mobile where it previously was not**. The layout preset
+   again stayed advisory — now confirmed on **two independent tools**.
+   **But it shipped a defect**: a metric value overlapped an Alert badge at
+   mobile width. That is the single most valuable validation result so far —
+   every prior run passed clean, leaving the "AI tools can still make
+   mistakes, review the diff" guidance true but unillustrated. It is now
+   **demonstrated**, and must not be softened. **Do not claim Cursor Retheme
+   is universally safe (n=1).** **[uncertain]** the overlap may mean the
+   responsive rules under-specify badge/numeral collision at narrow widths —
+   wait for a second occurrence before changing template wording. Still
+   unvalidated for Retheme: **Windsurf, VS Code / Copilot**, the
+   **Instructions Only** action style, and the other 8 layout presets.
    The follow-up this pass recommended — **context-of-use guidance in
    all 18 hidden templates — is now done (2026-07-09)**; each template
    states who uses the UI, what moment they're in, what decision it must

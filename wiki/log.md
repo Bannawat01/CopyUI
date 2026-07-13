@@ -1518,3 +1518,43 @@ extracted rules, for a later task:
     held, n=1."* **Do NOT generalize to "Retheme layout presets are safe."**
 - Trust copy unchanged. Users still commit/branch and review the diff.
 - Wiki: next-actions.md (item 4), prompt-system.md, this entry.
+
+## [2026-07-10] retheme-validation-3 | Cursor: mostly successful, n=1 — first real defect found
+- No app code changed — throwaway validation branch. Docs only.
+- **Tool used: Cursor.** Options: `retheme / apply / dark / mobile-app /
+  #ca8a04`. This is the first Retheme validation on a tool with **no stake in
+  making CopyUI's prompt look good** — the adversarial case that
+  `retheme-validation-2` (Claude Code judging itself) explicitly could not
+  provide.
+- **Result: PARTIAL PASS. Mostly successful, not clean.**
+  - Cursor applied the visual retheme to the existing page successfully.
+  - Theme and color direction applied as requested.
+  - **The page became usable on mobile where it had not been before** — a real
+    functional improvement, not just a restyle.
+  - Existing functionality appeared preserved. No broad rewrite, no unrelated
+    page damage.
+  - Layout preset did **not** appear to cause unsafe restructuring — consistent
+    with the Claude Code run, now on an independent tool.
+  - **Defect found**: one minor mobile responsive regression — a metric value
+    **overlapped an Alert badge** inside a card.
+- **The defect is the most valuable thing in this run.** Every prior validation
+  passed clean, which made the "AI tools can still make mistakes — commit,
+  branch, review the diff" guidance true but *unillustrated*. Now there is a
+  concrete instance: a real tool, following the prompt faithfully, produced a
+  visual regression a human reviewer would catch in seconds and an automated
+  check would not. The safety copy is no longer theoretical, and it should not
+  be softened.
+- **Signal on the preset rule**: two independent tools (Claude Code, Cursor) have
+  now honored the advisory-only treatment of layout presets in Retheme mode.
+  That is a real strengthening — the previous n=1 was self-judged.
+- **Caveats:**
+  - **n=1 for Cursor.** Do **not** claim Cursor Retheme is universally safe.
+  - The overlap suggests the prompt's responsive/hierarchy rules may under-
+    specify collision behavior when a badge and a large numeral share a card at
+    narrow widths. **[uncertain]** — one instance is not a pattern. Do not
+    rewrite prompt wording on the strength of a single overlap; wait for a
+    second occurrence before treating it as a template bug rather than a
+    tool artifact.
+  - Windsurf and VS Code / Copilot remain entirely unvalidated for Retheme.
+- Trust copy unchanged, and now demonstrably earned.
+- Wiki: next-actions.md (item 4), prompt-system.md, this entry.
