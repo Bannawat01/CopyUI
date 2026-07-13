@@ -261,12 +261,17 @@ trade-offs, not blockers — in rough order:
     single-theme. Prompt preview thumbnails stay dark/stylized in both
     modes — **confirmed intentional**, not a bug (they're illustrative
     mockups, not guaranteed output, matching the deliberate exception
-    recorded at ship time). **[uncertain] Detail page NOT yet checked**
-    — the copy panel, all 5 prompt-option selectors, Generated Examples,
-    and the Trust/Retheme safety UI (the amber tones needing a manual
-    `dark:` split) remain unverified in a real browser. This is the
-    higher-stakes half of the toggle and should be checked before this
-    item is closed out.
+    recorded at ship time). **Detail page manual QA done (2026-07-10)**
+    — checked in production across Dark, Light, and System: copy panel,
+    the Copy button (readable in all three — confirms the earlier
+    contrast fix held under the new appearance system, not just under
+    the dark theme it was originally patched against), all 5
+    prompt-option selectors, Generated Examples, and the full copy flow.
+    The Retheme safety note — the one component that needed a manual
+    `dark:` variant instead of a plain token swap — confirmed appearing
+    only in Retheme Mode and readable in both Light and Dark. **No
+    blocking visual issues found anywhere. Item 16 CLOSED** — both
+    homepage and detail-page manual QA are complete with no open gaps.
 
 17. **Tool-mode copy drift FIXED before launch (2026-07-10)** — the site
     advertised 3 tools while supporting 6. All launch-facing copy

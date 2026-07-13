@@ -1718,3 +1718,27 @@ infrastructure existed and was half-ignored.
   Retheme safety UI (the amber tones that needed a manual `dark:` split
   specifically because the token conversion couldn't cover them).
 - Wiki: next-actions.md (item 16), this entry.
+
+## [2026-07-10] appearance-qa-2 | Manual browser QA: detail page checked, item 16 closed
+- No app code changed. Docs only. Closes the gap left open by
+  `appearance-qa-1`, which explicitly deferred the detail page.
+- **Detail page: checked in production across all three appearance
+  modes — Dark, Light, and System.** No blocking visual issues found.
+- Confirmed individually: copy panel; the Copy button itself, readable in
+  all three modes (this is the button whose contrast was a real bug fixed
+  two passes ago — worth confirming it stayed fixed under the new appearance
+  system, not just under the dark theme it was originally patched against);
+  Prompt Intent, Tool Mode, Theme Mode, Action Style, and Layout Preset
+  selectors; Generated Examples renders cleanly; the full copy flow still
+  works end to end.
+- **Retheme safety note**: confirmed it appears only when Retheme Mode is
+  selected, and confirmed **readable in both Light and Dark** — this was the
+  one component in the whole conversion that couldn't use a plain token swap
+  (its amber accent needed a manual `dark:` variant split, since the dark-mode
+  amber values would have gone pale-on-pale unreadable against a light page).
+  This is the first real-browser confirmation that fix actually works, not
+  just that the classes compile.
+- **With this, both halves of the toggle's manual QA are complete**: homepage
+  (`appearance-qa-1`) and detail page (this entry). No open visual gaps
+  remain for the Website Appearance Toggle.
+- Wiki: next-actions.md (item 16, closed), this entry.
