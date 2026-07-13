@@ -303,6 +303,27 @@ honesty guard fails the build if the copy ever claims guaranteed or identical
 output. Per-prompt content is English-only in v1; the section chrome is
 localized.
 
+### Generated Examples: real-output validation (2026-07-10)
+First validation pass against v0.dev. **3 of 18 examples are now backed by
+observed output rather than predicted direction**, and **none needed
+correcting**:
+
+| Prompt / options | Result |
+| --- | --- |
+| Pricing Table / Light / Pricing Grid | Matched the pricing-grid direction; visually strong |
+| AI Chat Interface / Dark / Mobile App Layout | Theme held; followed the mobile-app direction |
+| E-commerce Product Page / Light / Card Grid | Matched very well — better than expected |
+
+The examples were written from the templates' *intent*, so this pass is the
+first evidence the intent and the output actually agree. The remaining **15 are
+still direction-only** — honest, but unobserved. Validate opportunistically as
+users test prompts; keep the wording direction-setting regardless of how many
+get confirmed, because a validated example is still not a guaranteed one.
+
+Side effect worth recording: **Light now has two independent passing runs** and
+**Mobile App Layout has held on a second, unrelated prompt**. Both were the
+original failure cases that motivated conflict-safe composition.
+
 ## Quality checklist (detail page)
 The detail page's `QualityChecklist` panel (production pass, 2026-07-09)
 advertises the six template section names as a trust signal. It's a

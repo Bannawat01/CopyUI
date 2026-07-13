@@ -1424,3 +1424,36 @@ extracted rules, for a later task:
 - **Future option, not built**: real screenshots from validated runs, or
   user-submitted examples. Both need storage/moderation — out of scope for v1.
 - Wiki: next-actions.md (item 20), prompt-system.md, this entry.
+
+## [2026-07-10] examples-validation-1 | Generated Examples v1: first 3 validated on real output
+- No app code changed. **No example metadata needed correcting** — the three
+  tested entries matched what v0 actually produced.
+- Validated on v0.dev:
+  1. **Pricing Table + Light + Pricing Grid** — visually strong; matched the
+     intended pricing-grid direction.
+  2. **AI Chat Interface + Dark + Mobile App Layout** — theme held, polished,
+     followed the mobile-app direction.
+  3. **E-commerce Product Page + Light + Card Grid** — matched expectations
+     very well, better than expected; followed the card-grid direction.
+- **Why this matters more than the individual results.** When Generated
+  Examples v1 shipped, its weakest point was recorded plainly: the examples
+  were written from the *templates' intent*, not from observed output, so every
+  `outcomeSummary` and `expectationNote` was an informed guess. Three of them
+  are now evidence rather than prediction, and none of the three needed
+  changing — which is the first sign the guesses were calibrated, not merely
+  confident.
+- All three ran on **v0**, which each entry already listed in
+  `suggestedToolModes` — so the tool suggestions are confirmed for these three,
+  but the Cursor / Claude Code suggestions on the same entries remain untested.
+- **15 of 18 examples remain direction-only** (unvalidated against real output).
+  They are honest — the copy never claims otherwise, and the honesty guard
+  still fails the build on "guaranteed" / "pixel-perfect" / "always identical" —
+  but they are still expectations, not observations. Keep validating as users
+  test prompts; keep the wording direction-setting either way.
+- Two accumulating signals worth noting across the whole project: **Light theme
+  now has two independent passing runs** (Pricing Table, E-commerce), and
+  **Mobile App Layout has held on a second, very different prompt** (AI Chat,
+  after the Startup Landing Hero run). Both were once the biggest known
+  failures. The conflict-safe composition continues to hold.
+- Wiki: next-actions.md (item 20), prompt-system.md (validation section), this
+  entry.

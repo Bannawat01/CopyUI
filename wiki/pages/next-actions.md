@@ -268,11 +268,15 @@ trade-offs, not blockers — in rough order:
     verified by tests and by `curl` against a live detail page.
     **Known v1 gaps**: (a) per-prompt example *content* is English-only —
     only the section chrome is localized (en/th/zh-CN); translating 18 × 6
-    fields is a follow-up. (b) The examples are written from the templates'
-    intent, **not from observed real output** — only 3 prompt/option
-    combinations have ever been validated against a real tool, so some
-    `expectationNote`s are informed guesses. Worth revisiting as more real
-    runs accumulate. **Future option, not built**: real screenshots from
+    fields is a follow-up. (b) **First real-output validation done
+    (2026-07-10)**: Pricing Table / Light / Pricing Grid, AI Chat Interface
+    / Dark / Mobile App Layout, and E-commerce Product Page / Light / Card
+    Grid all matched their stated direction on v0 — **no metadata changes
+    needed**. So **3 of 18 examples are now evidence; the other 15 remain
+    written from template intent rather than observed output**. Keep
+    validating opportunistically as users test prompts, and keep the copy
+    direction-setting either way — a validated example is still not a
+    guaranteed one. **Future option, not built**: real screenshots from
     validated runs, or user-submitted examples — both need
     storage/moderation and were out of scope.
 
