@@ -16,7 +16,7 @@ const CHECKLIST_ITEMS = [
 export function QualityChecklist() {
   return (
     <div className="flex flex-col gap-2 rounded-lg border border-white/10 bg-white/[0.03] p-3">
-      <span className="text-xs font-medium uppercase tracking-widest text-white/40">
+      <span className="text-xs font-medium uppercase tracking-widest text-white/55">
         Every prompt includes
       </span>
       <ul className="grid grid-cols-1 gap-x-3 gap-y-1.5 min-[380px]:grid-cols-2">

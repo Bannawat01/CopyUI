@@ -93,7 +93,7 @@ export function GallerySearch({ prompts }: { prompts: PublicPromptTheme[] }) {
               </option>
             ))}
           </select>
-          <span className="hidden shrink-0 text-sm text-white/40 sm:inline">
+          <span className="hidden shrink-0 text-sm text-white/55 sm:inline">
             {t("gallery.count", {
               shown: filtered.length,
               total: prompts.length,
@@ -131,7 +131,7 @@ export function GallerySearch({ prompts }: { prompts: PublicPromptTheme[] }) {
               <span className="relative inline-flex items-center gap-1.5">
                 {tCategory(c)}
                 <span
-                  className={`text-xs ${active ? "text-black/60" : "text-white/45"}`}
+                  className={`text-xs ${active ? "text-black/60" : "text-white/55"}`}
                 >
                   {categoryCounts[c] ?? 0}
                 </span>

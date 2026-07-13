@@ -15,7 +15,7 @@ export function SiteFooter() {
           <h2 className="font-heading text-sm font-medium text-white/90">
             {t("footer.heading")}
           </h2>
-          <p className="text-xs text-white/45">{t("footer.blurb")}</p>
+          <p className="text-xs text-white/55">{t("footer.blurb")}</p>
         </div>
 
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -34,7 +34,7 @@ export function SiteFooter() {
                     aria-hidden="true"
                   />
                 </span>
-                <span className="text-xs leading-relaxed text-white/40">
+                <span className="text-xs leading-relaxed text-white/55">
                   {link.description}
                 </span>
               </a>
@@ -42,7 +42,7 @@ export function SiteFooter() {
           ))}
         </ul>
 
-        <div className="flex flex-col gap-2 border-t border-white/5 pt-5 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-2 border-t border-white/5 pt-5 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
           <span>{t("footer.tagline", { tools: toolModeList() })}</span>
           <a
             href={REPO_URL}

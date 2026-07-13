@@ -321,4 +321,19 @@ trade-offs, not blockers — in rough order:
     validated runs, or user-submitted examples — both need
     storage/moderation and were out of scope.
 
+21. **UX/UI polish pass (2026-07-10)** — pre-public-testing pass, 3 fixes,
+    no redesign. **(a)** Site-wide contrast fix: `text-white/40` (3.71:1)
+    and `/45` (4.49:1) failed WCAG AA for small text across 12+ places;
+    raised to passing tiers. **(b)** Trust FAQ got its own subhead — it
+    had been reusing the language note under a consistency/safety heading.
+    **(c)** Homepage example schematics now carry an explicit
+    "Schematic — not a screenshot" label (user feedback), all 3 locales.
+    160/160 tests, lint + build clean, hidden-prompt guarantee re-verified
+    by `curl`. **Deferred, still:** the **website appearance / theme
+    toggle** (item 16) — the "site feels like one theme" feedback is real
+    but a toggle is a genuine change (`dark` hardcoded on `<html>`), not a
+    polish-pass item. Also still open from validation: the Cursor mobile
+    overlap needs a **second occurrence** before any responsive template
+    wording changes (item 4).
+
 This list should be revised as decisions are made — do not treat it as fixed.

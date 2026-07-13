@@ -118,6 +118,9 @@ const en = {
   "copy.error": "Couldn't copy the prompt. Please try again.",
 
   // Generated Examples
+  "faq.subhead":
+    "Straight answers about consistency and safety — including what these prompts can't promise.",
+  "examples.schematic": "Schematic — not a screenshot",
   "examples.homeHeading": "What these prompts can create",
   "examples.homeSubhead":
     "The direction each prompt is designed to produce. Not screenshots — AI output varies by tool and by run.",
@@ -223,6 +226,9 @@ const th: Partial<Record<TranslationKey, string>> = {
   "copy.success": "คัดลอกแล้ว — ปรับแต่งสำหรับ {tool}",
   "copy.error": "คัดลอก prompt ไม่สำเร็จ กรุณาลองใหม่อีกครั้ง",
 
+  "faq.subhead":
+    "คำตอบตรง ๆ เรื่องความสม่ำเสมอและความปลอดภัย รวมถึงสิ่งที่ prompt เหล่านี้รับประกันไม่ได้",
+  "examples.schematic": "ภาพร่างโครงสร้าง ไม่ใช่ภาพหน้าจอจริง",
   "examples.homeHeading": "prompt เหล่านี้สร้างอะไรได้บ้าง",
   "examples.homeSubhead":
     "ทิศทางที่ prompt แต่ละตัวออกแบบมาให้ได้ ไม่ใช่ภาพหน้าจอจริง — ผลลัพธ์ AI ต่างกันไปตามเครื่องมือและแต่ละครั้งที่รัน",
@@ -321,6 +327,8 @@ const zhCN: Partial<Record<TranslationKey, string>> = {
   "copy.success": "已复制 — 已为 {tool} 定制",
   "copy.error": "复制提示词失败，请重试。",
 
+  "faq.subhead": "关于一致性与安全的直接回答 — 包括这些提示词无法承诺的部分。",
+  "examples.schematic": "示意结构 — 并非截图",
   "examples.homeHeading": "这些提示词能做出什么",
   "examples.homeSubhead":
     "每个提示词旨在产出的方向。并非截图 — AI 输出会因工具和每次运行而不同。",

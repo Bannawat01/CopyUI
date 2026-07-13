@@ -24,7 +24,7 @@ export function ExampleShowcase() {
         <h2 className="font-heading text-sm font-medium text-white/90">
           {t("examples.homeHeading")}
         </h2>
-        <p className="max-w-2xl text-xs leading-relaxed text-white/45">
+        <p className="max-w-2xl text-xs leading-relaxed text-white/55">
           {t("examples.homeSubhead")}
         </p>
       </div>
@@ -41,13 +41,16 @@ export function ExampleShowcase() {
                 aria-hidden="true"
                 className="flex flex-col gap-1 rounded-lg border border-white/5 bg-black/30 p-2"
               >
+                <span className="px-1 text-[9px] font-medium uppercase tracking-wide text-white/50">
+                  {t("examples.schematic")}
+                </span>
                 {example.layoutPreview.map((row, i) => (
                   <span
                     key={row}
                     className={`truncate rounded px-2 py-1 text-[10px] leading-tight ${
                       i === 0
                         ? "bg-white/[0.08] text-white/60"
-                        : "bg-white/[0.04] text-white/40"
+                        : "bg-white/[0.04] text-white/55"
                     }`}
                   >
                     {row}
@@ -59,7 +62,7 @@ export function ExampleShowcase() {
                 <span className="text-xs font-medium text-white/80 transition-colors group-hover:text-white">
                   {example.exampleTitle}
                 </span>
-                <span className="text-[11px] leading-relaxed text-white/40">
+                <span className="text-[11px] leading-relaxed text-white/55">
                   {example.outcomeSummary}
                 </span>
               </div>

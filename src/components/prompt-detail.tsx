@@ -84,7 +84,7 @@ export function PromptDetail({ prompt }: { prompt: PromptDetailData }) {
           <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-white/70 outline-none transition-colors hover:text-white focus-visible:ring-3 focus-visible:ring-ring/50 [&::-webkit-details-marker]:hidden">
             {t("detail.advanced")}
             <ChevronDown
-              className="h-4 w-4 text-white/40 transition-transform group-open:rotate-180"
+              className="h-4 w-4 text-white/55 transition-transform group-open:rotate-180"
               aria-hidden="true"
             />
           </summary>

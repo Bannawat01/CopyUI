@@ -56,7 +56,7 @@ export function ExampleOutcome({ slug }: { slug: string }) {
                 className={`rounded px-2 py-1 text-[11px] leading-tight ${
                   i === 0
                     ? "bg-white/[0.08] text-white/60"
-                    : "bg-white/[0.04] text-white/40"
+                    : "bg-white/[0.04] text-white/55"
                 }`}
               >
                 {row}
@@ -90,7 +90,7 @@ export function ExampleOutcome({ slug }: { slug: string }) {
       </div>
 
       {example.expectationNote && (
-        <p className="text-xs leading-relaxed text-white/45">
+        <p className="text-xs leading-relaxed text-white/55">
           <span className="font-medium text-white/60">
             {t("examples.heads-up")}:
           </span>{" "}
@@ -98,7 +98,7 @@ export function ExampleOutcome({ slug }: { slug: string }) {
         </p>
       )}
 
-      <p className="flex items-start gap-2 rounded-lg border border-white/10 bg-white/[0.03] p-3 text-xs leading-relaxed text-white/45">
+      <p className="flex items-start gap-2 rounded-lg border border-white/10 bg-white/[0.03] p-3 text-xs leading-relaxed text-white/55">
         <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
         {t("examples.varyNote")}
       </p>

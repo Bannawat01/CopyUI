@@ -1558,3 +1558,58 @@ extracted rules, for a later task:
   - Windsurf and VS Code / Copilot remain entirely unvalidated for Retheme.
 - Trust copy unchanged, and now demonstrably earned.
 - Wiki: next-actions.md (item 4), prompt-system.md, this entry.
+
+## [2026-07-10] ux-polish-1 | Contrast pass + trust/examples clarity fixes
+- Focused UX/UI polish pass before wider public testing. No redesign, no new
+  systems, no appearance toggle (deferred — see below). 3 fixes.
+
+### Audit — top findings
+1. **[a11y, site-wide] Low-contrast body text fails WCAG AA.** `text-white/40`
+   = 3.71:1 and `text-white/45` = 4.49:1 on the `#050505` surface — both below
+   the 4.5:1 floor for small text, across 12+ places (home intro, gallery,
+   cards, footer, trust FAQ, examples, quality checklist, detail panel). This
+   is the highest-impact issue: measurable, everywhere, and it undercuts the
+   product's own contrast-quality pitch.
+2. **[clarity] Trust FAQ subhead was the wrong text.** It reused `lang.note`
+   ("Prompt output stays in English…"), which is about *language*, under a
+   heading about output *consistency and safety*. Mismatched.
+3. **[trust] Example schematics could read as screenshots.** Direct user
+   feedback. The blocks are schematic, but nothing said so in words.
+- Lower-priority / not done this pass: homepage section rhythm is already
+  correct (gallery heading text-xl is visibly primary; examples/FAQ text-sm are
+  subordinate); tool/action pills already `flex-wrap`; empty/search states
+  already exist. No change needed — noted so the next pass doesn't re-audit them.
+
+### Fixes implemented
+- **Contrast**: raised failing text tiers site-wide — `/40`→`/55` (6.22:1),
+  `/45`→`/55`, footer `/35`→`/50`. Text colors only; decorative
+  borders/backgrounds/aria-hidden icons untouched. All body text now clears AA.
+- **Trust FAQ** now has its own `faq.subhead` ("Straight answers about
+  consistency and safety — including what these prompts can't promise") instead
+  of the language note. New key, all 3 locales.
+- **Example schematics** carry an explicit `examples.schematic`
+  ("Schematic — not a screenshot") micro-label on the homepage cards. New key,
+  all 3 locales. The detail view already labels the block "Typical structure"
+  plus a vary-note, so no redundant label added there.
+- Caught myself reintroducing the bug: the new schematic label first shipped at
+  `text-white/35`. Bumped to `/50` — a contrast pass that adds failing text
+  would be self-defeating.
+- Localization: 2 new keys × 3 locales; Thai/Chinese kept short. `lang.note`
+  retained (still the language-selector tooltip), so i18n tests that pin it are
+  untouched.
+- Tests: homepage assertions updated (FAQ subhead + schematic label); the stale
+  assertion that `lang.note` renders on the homepage was wrong and is replaced —
+  the language note lives on the selector, not the FAQ. **160/160.**
+- Safety: hidden-prompt guarantee re-verified on a live server — `curl` of home
+  and detail shows **0** matches for `Product context:` / `Context of use:`.
+  Prompt builder, prompt output, and trust wording all untouched. No overpromise
+  language added; the honesty guards still pass.
+- Validation: `rtk npm test` 160/160, `rtk npm run lint` clean, `rtk npm run
+  build` clean (27 routes).
+
+### Deferred (intentional)
+- **Website appearance / theme toggle NOT built** — the "site feels like one
+  theme" feedback. Still a genuine change (`dark` hardcoded on `<html>`), out of
+  scope for a polish pass; remains next-actions item 16.
+- Real screenshots / user-submitted examples — needs storage/moderation.
+- Wiki: next-actions.md (item 21), this entry.

@@ -18,7 +18,7 @@ export function TrustFaq() {
         <h2 className="font-heading text-sm font-medium text-white/90">
           What to expect from AI output
         </h2>
-        <p className="text-xs text-white/45">{t("lang.note")}</p>
+        <p className="text-xs text-white/55">{t("faq.subhead")}</p>
       </div>
 
       <ul className="mt-4 flex flex-col gap-2">
@@ -28,7 +28,7 @@ export function TrustFaq() {
               <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-lg px-4 py-3 text-sm font-medium text-white/75 outline-none transition-colors hover:text-white focus-visible:ring-3 focus-visible:ring-ring/50 [&::-webkit-details-marker]:hidden">
                 {item.question}
                 <ChevronDown
-                  className="h-4 w-4 shrink-0 text-white/40 transition-transform group-open:rotate-180"
+                  className="h-4 w-4 shrink-0 text-white/55 transition-transform group-open:rotate-180"
                   aria-hidden="true"
                 />
               </summary>

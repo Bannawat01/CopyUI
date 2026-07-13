@@ -27,7 +27,10 @@ describe("homepage", () => {
   it("renders default-locale (English) UI labels", () => {
     expect(html).toContain(t("en", "gallery.heading"));
     expect(html).toContain(t("en", "home.step1.title"));
-    expect(html).toContain(t("en", "lang.note"));
+    // The trust FAQ now leads with its own subhead, not the language note
+    // (which belongs to the language selector, not this section).
+    // Substring avoids the apostrophe, which renderToStaticMarkup escapes.
+    expect(html).toContain("Straight answers about consistency and safety");
   });
 
   // The site advertised 3 tools long after it supported 6. Copy is now
@@ -80,6 +83,8 @@ describe("homepage", () => {
     expect(html).toContain("Conversational AI workspace");
     // Schematic structure, not a fake screenshot.
     expect(html).toContain("Sidebar (240px) + sticky top bar");
+    // ...and it says so explicitly, so nobody mistakes it for real output.
+    expect(html).toContain(t("en", "examples.schematic"));
   });
 
   it("does not overpromise determinism or safety in the FAQ", () => {

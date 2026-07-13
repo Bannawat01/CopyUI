@@ -55,10 +55,10 @@ export function HomeIntro() {
             </div>
             <div className="flex flex-col gap-1">
               <h2 className="text-sm font-medium text-white/90">
-                <span className="mr-1.5 text-white/40">{i + 1}.</span>
+                <span className="mr-1.5 text-white/55">{i + 1}.</span>
                 {t(step.titleKey)}
               </h2>
-              <p className="text-xs leading-relaxed text-white/45">
+              <p className="text-xs leading-relaxed text-white/55">
                 {t(step.descKey, { tools })}
               </p>
             </div>

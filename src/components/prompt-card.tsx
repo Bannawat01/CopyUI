@@ -65,7 +65,7 @@ export function PromptCard({ prompt }: { prompt: PublicPromptTheme }) {
           ))}
         </div>
 
-        <div className="mt-auto flex items-center justify-between border-t border-white/5 pt-3 text-xs text-white/40 transition-colors duration-300 group-hover:text-white/60 group-focus-within:text-white/60">
+        <div className="mt-auto flex items-center justify-between border-t border-white/5 pt-3 text-xs text-white/55 transition-colors duration-300 group-hover:text-white/60 group-focus-within:text-white/60">
           <div className="flex items-center gap-1.5">
             <span
               className="flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold text-white/80"
