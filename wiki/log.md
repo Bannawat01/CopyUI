@@ -1694,3 +1694,27 @@ infrastructure existed and was half-ignored.
   files, `appearance.test.ts` and `site-header.test.tsx`). `rtk npm run lint`
   clean. `rtk npm run build` clean (27 routes).
 - Wiki: next-actions.md (item 16, now done), this entry.
+
+## [2026-07-10] appearance-qa-1 | Manual browser QA: homepage checked, detail page still open
+- No app code changed. Docs only.
+- **Homepage: checked in production, both Dark and Light.** Header,
+  appearance selector, language selector, search, sort, category pills, and
+  the prompt grid all render correctly in both modes. **No blocking visual
+  issues found.**
+- Light mode's actual verdict: it **improves accessibility and makes the site
+  read as more than one theme** — the thing users originally asked for.
+- **Prompt preview thumbnails stay dark/stylized in both modes — confirmed
+  intentional, not a bug.** They're illustrative mockups, not guaranteed
+  generated output, so they aren't expected to follow site appearance. This
+  matches the deliberate exception recorded when the toggle shipped
+  (`prompt-preview.tsx` was left untouched on purpose).
+- **Detail page: NOT yet checked.** The QA report handed to this entry
+  contained a template placeholder rather than a completed result for the
+  detail page ("still needs or has completed a quick check depending on the
+  latest manual QA result") — no explicit confirmation that the check
+  happened. Recording it as open rather than assuming a pass, since the
+  detail page carries the highest-stakes surfaces of the toggle: the copy
+  panel, all 5 prompt-option selectors, Generated Examples, and the Trust /
+  Retheme safety UI (the amber tones that needed a manual `dark:` split
+  specifically because the token conversion couldn't cover them).
+- Wiki: next-actions.md (item 16), this entry.

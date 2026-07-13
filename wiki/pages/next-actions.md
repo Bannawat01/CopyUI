@@ -253,10 +253,20 @@ trade-offs, not blockers — in rough order:
     [log.md](../log.md) under `appearance-toggle` — this is a UI/styling
     change with nothing prompt-related, so prompt-system.md was left
     untouched.
-    **[uncertain]** No dedicated manual browser QA pass on light mode yet
-    — verified via the token conversion's correctness and render tests
-    only, the same caveat every prior visual change in this project has
-    carried.
+    **Homepage manual QA done (2026-07-10)** — checked in production,
+    Dark and Light: header, appearance selector, language selector,
+    search, sort, category pills, and the prompt grid all render
+    correctly in both, no blocking issues. Light mode's verdict: it
+    genuinely improves accessibility and stops the site reading as
+    single-theme. Prompt preview thumbnails stay dark/stylized in both
+    modes — **confirmed intentional**, not a bug (they're illustrative
+    mockups, not guaranteed output, matching the deliberate exception
+    recorded at ship time). **[uncertain] Detail page NOT yet checked**
+    — the copy panel, all 5 prompt-option selectors, Generated Examples,
+    and the Trust/Retheme safety UI (the amber tones needing a manual
+    `dark:` split) remain unverified in a real browser. This is the
+    higher-stakes half of the toggle and should be checked before this
+    item is closed out.
 
 17. **Tool-mode copy drift FIXED before launch (2026-07-10)** — the site
     advertised 3 tools while supporting 6. All launch-facing copy
