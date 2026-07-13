@@ -52,7 +52,7 @@ export function PromptDetail({ prompt }: { prompt: PromptDetailData }) {
           primaryColor={primaryColor}
           secondaryColor={secondaryColor}
           accentColor={accentColor}
-          className="aspect-video w-full rounded-xl border border-white/10"
+          className="aspect-video w-full rounded-xl border border-border"
         />
       </motion.div>
 
@@ -80,11 +80,11 @@ export function PromptDetail({ prompt }: { prompt: PromptDetailData }) {
           onChange={setPrimaryColor}
         />
 
-        <details className="group rounded-lg border border-white/10 bg-white/[0.03]">
-          <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-white/70 outline-none transition-colors hover:text-white focus-visible:ring-3 focus-visible:ring-ring/50 [&::-webkit-details-marker]:hidden">
+        <details className="group rounded-lg border border-border bg-fill-subtle">
+          <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 [&::-webkit-details-marker]:hidden">
             {t("detail.advanced")}
             <ChevronDown
-              className="h-4 w-4 text-white/55 transition-transform group-open:rotate-180"
+              className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180"
               aria-hidden="true"
             />
           </summary>

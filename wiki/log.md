@@ -1613,3 +1613,84 @@ extracted rules, for a later task:
   scope for a polish pass; remains next-actions item 16.
 - Real screenshots / user-submitted examples — needs storage/moderation.
 - Wiki: next-actions.md (item 21), this entry.
+
+## [2026-07-10] appearance-toggle | Website Appearance (Dark/Light/System) shipped
+- Direct fix for the "site feels like one visual theme" feedback (deferred
+  twice before, item 16). Separate concept from the prompt builder's Theme
+  Mode — that distinction is the whole safety story and is stated in the UI.
+
+### Architecture
+- `src/components/appearance-provider.tsx`: same pattern as `locale-provider.tsx`
+  — `useSyncExternalStore` over `localStorage` (`copyui:appearance`), a DOM
+  write in a `useEffect` keyed on the *resolved* value (not `setState` in an
+  effect — the lint rule that shaped the locale provider holds here too), and
+  a `matchMedia("(prefers-color-scheme: dark)")` listener so System live-
+  updates if the OS theme changes mid-session. Default is **dark** — the
+  existing brand identity; the toggle adds an option, it doesn't flip the
+  default. Server snapshot is always `dark`, matching `layout.tsx`'s static
+  `dark` class, so there is no hydration mismatch.
+- `src/components/appearance-selector.tsx`: compact `<select>` next to the
+  language selector in a new header row, Moon/Sun/Monitor icon reflecting the
+  current choice, `title` tooltip stating explicitly that this changes the
+  website only — not a copied prompt's Theme Mode. Localized en/th/zh-CN.
+- Applies `.dark` on `<html>` via `classList.toggle`, which the existing
+  `@custom-variant dark (&:is(.dark *))` in `globals.css` already keys off of.
+
+### Styling — token conversion, not a redesign
+`globals.css` already had a full shadcn light/dark token system
+(`:root`/`.dark`, `--background`, `--foreground`, `--muted-foreground`,
+`--border`, `--card`, …) that most custom components simply weren't using —
+they hardcoded raw values (`bg-[#050505]`, `text-white/NN`, `border-white/NN`)
+instead. That's the actual root cause of "only one theme": the token
+infrastructure existed and was half-ignored.
+- Added 3 new tokens for fill tiers with no existing equivalent —
+  `--fill-subtle`, `--fill-hover`, `--fill-sunken` — defined per-theme in both
+  `:root` and `.dark`, wired through `@theme inline`.
+- **Mechanically converted 19 components** via a single ordered find-and-replace
+  script (longest/most-specific token first, to avoid a short pattern eating
+  part of a longer one) mapping the fixed raw-color vocabulary — `text-white/*`,
+  `border-white/*`, `bg-white/*`, `bg-black/30`, `bg-[#050505]`, `bg-[#0c0c0e]`
+  — onto `text-foreground`/`text-muted-foreground`, `border-border`/
+  `border-foreground/NN`, `bg-fill-*`, `bg-background`, `bg-card`. Scripted and
+  bounded, not hand-redesigned: same visual rhythm, same hierarchy, different
+  source of truth. Covers homepage, prompt detail, cards, examples, FAQ,
+  footer, all 5 prompt-option selectors, and the language/appearance selectors.
+- 2 components needed manual `dark:` variants instead of pure tokens, since
+  they carry a fixed accent hue rather than a neutral surface:
+  `retheme-safety-note.tsx` (amber tones — the dark values were unreadable as
+  a pale-on-pale wash against a light page) and `prompt-card.tsx`'s hover
+  shadow (a hardcoded white-ring glow tuned for dark backgrounds; light mode
+  gets a plain soft drop shadow instead).
+- **Tuned one existing shadcn default**: light-mode `--muted-foreground` was
+  `oklch(0.556)`, which measures ~3.8:1 on white — below the 4.5:1 floor for
+  small text, the same class of bug fixed in dark mode two passes ago.
+  Darkened to `oklch(0.44)` before it shipped, not after a user found it.
+- **Deliberately left untouched**: `prompt-preview.tsx` (the 18 per-theme
+  mockup renderers). These simulate a dark app screenshot regardless of site
+  chrome — the same way a code editor's syntax theme doesn't have to match the
+  IDE's UI theme. Converting them would be a redesign of the mockups
+  themselves, not an appearance toggle.
+
+### Safety verification
+- `promptTemplate`, the build API, and `Theme Mode` inside the prompt builder
+  are untouched — appearance is a CSS/DOM-only concern, never sent to the
+  server. New test: POST the build API with `appearance: "light"` in the body
+  and assert the response is byte-identical to a request without it, and that
+  `appearance` never appears as a response key; also asserts `themeMode` output
+  is unaffected across all 3 appearance values.
+- Re-verified on a live server: `curl` of home and detail shows **0** matches
+  for `Product context:`; the build API response for any request has exactly
+  the same 6 keys as before, `appearance` is not among them.
+- Existing i18n byte-identical-across-locales tests untouched and still pass.
+
+### Deferred / limitations
+- The 5 prompt-option selectors and detail panel are visually consistent in
+  both themes but have had **no dedicated manual QA pass in a real browser** —
+  verified only via the token conversion's correctness and the render tests,
+  same caveat as every prior visual change in this project.
+- No dark-only copy assumptions found in visible strings during this pass, but
+  this was not an exhaustive per-string audit.
+- Tests: `rtk npm test` **173/173 across 12 files** (was 160/10; 2 new test
+  files, `appearance.test.ts` and `site-header.test.tsx`). `rtk npm run lint`
+  clean. `rtk npm run build` clean (27 routes).
+- Wiki: next-actions.md (item 16, now done), this entry.

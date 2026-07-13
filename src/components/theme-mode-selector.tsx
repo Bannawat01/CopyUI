@@ -25,7 +25,7 @@ export function ThemeModeSelector({
       <div
         role="radiogroup"
         aria-labelledby="theme-mode-label"
-        className="inline-flex w-fit rounded-lg border border-white/10 bg-white/5 p-1"
+        className="inline-flex w-fit rounded-lg border border-border bg-fill-subtle p-1"
       >
         {THEME_MODES.map(({ value: mode }) => {
           const active = value === mode;
@@ -37,7 +37,7 @@ export function ThemeModeSelector({
               aria-checked={active}
               onClick={() => onChange(mode)}
               className={`rounded-md px-3 py-1 text-xs font-medium outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 ${
-                active ? "bg-white text-black" : "text-white/50 hover:text-white"
+                active ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {t(`theme.${mode}` as TranslationKey)}

@@ -33,9 +33,9 @@ export function LayoutPresetSelector({
         id="layout-preset"
         value={value}
         onChange={(e) => onChange(e.target.value as LayoutPreset)}
-        className="h-9 w-full rounded-lg border border-white/10 bg-white/5 px-3 text-sm text-white outline-none transition-colors hover:bg-white/10 focus-visible:ring-3 focus-visible:ring-ring/50"
+        className="h-9 w-full rounded-lg border border-border bg-fill-subtle px-3 text-sm text-foreground outline-none transition-colors hover:bg-fill-hover focus-visible:ring-3 focus-visible:ring-ring/50"
       >
-        <option value={auto.value} className="bg-[#111]">
+        <option value={auto.value} className="bg-popover">
           {auto.label}
         </option>
         <optgroup label={t("layout.recommended")}>
@@ -43,7 +43,7 @@ export function LayoutPresetSelector({
             <option
               key={preset.value}
               value={preset.value}
-              className="bg-[#111]"
+              className="bg-popover"
             >
               {preset.label}
             </option>
@@ -54,7 +54,7 @@ export function LayoutPresetSelector({
             <option
               key={preset.value}
               value={preset.value}
-              className="bg-[#111]"
+              className="bg-popover"
             >
               {preset.label}
             </option>

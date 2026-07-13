@@ -66,7 +66,7 @@ export function GallerySearch({ prompts }: { prompts: PublicPromptTheme[] }) {
   return (
     <section className="mt-6 flex w-full flex-col gap-5 sm:mt-8 sm:gap-6">
       <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
-        <h2 className="font-heading text-xl font-medium text-white sm:text-2xl">
+        <h2 className="font-heading text-xl font-medium text-foreground sm:text-2xl">
           {t("gallery.heading")}
         </h2>
         <div className="flex w-full items-center gap-3 sm:w-auto">
@@ -76,7 +76,7 @@ export function GallerySearch({ prompts }: { prompts: PublicPromptTheme[] }) {
             placeholder={t("gallery.searchPlaceholder")}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="h-10 w-full border-white/10 bg-white/5 text-white placeholder:text-white/30 sm:w-72"
+            className="h-10 w-full border-border bg-fill-subtle text-foreground placeholder:text-muted-foreground sm:w-72"
           />
           <label className="sr-only" htmlFor="gallery-sort">
             {t("gallery.sortAria")}
@@ -85,15 +85,15 @@ export function GallerySearch({ prompts }: { prompts: PublicPromptTheme[] }) {
             id="gallery-sort"
             value={sort}
             onChange={(e) => setSort(e.target.value as SortOption)}
-            className="h-10 shrink-0 rounded-lg border border-white/10 bg-white/5 px-3 text-sm text-white outline-none transition-colors hover:bg-white/10 focus-visible:ring-3 focus-visible:ring-ring/50"
+            className="h-10 shrink-0 rounded-lg border border-border bg-fill-subtle px-3 text-sm text-foreground outline-none transition-colors hover:bg-fill-hover focus-visible:ring-3 focus-visible:ring-ring/50"
           >
             {SORT_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value} className="bg-[#111]">
+              <option key={opt.value} value={opt.value} className="bg-popover">
                 {t(opt.labelKey)}
               </option>
             ))}
           </select>
-          <span className="hidden shrink-0 text-sm text-white/55 sm:inline">
+          <span className="hidden shrink-0 text-sm text-muted-foreground sm:inline">
             {t("gallery.count", {
               shown: filtered.length,
               total: prompts.length,
@@ -117,21 +117,21 @@ export function GallerySearch({ prompts }: { prompts: PublicPromptTheme[] }) {
               onClick={() => setCategory(c)}
               className={`relative rounded-full px-3 py-1.5 text-sm font-medium outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 ${
                 active
-                  ? "text-black"
-                  : "border border-white/10 bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
+                  ? "text-background"
+                  : "border border-border bg-fill-subtle text-muted-foreground hover:bg-fill-hover hover:text-foreground"
               }`}
             >
               {active && (
                 <motion.span
                   layoutId="category-pill-active"
-                  className="absolute inset-0 rounded-full bg-white"
+                  className="absolute inset-0 rounded-full bg-foreground"
                   transition={{ type: "spring", stiffness: 400, damping: 32 }}
                 />
               )}
               <span className="relative inline-flex items-center gap-1.5">
                 {tCategory(c)}
                 <span
-                  className={`text-xs ${active ? "text-black/60" : "text-white/55"}`}
+                  className={`text-xs ${active ? "text-background/60" : "text-muted-foreground"}`}
                 >
                   {categoryCounts[c] ?? 0}
                 </span>

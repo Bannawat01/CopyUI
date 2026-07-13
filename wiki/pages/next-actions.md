@@ -240,11 +240,23 @@ trade-offs, not blockers — in rough order:
     is deliberately non-committal (AI output is not deterministic;
     Retheme is "designed to preserve", not "safe"), and
     `tests/trust-copy.test.ts` fails if overpromising language ever
-    creeps in. **Still open**: a **site appearance / theme toggle** —
-    users observed CopyUI itself is dark-only. This is a real UX gap but
-    a separate task; note that `dark` is currently hardcoded on `<html>`
-    in `src/app/layout.tsx`, so it is a genuine change, not a switch
-    flip. Deferred, not rejected.
+    creeps in. **Website appearance toggle SHIPPED (2026-07-10)** — Dark
+    / Light / System, in the header next to the language selector,
+    persisted in `localStorage`, separate from the prompt builder's
+    Theme Mode (stated explicitly in the selector's tooltip). Uncovered
+    the actual root cause along the way: `globals.css` already had a
+    full shadcn light/dark token system that most components simply
+    weren't using — 19 components mechanically converted from hardcoded
+    raw colors onto tokens (scripted, not hand-redesigned), plus one
+    existing shadcn default (light-mode `--muted-foreground`) tuned for
+    AA contrast before it shipped, not after. Full breakdown in
+    [log.md](../log.md) under `appearance-toggle` — this is a UI/styling
+    change with nothing prompt-related, so prompt-system.md was left
+    untouched.
+    **[uncertain]** No dedicated manual browser QA pass on light mode yet
+    — verified via the token conversion's correctness and render tests
+    only, the same caveat every prior visual change in this project has
+    carried.
 
 17. **Tool-mode copy drift FIXED before launch (2026-07-10)** — the site
     advertised 3 tools while supporting 6. All launch-facing copy

@@ -51,7 +51,7 @@ export default async function PromptDetailPage({
   if (!prompt) notFound();
 
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 bg-[#050505] px-4 py-8 sm:gap-8 sm:px-6 sm:py-10 lg:px-10">
+    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 bg-background px-4 py-8 sm:gap-8 sm:px-6 sm:py-10 lg:px-10">
       <BackToGallery />
 
       <DetailHeader

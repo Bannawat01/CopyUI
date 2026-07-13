@@ -69,8 +69,8 @@ export function ColorControl({
             onClick={onClear}
             className={`rounded-full border px-2.5 py-1 text-xs font-medium outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 ${
               value === undefined
-                ? "border-white/25 bg-white/10 text-white"
-                : "border-white/10 bg-white/5 text-white/50 hover:text-white"
+                ? "border-foreground/25 bg-fill-hover text-foreground"
+                : "border-border bg-fill-subtle text-muted-foreground hover:text-foreground"
             }`}
           >
             None

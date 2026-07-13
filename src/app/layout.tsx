@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { MotionProvider } from "@/components/motion-provider";
 import { LocaleProvider } from "@/components/locale-provider";
+import { AppearanceProvider } from "@/components/appearance-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import {
@@ -60,13 +61,15 @@ export default function RootLayout({
       className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <LocaleProvider>
-          <MotionProvider>
-            <SiteHeader />
-            {children}
-            <SiteFooter />
-          </MotionProvider>
-        </LocaleProvider>
+        <AppearanceProvider>
+          <LocaleProvider>
+            <MotionProvider>
+              <SiteHeader />
+              {children}
+              <SiteFooter />
+            </MotionProvider>
+          </LocaleProvider>
+        </AppearanceProvider>
         <Analytics />
         <SpeedInsights />
       </body>

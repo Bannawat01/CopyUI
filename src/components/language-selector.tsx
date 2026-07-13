@@ -9,7 +9,7 @@ export function LanguageSelector() {
 
   return (
     <div className="flex items-center gap-2">
-      <Globe className="h-4 w-4 shrink-0 text-white/40" aria-hidden="true" />
+      <Globe className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
       <label className="sr-only" htmlFor="locale-select">
         {t("lang.label")}
       </label>
@@ -22,10 +22,10 @@ export function LanguageSelector() {
         // The note explains that switching the site language does NOT switch
         // the copied prompt's language — the single most likely misreading.
         title={t("lang.note")}
-        className="h-8 rounded-lg border border-white/10 bg-white/5 px-2 text-xs text-white/80 outline-none transition-colors hover:bg-white/10 focus-visible:ring-3 focus-visible:ring-ring/50"
+        className="h-8 rounded-lg border border-border bg-fill-subtle px-2 text-xs text-foreground/90 outline-none transition-colors hover:bg-fill-hover focus-visible:ring-3 focus-visible:ring-ring/50"
       >
         {LOCALES.map((l) => (
-          <option key={l} value={l} className="bg-[#111]">
+          <option key={l} value={l} className="bg-popover">
             {LOCALE_LABELS[l]}
           </option>
         ))}

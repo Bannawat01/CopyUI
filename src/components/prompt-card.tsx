@@ -25,7 +25,7 @@ export function PromptCard({ prompt }: { prompt: PublicPromptTheme }) {
       transition={{ type: "spring", stiffness: 300, damping: 22 }}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0c0c0e] transition-shadow duration-300 hover:border-white/20 hover:shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_24px_48px_-16px_rgba(0,0,0,0.6)] has-[a:focus-visible]:border-ring has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-ring"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-shadow duration-300 hover:border-foreground/20 hover:shadow-[0_2px_24px_-8px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_24px_48px_-16px_rgba(0,0,0,0.6)] has-[a:focus-visible]:border-ring has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-ring"
     >
       <div
         className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100"
@@ -47,10 +47,10 @@ export function PromptCard({ prompt }: { prompt: PublicPromptTheme }) {
 
       <div className="relative flex flex-1 flex-col gap-3 p-4">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-heading text-sm font-medium text-white/90">
+          <h3 className="font-heading text-sm font-medium text-foreground">
             {prompt.title}
           </h3>
-          <Copy className="mt-0.5 h-3.5 w-3.5 shrink-0 text-white/25 transition-colors group-hover:text-white/60 group-focus-within:text-white/60" />
+          <Copy className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground group-focus-within:text-muted-foreground" />
         </div>
 
         <div className="flex flex-wrap gap-1.5">
@@ -58,17 +58,17 @@ export function PromptCard({ prompt }: { prompt: PublicPromptTheme }) {
             <Badge
               key={tag}
               variant="secondary"
-              className="border-white/5 bg-white/5 text-[10px] text-white/50"
+              className="border-border bg-fill-subtle text-[10px] text-muted-foreground"
             >
               {tag}
             </Badge>
           ))}
         </div>
 
-        <div className="mt-auto flex items-center justify-between border-t border-white/5 pt-3 text-xs text-white/55 transition-colors duration-300 group-hover:text-white/60 group-focus-within:text-white/60">
+        <div className="mt-auto flex items-center justify-between border-t border-border pt-3 text-xs text-muted-foreground transition-colors duration-300 group-hover:text-foreground group-focus-within:text-muted-foreground">
           <div className="flex items-center gap-1.5">
             <span
-              className="flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold text-white/80"
+              className="flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold text-foreground/90"
               style={{ backgroundColor: `${prompt.defaultPrimaryColor}33` }}
             >
               {initial}

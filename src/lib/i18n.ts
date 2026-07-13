@@ -35,6 +35,14 @@ const en = {
   "lang.note":
     "Prompt output stays in English for better AI-tool reliability and token efficiency.",
 
+  // Website appearance (separate from the prompt builder's Theme Mode)
+  "appearance.label": "Appearance",
+  "appearance.dark": "Dark",
+  "appearance.light": "Light",
+  "appearance.system": "System",
+  "appearance.note":
+    "Changes only this website's look. It does not change the Theme Mode inside a copied prompt.",
+
   // Homepage
   "home.badge": "Prompt Marketplace",
   "home.headline": "Production-ready UI prompts for {tools}",
@@ -150,6 +158,13 @@ const th: Partial<Record<TranslationKey, string>> = {
   "lang.note":
     "เปลี่ยนเฉพาะภาษาของเว็บไซต์ Prompt ที่คัดลอกจะยังเป็นภาษาอังกฤษ เพื่อให้เครื่องมือ AI ทำงานได้เสถียรกว่าและประหยัด token",
 
+  "appearance.label": "รูปแบบเว็บไซต์",
+  "appearance.dark": "มืด",
+  "appearance.light": "สว่าง",
+  "appearance.system": "ตามระบบ",
+  "appearance.note":
+    "เปลี่ยนเฉพาะหน้าตาเว็บไซต์นี้ ไม่มีผลต่อ Theme Mode ภายใน prompt ที่คัดลอก",
+
   "home.badge": "แหล่งรวม Prompt",
   "home.headline": "Prompt UI พร้อมใช้งานจริงสำหรับ {tools}",
   "home.subhead":
@@ -254,6 +269,13 @@ const zhCN: Partial<Record<TranslationKey, string>> = {
   "lang.label": "语言",
   "lang.note":
     "仅切换网站界面语言。复制的提示词仍为英文，以提升 AI 工具的稳定性并节省 token。",
+
+  "appearance.label": "外观",
+  "appearance.dark": "深色",
+  "appearance.light": "浅色",
+  "appearance.system": "跟随系统",
+  "appearance.note":
+    "仅改变本网站的外观，不会影响复制的提示词内部的 Theme Mode。",
 
   "home.badge": "提示词市场",
   "home.headline": "面向 {tools} 的生产级 UI 提示词",

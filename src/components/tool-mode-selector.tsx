@@ -20,7 +20,7 @@ export function ToolModeSelector({
       <div
         role="radiogroup"
         aria-labelledby="tool-mode-label"
-        className="inline-flex w-fit flex-wrap gap-y-1 rounded-lg border border-white/10 bg-white/5 p-1"
+        className="inline-flex w-fit flex-wrap gap-y-1 rounded-lg border border-border bg-fill-subtle p-1"
       >
         {TOOL_MODES.map(({ value: mode, label }) => {
           const selected = value === mode;
@@ -33,8 +33,8 @@ export function ToolModeSelector({
               onClick={() => onChange(mode)}
               className={`rounded-md px-3 py-1 text-xs font-medium outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 ${
                 selected
-                  ? "bg-white text-black"
-                  : "text-white/50 hover:text-white"
+                  ? "bg-foreground text-background"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {label}
