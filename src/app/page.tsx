@@ -1,5 +1,6 @@
 import { GallerySearch } from "@/components/gallery-search";
 import { HomeIntro } from "@/components/home-intro";
+import { ExampleShowcase } from "@/components/example-showcase";
 import { TrustFaq } from "@/components/trust-faq";
 import { getPublicPrompts } from "@/lib/prompts";
 
@@ -11,6 +12,8 @@ export default function GalleryPage() {
       <HomeIntro />
 
       <GallerySearch prompts={prompts} />
+
+      <ExampleShowcase />
 
       <TrustFaq />
     </main>

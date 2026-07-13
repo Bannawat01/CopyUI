@@ -1383,3 +1383,44 @@ extracted rules, for a later task:
   `NEXT_PUBLIC_SITE_URL`, and this fix.
 - Validation: `rtk npm test` 150/150, `rtk npm run lint` clean, `rtk npm run
   build` clean (27 routes).
+
+## [2026-07-10] generated-examples-v1 | Static "what this creates" preview metadata
+- **Goal**: let users see the expected outcome *before* copying, to improve trust
+  and conversion. Post-launch feature, deliberately bounded.
+- **What it is NOT**: no database, no uploads, no auth, no external API, no real
+  AI generation, no screenshots. `src/lib/generated-examples.ts` is hand-written
+  public metadata — one entry per prompt, 18 total.
+- Shape per example: `exampleTitle`, `outcomeSummary`, `layoutPreview` (schematic
+  rows), `keyElements` (4–6), `bestFor` (2–4), `suggestedToolModes` (real
+  `ToolMode` ids), `visualNotes` (2–4), optional `expectationNote` naming where a
+  run is most likely to drift (e.g. "chart libraries vary by tool").
+- **Rendered as labelled schematic blocks, never a fake screenshot.** Showing
+  something that *looks* like real generated output when it is not would be the
+  exact overpromise the rest of the product spent weeks avoiding. The structure
+  is honest about being a structure.
+- Homepage: `ExampleShowcase` — 4 featured examples spread across categories,
+  below the gallery, above the trust FAQ. Detail page: `ExampleOutcome` — full
+  breakdown *below* the copy panel, so it informs the decision without
+  interrupting the copy flow.
+- **Safety, verified two ways.** This data ships to the browser, so it is
+  hand-written, never derived from `promptTemplate`. Tests assert it contains no
+  template markers (`Product context:`, `Context of use:`, `Target tool:`,
+  `{{primaryColor}}`, `RETHEME ONLY`, …) and never reproduces any template's
+  opening 60 characters. Then `next start` + `curl` on a real detail page:
+  **0 matches** for `Product context:` / `Context of use:`, with the examples
+  section rendering correctly.
+- Honesty guard: a test fails the build if the example copy ever says
+  "guaranteed", "always identical", "same result every time", "pixel-perfect",
+  or "100% deterministic" — and asserts the direction-setting language
+  ("designed to", "expect", "may differ") is present. Same bar as the trust copy.
+- **Localization**: section chrome (headings, labels, the vary-note) is fully
+  localized en/th/zh-CN. Per-prompt example *content* stays concise English in
+  v1 — translating 18 × 6 fields was out of budget, and the localized note
+  states plainly that examples describe intended direction and the copied prompt
+  remains English. Recorded as a known v1 gap, not an oversight.
+- Prompt builder, prompt output, tool/theme modes, and i18n behavior: untouched.
+- Validation: `rtk npm test` **160/160 across 10 files** (was 150/9),
+  `rtk npm run lint` clean, `rtk npm run build` clean (27 routes).
+- **Future option, not built**: real screenshots from validated runs, or
+  user-submitted examples. Both need storage/moderation — out of scope for v1.
+- Wiki: next-actions.md (item 20), prompt-system.md, this entry.

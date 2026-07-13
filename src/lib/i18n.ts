@@ -117,6 +117,21 @@ const en = {
   "copy.success": "Copied — tailored for {tool}",
   "copy.error": "Couldn't copy the prompt. Please try again.",
 
+  // Generated Examples
+  "examples.homeHeading": "What these prompts can create",
+  "examples.homeSubhead":
+    "The direction each prompt is designed to produce. Not screenshots — AI output varies by tool and by run.",
+  "examples.detailHeading": "What this prompt can generate",
+  "examples.expectedDirection": "Expected direction",
+  "examples.typicalStructure": "Typical structure",
+  "examples.keyElements": "Key UI elements",
+  "examples.bestFor": "Best for",
+  "examples.recommendedTools": "Works well in",
+  "examples.visualNotes": "Visual direction",
+  "examples.heads-up": "Heads up",
+  "examples.varyNote":
+    "This describes the intended direction, not a fixed result. Output may vary by tool and by run. The copied prompt stays in English.",
+
   // Footer
   "footer.heading": "Missing a prompt, or did one fall flat?",
   "footer.blurb":
@@ -208,6 +223,20 @@ const th: Partial<Record<TranslationKey, string>> = {
   "copy.success": "คัดลอกแล้ว — ปรับแต่งสำหรับ {tool}",
   "copy.error": "คัดลอก prompt ไม่สำเร็จ กรุณาลองใหม่อีกครั้ง",
 
+  "examples.homeHeading": "prompt เหล่านี้สร้างอะไรได้บ้าง",
+  "examples.homeSubhead":
+    "ทิศทางที่ prompt แต่ละตัวออกแบบมาให้ได้ ไม่ใช่ภาพหน้าจอจริง — ผลลัพธ์ AI ต่างกันไปตามเครื่องมือและแต่ละครั้งที่รัน",
+  "examples.detailHeading": "prompt นี้สร้างอะไรได้",
+  "examples.expectedDirection": "ทิศทางที่คาดหวัง",
+  "examples.typicalStructure": "โครงสร้างโดยทั่วไป",
+  "examples.keyElements": "องค์ประกอบ UI หลัก",
+  "examples.bestFor": "เหมาะกับ",
+  "examples.recommendedTools": "ใช้ได้ดีกับ",
+  "examples.visualNotes": "แนวทางด้านภาพ",
+  "examples.heads-up": "ควรรู้ไว้",
+  "examples.varyNote":
+    "นี่คือทิศทางที่ตั้งใจไว้ ไม่ใช่ผลลัพธ์ตายตัว ผลอาจต่างกันไปตามเครื่องมือและแต่ละครั้งที่รัน และ prompt ที่คัดลอกจะยังเป็นภาษาอังกฤษ",
+
   "footer.heading": "ไม่มี prompt ที่ต้องการ หรือผลลัพธ์ไม่ดี?",
   "footer.blurb":
     "CopyUI พัฒนาแบบเปิด ความคิดเห็นของคุณจะถูกส่งไปยัง GitHub Issues โดยตรง — ไม่ต้องสมัครอะไรเพิ่ม ไม่มีแบบฟอร์ม",
@@ -291,6 +320,20 @@ const zhCN: Partial<Record<TranslationKey, string>> = {
   "copy.building": "正在生成 {tool} 提示词…",
   "copy.success": "已复制 — 已为 {tool} 定制",
   "copy.error": "复制提示词失败，请重试。",
+
+  "examples.homeHeading": "这些提示词能做出什么",
+  "examples.homeSubhead":
+    "每个提示词旨在产出的方向。并非截图 — AI 输出会因工具和每次运行而不同。",
+  "examples.detailHeading": "这个提示词能生成什么",
+  "examples.expectedDirection": "预期方向",
+  "examples.typicalStructure": "典型结构",
+  "examples.keyElements": "关键界面元素",
+  "examples.bestFor": "适用于",
+  "examples.recommendedTools": "适合搭配",
+  "examples.visualNotes": "视觉方向",
+  "examples.heads-up": "请注意",
+  "examples.varyNote":
+    "这里描述的是预期方向，而非固定结果。输出会因工具和每次运行而不同。复制的提示词仍为英文。",
 
   "footer.heading": "缺少某个提示词，或效果不理想？",
   "footer.blurb":

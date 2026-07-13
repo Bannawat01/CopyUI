@@ -5,6 +5,7 @@ import { getPromptBySlug, prompts } from "@/lib/prompts";
 import { toolModeList } from "@/lib/tool-modes";
 import { PromptDetail } from "@/components/prompt-detail";
 import { DetailHeader } from "@/components/detail-header";
+import { ExampleOutcome } from "@/components/example-outcome";
 
 export function generateStaticParams() {
   return prompts.map((p) => ({ slug: p.slug }));
@@ -66,6 +67,8 @@ export default async function PromptDetailPage({
           defaultPrimaryColor: prompt.defaultPrimaryColor,
         }}
       />
+
+      <ExampleOutcome slug={prompt.slug} />
     </main>
   );
 }

@@ -285,6 +285,24 @@ requirement:
   text. The label/caption changes are presentation-only — no new prop
   or data ever carries `promptTemplate` client-side.
 
+## Generated Examples (public metadata, 2026-07-10)
+`src/lib/generated-examples.ts` describes, per prompt, the *direction* the
+prompt is designed to produce: outcome summary, schematic layout, key
+elements, best-for cases, suggested tool modes, visual notes, and an optional
+note on where a run tends to drift.
+
+**It is public, hand-written copy — not derived from `promptTemplate`.** That
+distinction is the whole safety story: it ships to the browser, so it must
+never be a summary of the hidden template. Tests assert it contains no
+template markers and never reproduces any template's opening line, and the
+`curl` check on a live detail page confirms `Product context:` and
+`Context of use:` still return zero matches.
+
+It is rendered as labelled schematic blocks, never a fake screenshot, and an
+honesty guard fails the build if the copy ever claims guaranteed or identical
+output. Per-prompt content is English-only in v1; the section chrome is
+localized.
+
 ## Quality checklist (detail page)
 The detail page's `QualityChecklist` panel (production pass, 2026-07-09)
 advertises the six template section names as a trust signal. It's a

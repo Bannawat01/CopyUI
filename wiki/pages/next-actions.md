@@ -257,4 +257,23 @@ trade-offs, not blockers — in rough order:
     contrast bug** (white text on a user-chosen `primaryColor` fails
     WCAG on light colors) is the last defect with real user impact.
 
+20. **Generated Examples v1 shipped (2026-07-10)** — static public
+    metadata (`src/lib/generated-examples.ts`) describing what each of the
+    18 prompts is designed to produce: outcome summary, schematic layout,
+    key elements, best-for, suggested tool modes, visual notes. Shown as a
+    4-card showcase on the homepage and a full section on each detail page,
+    below the copy panel. Rendered as **schematic blocks, never fake
+    screenshots**, and an honesty guard fails the build if the copy ever
+    promises guaranteed or identical output. No `promptTemplate` exposure —
+    verified by tests and by `curl` against a live detail page.
+    **Known v1 gaps**: (a) per-prompt example *content* is English-only —
+    only the section chrome is localized (en/th/zh-CN); translating 18 × 6
+    fields is a follow-up. (b) The examples are written from the templates'
+    intent, **not from observed real output** — only 3 prompt/option
+    combinations have ever been validated against a real tool, so some
+    `expectationNote`s are informed guesses. Worth revisiting as more real
+    runs accumulate. **Future option, not built**: real screenshots from
+    validated runs, or user-submitted examples — both need
+    storage/moderation and were out of scope.
+
 This list should be revised as decisions are made — do not treat it as fixed.

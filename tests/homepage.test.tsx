@@ -74,6 +74,14 @@ describe("homepage", () => {
     expect(html).toContain("review the diff");
   });
 
+  it("renders the generated-examples showcase", () => {
+    expect(html).toContain(t("en", "examples.homeHeading"));
+    expect(html).toContain("Ops dashboard with KPI row and activity table");
+    expect(html).toContain("Conversational AI workspace");
+    // Schematic structure, not a fake screenshot.
+    expect(html).toContain("Sidebar (240px) + sticky top bar");
+  });
+
   it("does not overpromise determinism or safety in the FAQ", () => {
     const lower = html.toLowerCase();
     for (const overpromise of [
