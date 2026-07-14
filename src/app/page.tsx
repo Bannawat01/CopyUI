@@ -2,6 +2,7 @@ import { GallerySearch } from "@/components/gallery-search";
 import { HomeIntro } from "@/components/home-intro";
 import { ExampleShowcase } from "@/components/example-showcase";
 import { TrustFaq } from "@/components/trust-faq";
+import { GrowthSection } from "@/components/growth-section";
 import { getPublicPrompts } from "@/lib/prompts";
 
 export default function GalleryPage() {
@@ -16,6 +17,8 @@ export default function GalleryPage() {
       <ExampleShowcase />
 
       <TrustFaq />
+
+      <GrowthSection />
     </main>
   );
 }

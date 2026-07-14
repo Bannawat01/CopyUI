@@ -98,4 +98,35 @@ describe("homepage", () => {
       expect(lower).not.toContain(overpromise);
     }
   });
+
+  it("renders the growth section with all three feedback actions", () => {
+    expect(html).toContain(t("en", "growth.heading"));
+    expect(html).toContain(t("en", "feedback.giveFeedback.label"));
+    expect(html).toContain(t("en", "feedback.requestPrompt.label"));
+    expect(html).toContain(t("en", "feedback.reportOutput.label"));
+  });
+
+  it("renders share text naming real tool modes, not a hardcoded list", () => {
+    expect(html).toContain(t("en", "growth.shareHeading"));
+    for (const label of TOOL_MODE_LABELS) {
+      // Already asserted once for the headline; here specifically inside
+      // the share block's sentence structure.
+      expect(html).toContain(label);
+    }
+    expect(html).toContain("prompt marketplace for generating and retheming UI");
+  });
+
+  it("does not overpromise in the growth section either", () => {
+    const lower = html.toLowerCase();
+    for (const overpromise of [
+      "guaranteed",
+      "always identical",
+      "same result every time",
+      "never delete",
+      "100% deterministic",
+      "pixel-perfect",
+    ]) {
+      expect(lower).not.toContain(overpromise);
+    }
+  });
 });

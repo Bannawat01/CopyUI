@@ -143,6 +143,24 @@ const en = {
   "examples.varyNote":
     "This describes the intended direction, not a fixed result. Output may vary by tool and by run. The copied prompt stays in English.",
 
+  // Feedback links (shared by the footer and the homepage growth section)
+  "feedback.giveFeedback.label": "Give feedback",
+  "feedback.giveFeedback.description": "Ideas for the site, a prompt, or the copy experience.",
+  "feedback.requestPrompt.label": "Request a prompt",
+  "feedback.requestPrompt.description": "Suggest a UI theme you'd like added to the gallery.",
+  "feedback.reportOutput.label": "Report confusing output",
+  "feedback.reportOutput.description": "A copied prompt produced unclear or poor results in your AI tool.",
+
+  // Homepage "help us improve" / share section
+  "growth.heading": "Help improve CopyUI",
+  "growth.subhead":
+    "CopyUI is early. Your feedback shapes what gets built next — a confusing result or a missing theme is worth reporting.",
+  "growth.shareHeading": "Share CopyUI",
+  "growth.shareText":
+    "CopyUI is a prompt marketplace for generating and retheming UI with {tools}.",
+  "growth.shareCopy": "Copy",
+  "growth.shareCopied": "Copied!",
+
   // Footer
   "footer.heading": "Missing a prompt, or did one fall flat?",
   "footer.blurb":
@@ -258,6 +276,22 @@ const th: Partial<Record<TranslationKey, string>> = {
   "examples.varyNote":
     "นี่คือทิศทางที่ตั้งใจไว้ ไม่ใช่ผลลัพธ์ตายตัว ผลอาจต่างกันไปตามเครื่องมือและแต่ละครั้งที่รัน และ prompt ที่คัดลอกจะยังเป็นภาษาอังกฤษ",
 
+  "feedback.giveFeedback.label": "ให้ความคิดเห็น",
+  "feedback.giveFeedback.description": "ไอเดียเกี่ยวกับเว็บไซต์ prompt หรือประสบการณ์การคัดลอก",
+  "feedback.requestPrompt.label": "ขอ Prompt ใหม่",
+  "feedback.requestPrompt.description": "แนะนำธีม UI ที่อยากให้เพิ่มในแกลเลอรี",
+  "feedback.reportOutput.label": "แจ้งผลลัพธ์ที่สับสน",
+  "feedback.reportOutput.description": "Prompt ที่คัดลอกให้ผลลัพธ์ไม่ชัดเจนหรือไม่ดีในเครื่องมือ AI ของคุณ",
+
+  "growth.heading": "ช่วยพัฒนา CopyUI",
+  "growth.subhead":
+    "CopyUI ยังอยู่ในช่วงเริ่มต้น ความคิดเห็นของคุณช่วยกำหนดสิ่งที่จะพัฒนาต่อไป — ผลลัพธ์ที่สับสนหรือธีมที่ขาดหายไปคุ้มค่าที่จะแจ้งให้เราทราบ",
+  "growth.shareHeading": "แชร์ CopyUI",
+  "growth.shareText":
+    "CopyUI คือแหล่งรวม prompt สำหรับสร้างและ Retheme UI ด้วย {tools}",
+  "growth.shareCopy": "คัดลอก",
+  "growth.shareCopied": "คัดลอกแล้ว!",
+
   "footer.heading": "ไม่มี prompt ที่ต้องการ หรือผลลัพธ์ไม่ดี?",
   "footer.blurb":
     "CopyUI พัฒนาแบบเปิด ความคิดเห็นของคุณจะถูกส่งไปยัง GitHub Issues โดยตรง — ไม่ต้องสมัครอะไรเพิ่ม ไม่มีแบบฟอร์ม",
@@ -364,6 +398,22 @@ const zhCN: Partial<Record<TranslationKey, string>> = {
   "examples.heads-up": "请注意",
   "examples.varyNote":
     "这里描述的是预期方向，而非固定结果。输出会因工具和每次运行而不同。复制的提示词仍为英文。",
+
+  "feedback.giveFeedback.label": "提供反馈",
+  "feedback.giveFeedback.description": "关于网站、提示词或复制体验的想法。",
+  "feedback.requestPrompt.label": "请求新提示词",
+  "feedback.requestPrompt.description": "建议一个想加入图库的 UI 主题。",
+  "feedback.reportOutput.label": "反馈令人困惑的输出",
+  "feedback.reportOutput.description": "复制的提示词在你的 AI 工具中产生了不清晰或不理想的结果。",
+
+  "growth.heading": "帮助改进 CopyUI",
+  "growth.subhead":
+    "CopyUI 尚处早期。你的反馈决定接下来要做什么——令人困惑的结果或缺失的主题都值得反馈。",
+  "growth.shareHeading": "分享 CopyUI",
+  "growth.shareText":
+    "CopyUI 是一个提示词市场，用于通过 {tools} 生成和换主题 UI。",
+  "growth.shareCopy": "复制",
+  "growth.shareCopied": "已复制！",
 
   "footer.heading": "缺少某个提示词，或效果不理想？",
   "footer.blurb":

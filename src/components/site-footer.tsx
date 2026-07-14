@@ -2,8 +2,9 @@
 
 import { ArrowUpRight } from "lucide-react";
 import { useLocale } from "@/components/locale-provider";
-import { FEEDBACK_LINKS, REPO_URL } from "@/lib/feedback";
+import { FEEDBACK_LINKS, REPO_URL, getFeedbackHref } from "@/lib/feedback";
 import { toolModeList } from "@/lib/tool-modes";
+import type { TranslationKey } from "@/lib/i18n";
 
 export function SiteFooter() {
   const { t } = useLocale();
@@ -20,22 +21,22 @@ export function SiteFooter() {
 
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           {FEEDBACK_LINKS.map((link) => (
-            <li key={link.label}>
+            <li key={link.id}>
               <a
-                href={link.href}
+                href={getFeedbackHref(link.id)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex h-full flex-col gap-1 rounded-xl border border-border bg-fill-subtle p-4 outline-none transition-colors hover:border-foreground/20 hover:bg-fill-hover focus-visible:ring-3 focus-visible:ring-ring/50"
               >
                 <span className="flex items-center gap-1.5 text-sm font-medium text-foreground/90 transition-colors group-hover:text-foreground">
-                  {link.label}
+                  {t(`feedback.${link.id}.label` as TranslationKey)}
                   <ArrowUpRight
                     className="h-3.5 w-3.5 text-muted-foreground transition-colors group-hover:text-foreground"
                     aria-hidden="true"
                   />
                 </span>
                 <span className="text-xs leading-relaxed text-muted-foreground">
-                  {link.description}
+                  {t(`feedback.${link.id}.description` as TranslationKey)}
                 </span>
               </a>
             </li>

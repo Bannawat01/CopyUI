@@ -363,4 +363,22 @@ trade-offs, not blockers — in rough order:
     overlap needs a **second occurrence** before any responsive template
     wording changes (item 4).
 
+21. **"Help improve CopyUI" + share section shipped (2026-07-10)** —
+    product-growth polish for early testers with no existing audience.
+    New compact homepage section (after Trust FAQ, before footer): the 3
+    feedback actions (Give feedback / Request a prompt / Report confusing
+    output) as an inline pill row, plus a share-text block with a copy
+    button. `src/lib/feedback.ts` extended, not duplicated — links now
+    carry a stable `id`, display text moved to `i18n.ts` so the footer
+    and this new section share one localized source instead of two
+    drifting hardcoded strings. **External feedback form config shape
+    added** (`NEXT_PUBLIC_FEEDBACK_URL`, safe GitHub fallback, no fake
+    Google Form/Tally URL hardcoded) — real next step if/when a form
+    exists: set the env var, `giveFeedback` picks it up automatically,
+    `requestPrompt`/`reportOutput` keep their GitHub templates regardless.
+    Share text derived via `toolModeList()`, not hardcoded, so it can't
+    go stale the way the old 3-tool copy did. No auth/database/admin/
+    comments/analytics dashboard added. 183/183 tests, lint + build
+    clean, hidden-prompt guarantee re-verified live (0 leak matches).
+
 This list should be revised as decisions are made — do not treat it as fixed.

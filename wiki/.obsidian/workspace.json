@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "117bc34fc2e91b6c",
+        "id": "72968b424cc1e3f1",
         "type": "tabs",
         "children": [
           {
-            "id": "57eed042506416ea",
+            "id": "7e8f4ef3ac1967d9",
             "type": "leaf",
             "state": {
               "type": "graph",
@@ -176,17 +176,18 @@
       "bases:Create new base": false
     }
   },
-  "active": "57eed042506416ea",
+  "active": "7e8f4ef3ac1967d9",
   "lastOpenFiles": [
+    "raw/clips/JuliusBrusseecaveman 🪨 why use many token when few token do trick — Claude Code skill that cuts 65% of tokens by talking like caveman.md",
+    "pages/prompt-quality.md",
+    "index.md",
     "Untitled 1.canvas",
     "pages/overview.md",
     "Untitled.canvas",
     "raw/clips/shadcnoriginui Origin UI is an extensive collection of copy-and-paste components for quickly building application UIs. Powered by Tailwind CSS and React.md",
-    "raw/clips/JuliusBrusseecaveman 🪨 why use many token when few token do trick — Claude Code skill that cuts 65% of tokens by talking like caveman.md",
     "pages/next-actions.md.tmp.40708.66f6bf74b221",
     "raw/clips/Caveman - Token Compression Skill.md.tmp.40708.0dcc2e3c7356",
     "raw/clips/Caveman - Token Compression Skill.md",
-    "index.md",
     "pages/gallery-page.md",
     "pages/feature-ideas.md",
     "pages/prompt-system.md.tmp.39728.d3ea02773ad4",

@@ -1742,3 +1742,55 @@ infrastructure existed and was half-ignored.
   (`appearance-qa-1`) and detail page (this entry). No open visual gaps
   remain for the Website Appearance Toggle.
 - Wiki: next-actions.md (item 16, closed), this entry.
+
+## [2026-07-10] growth-section | "Help improve CopyUI" + share block shipped
+- Product-growth polish, not a validation task. Goal: give early testers with
+  no existing community an easy way to give feedback, request prompts, report
+  confusing output, and share the site.
+- **New**: `src/components/growth-section.tsx` — compact homepage section
+  after the Trust FAQ, before the footer: short headline + explanation, the 3
+  feedback actions as an inline pill row, and a share-text block with a copy
+  button.
+- **Feedback links centralized, not duplicated.** `src/lib/feedback.ts`
+  already existed (used by the footer) — extended rather than forked. Each
+  link now has a stable `id` (`giveFeedback` / `requestPrompt` /
+  `reportOutput`); display text moved out of `feedback.ts` and into
+  `i18n.ts`'s `feedback.<id>.*` keys, so the footer and the new homepage
+  section render the same localized copy from one source instead of two
+  hardcoded English strings drifting apart. `feedback.ts` itself now only
+  builds URLs — GitHub issue bodies stay English on purpose, since they're
+  read by maintainers, not visitors.
+- **External feedback form: config shape added, no fake URL.** New
+  `EXTERNAL_FEEDBACK_URL = process.env.NEXT_PUBLIC_FEEDBACK_URL || null` and
+  `getFeedbackHref(id)`. When unset (today), every action falls back to
+  GitHub Issues. If set later, only `giveFeedback` — the general, unstructured
+  action — redirects to it; `requestPrompt` and `reportOutput` always keep
+  their structured GitHub issue templates, since a generic external form
+  wouldn't carry the same prefilled fields. No Google Form/Tally/Typeform
+  placeholder was hardcoded — a fake link is worse than none.
+- **Share text is derived, not hardcoded**: `"CopyUI is a prompt marketplace
+  for generating and retheming UI with {tools}."` with `{tools}` filled by
+  `toolModeList()`, so it can't go stale the way the old 3-tool copy did.
+  Copy button uses plain `navigator.clipboard.writeText`; on failure the text
+  stays fully selectable in the block, so nothing is lost — no new dependency.
+- **Design**: deliberately lighter than the footer's existing feedback card
+  grid (pill row here vs. cards there) so the two don't read as duplicate UI
+  on the same page. Footer's fuller treatment is kept as-is and untouched in
+  substance — still the only feedback surface on prompt detail pages, which
+  don't render the homepage's growth section.
+- Localization: all new UI copy (headings, feedback labels/descriptions,
+  share text, button states) localized en/th/zh-CN. Technical terms
+  (prompt, Retheme, tool names) kept unlocalized per convention.
+- Trust: no new overpromising language; homepage test suite now guards the
+  growth section specifically for "guaranteed" / "pixel-perfect" / etc., same
+  bar as the trust FAQ and generated examples.
+- Hidden-prompt safety: unaffected — this is homepage UI copy with no
+  connection to `promptTemplate` or the build API. Verified on a live server:
+  0 matches for `Product context:`.
+- Explicitly NOT added: auth, database, admin, comments, user accounts,
+  analytics dashboard, URL-based locale routing, any new external API call.
+- Tests: 2 new files (`tests/feedback.test.ts`, plus additions to
+  `tests/homepage.test.tsx`). `rtk npm test` **183/183 across 13 files**
+  (was 173/12). `rtk npm run lint` clean. `rtk npm run build` clean
+  (27 routes).
+- Wiki: next-actions.md (new item), this entry.
