@@ -1841,3 +1841,25 @@ infrastructure existed and was half-ignored.
 - Explicitly not implemented: the custom domain itself (documentation only,
   as scoped), auth/database/payments/admin/analytics dashboard/external APIs.
 - Wiki: next-actions.md (new item), this entry.
+
+## [2026-07-10] feedback-workflow | Early-user feedback workflow drafted (docs only)
+- No app code changed. CopyUI has feedback *links* (GitHub Issues, extended
+  two passes ago) but no actual *process* for getting 5–10 real testers to
+  produce useful signal — this closes that gap with a plan, not tooling.
+- Added to `next-actions.md` (item 23): an outreach checklist (send URL → try
+  one prompt → switch one option → actually copy it → probe Retheme-safety
+  understanding unprompted → ask if Generated Examples built trust), an
+  8-question feedback list, and a compact per-issue result format (tester
+  type / tool used / prompt tested / issue found / severity / action needed).
+- Deliberate design choice: question 1 ("What did you think CopyUI does?")
+  is asked *before* any explanation, specifically so a wrong answer is
+  attributed to unclear product copy rather than tester unfamiliarity — the
+  same self-checking instinct behind the trust-copy and generated-examples
+  honesty guards elsewhere in this project, applied to human testing instead
+  of code.
+- Marked explicitly unvalidated: this workflow has not been run against a
+  real tester yet, so it's logged as a first draft to revise after actual
+  use, not a finished script.
+- No new wiki page created, no database/form integration, README untouched —
+  all as scoped.
+- Wiki: next-actions.md (item 23), this entry.

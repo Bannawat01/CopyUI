@@ -394,4 +394,43 @@ trade-offs, not blockers — in rough order:
     real `SITE_URL`, localized across all 3 locales. 184/184 tests, lint
     + build clean, hidden-prompt guarantee re-verified live.
 
+23. **Early-user feedback workflow (2026-07-10)** — a concrete plan for
+    collecting useful signal from 5–10 real testers, not just waiting for
+    GitHub Issues to arrive on their own. No tooling, no form — a
+    checklist and a result format to fill in by hand per tester.
+
+    **Outreach checklist** (send this sequence to each tester):
+    - Send the live URL.
+    - Ask them to try one prompt end to end.
+    - Ask them to switch one option (Theme Mode, Tool Mode, or a Layout
+      Preset) and see what changes.
+    - Ask them to actually click Copy and paste the prompt somewhere.
+    - Ask whether they understood the Retheme safety explanation *before*
+      being told what it says — a tester who has to be walked through it
+      means the copy isn't doing its job.
+    - Ask whether Generated Examples made them trust the prompt more, or
+      whether they skipped past them.
+
+    **Feedback questions** (ask after they've used it, not before):
+    1. What did you think CopyUI does?
+    2. What confused you?
+    3. Which tool would you actually use it with?
+    4. Did you trust the Retheme safety explanation?
+    5. Did the Generated Examples help?
+    6. Did the language or appearance options help?
+    7. Would you use this on a real project?
+    8. What prompt type should be added next?
+
+    **Result format** (one row per issue found, not per tester):
+    `tester type | tool used | prompt tested | issue found | severity |
+    action needed`
+
+    **Why question 1 comes before any explanation**: it tests whether the
+    homepage and detail page communicate the product on their own — if a
+    tester's answer doesn't match what CopyUI actually does, that's a
+    copy/clarity bug, not a tester error. **[uncertain]** This workflow is
+    unvalidated — it has not yet been run against a single real tester, so
+    treat the question list as a first draft to revise after the first
+    session, not a fixed script.
+
 This list should be revised as decisions are made — do not treat it as fixed.
