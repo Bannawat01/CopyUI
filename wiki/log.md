@@ -1794,3 +1794,50 @@ infrastructure existed and was half-ignored.
   (was 173/12). `rtk npm run lint` clean. `rtk npm run build` clean
   (27 routes).
 - Wiki: next-actions.md (new item), this entry.
+
+## [2026-07-10] share-kit-domain-readiness | Launch share kit + custom-domain checklist
+- Prep for public sharing after v1 launch readiness. Documentation-focused,
+  with one real bug fix in the on-site share text found along the way.
+- **README.md**: two new sections.
+  - **"Custom domain checklist"** — 4 concrete steps for after a domain is
+    attached (out of scope to implement here): update
+    `NEXT_PUBLIC_SITE_URL` in Vercel to the exact domain with no trailing
+    slash, redeploy (env var alone does nothing until the next build since
+    sitemap/robots/canonical are baked in at build time), verify
+    `/sitemap.xml` and `/robots.txt` show the new domain not `localhost` or
+    a `*.vercel.app` preview URL, verify canonical/OG tags on a real page.
+  - **"Share CopyUI"** — ready-to-paste blurbs for X/Twitter, LinkedIn,
+    Discord, Facebook groups, LINE, and a GitHub-README one-liner. Each
+    tailored to that platform's actual tone (LinkedIn reads as a builder
+    update, Discord/Facebook explicitly invite feedback, X is short and
+    tagged). LINE's blurb is **Thai**, not a direct translation of the
+    English ones — LINE's core user base skews Thai, and a literal English
+    post would undersell it there. **Deliberate honesty call**: none of the
+    six blurbs repeats the full Retheme/determinism disclaimers verbatim —
+    a tweet-length post cramming in a safety paragraph defeats the point of
+    "concise," and the site's own Trust FAQ already carries those caveats
+    in full for anyone who clicks through. What the short copy avoids
+    instead is any actual false claim (no "guaranteed", no
+    "pixel-perfect"), and several variants say "still early" / invite
+    feedback directly, which is itself an honest signal.
+- **Real bug found and fixed**: the on-site "Share CopyUI" block's copyable
+  text (`growth-section.tsx`, shipped last pass) had **no link** — a share
+  message with nothing to click doesn't drive any traffic. `growth.shareText`
+  now interpolates `{url}` from `SITE_URL` (already a build-time-inlined
+  `NEXT_PUBLIC_SITE_URL`, safe in a client component) across all 3 locales,
+  so what a user copies from the site is immediately useful, not just an
+  ad-copy sentence.
+- Localization: the share-text fix applied to en/th/zh-CN. The platform share
+  kit in README stays primarily English (its natural audience — GitHub,
+  X, LinkedIn, Discord, Facebook groups are not locale-switched surfaces),
+  with the one deliberate Thai exception noted above for LINE.
+- Hidden-prompt safety: unaffected — verified live, 0 leak matches for
+  `Product context:`.
+- Tests: 1 new/updated assertion (`tests/homepage.test.tsx` — share text
+  must contain `SITE_URL`). `rtk npm test` **184/184 across 13 files**
+  (was 183). `rtk npm run lint` clean. `rtk npm run build` clean
+  (27 routes) — ran despite this being mostly docs, since two app files
+  changed (`growth-section.tsx`, `i18n.ts`).
+- Explicitly not implemented: the custom domain itself (documentation only,
+  as scoped), auth/database/payments/admin/analytics dashboard/external APIs.
+- Wiki: next-actions.md (new item), this entry.

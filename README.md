@@ -127,3 +127,65 @@ The prompt templates are the product, so they never reach the client:
 A standard Next.js app — deploys as-is to Vercel or any Node host. All
 prompt detail routes are statically prerendered; the only dynamic route is
 the server-side prompt build API. Remember to set `NEXT_PUBLIC_SITE_URL`.
+
+### Custom domain checklist
+
+Attaching a custom domain is a Vercel/DNS step outside this repo, but four
+things need to happen **after** it's attached or CopyUI keeps advertising
+the wrong URL to search engines and social previews:
+
+1. **Update `NEXT_PUBLIC_SITE_URL`** in the deployment environment (Vercel →
+   Project Settings → Environment Variables) to the exact new domain, e.g.
+   `https://copyui.app` — **no trailing slash**. `src/lib/site.ts` reads
+   this single value and derives everything else (canonical URLs, Open
+   Graph, `robots.txt`, `sitemap.xml`) from it.
+2. **Redeploy.** This is a build-time value baked into static pages and the
+   sitemap/robots routes — changing the env var alone does nothing until
+   the next deploy picks it up.
+3. **Verify `/sitemap.xml` and `/robots.txt`** on the live domain reference
+   the new domain, not `localhost` and not the old `*.vercel.app` preview
+   URL.
+4. **Verify canonical and OG tags** on a real page (view source, or a social
+   debugger) show the new domain — this also determines what a shared link's
+   preview card renders, so it's worth checking directly rather than
+   assuming.
+
+### Share CopyUI
+
+Ready-to-paste blurbs for sharing CopyUI with early testers. Replace `<url>`
+with the deployed link. Kept honest on purpose — no "guaranteed" or
+"pixel-perfect" claims; the site's own Trust FAQ carries the fuller honesty
+caveats (AI output direction vs. exact pixels, Retheme preserves code by
+design but review the diff), so these short posts don't need to repeat them
+line for line.
+
+**X / Twitter**
+```
+CopyUI — copy production-ready UI prompts for v0.dev, Cursor, Claude Code, Windsurf & more. Pick a theme, set your brand color, copy a tailored prompt. No signup. <url>
+```
+
+**LinkedIn**
+```
+I've been building CopyUI — a small prompt marketplace for teams using AI UI tools like v0.dev, Cursor, Claude Code, and Windsurf. Instead of writing prompts from scratch, pick a UI theme, set your brand color, and copy a production-ready prompt tailored to your tool. Still early, and feedback from real use is what shapes what gets built next. <url>
+```
+
+**Discord**
+```
+Sharing something I've been building: CopyUI — a prompt marketplace for AI UI tools (v0.dev, Cursor, Claude Code, Windsurf, and more). Pick a theme, set a color, copy a ready-to-use prompt. Still early — if something's confusing or a prompt's output looks off, I'd genuinely like to hear about it. <url>
+```
+
+**Facebook groups**
+```
+Built a small tool called CopyUI — browse UI design prompts (dashboards, landing pages, pricing tables, and more) and copy one tailored for v0.dev, Cursor, Claude Code, Windsurf, or other AI tools. No signup needed. Would love feedback if you give it a try. <url>
+```
+
+**LINE** (Thai — LINE's core audience skews Thai, so this one is Thai rather than a direct translation)
+```
+ลองเล่น CopyUI ดูไหม? เว็บรวม prompt สำหรับสร้าง UI ด้วย AI (v0.dev, Cursor, Claude Code, Windsurf ฯลฯ) เลือกธีม ตั้งสี คัดลอก prompt ไปใช้ได้เลย ฟรี ไม่ต้องสมัครสมาชิก <url>
+```
+
+**GitHub README** (a one-liner for referencing CopyUI elsewhere, e.g. an
+awesome-list)
+```
+[CopyUI](<url>) — an AI UI prompt marketplace. Browse UI themes, customize brand color/theme/layout, and copy a production-ready prompt tailored for v0.dev, Cursor, Claude Code, Windsurf, and more.
+```

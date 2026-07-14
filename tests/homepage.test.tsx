@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import GalleryPage from "@/app/page";
 import { LocaleProvider } from "@/components/locale-provider";
 import { TOOL_MODE_LABELS, toolModeShortList } from "@/lib/tool-modes";
+import { SITE_URL } from "@/lib/site";
 import { t } from "@/lib/i18n";
 
 /**
@@ -114,6 +115,12 @@ describe("homepage", () => {
       expect(html).toContain(label);
     }
     expect(html).toContain("prompt marketplace for generating and retheming UI");
+  });
+
+  // A share message with no link doesn't drive anyone anywhere — the
+  // deployed site URL must ride along in the copyable text.
+  it("includes the site URL in the share text, so it's actually useful when pasted", () => {
+    expect(html).toContain(SITE_URL);
   });
 
   it("does not overpromise in the growth section either", () => {

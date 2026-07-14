@@ -157,7 +157,7 @@ const en = {
     "CopyUI is early. Your feedback shapes what gets built next — a confusing result or a missing theme is worth reporting.",
   "growth.shareHeading": "Share CopyUI",
   "growth.shareText":
-    "CopyUI is a prompt marketplace for generating and retheming UI with {tools}.",
+    "CopyUI is a prompt marketplace for generating and retheming UI with {tools}. {url}",
   "growth.shareCopy": "Copy",
   "growth.shareCopied": "Copied!",
 
@@ -288,7 +288,7 @@ const th: Partial<Record<TranslationKey, string>> = {
     "CopyUI ยังอยู่ในช่วงเริ่มต้น ความคิดเห็นของคุณช่วยกำหนดสิ่งที่จะพัฒนาต่อไป — ผลลัพธ์ที่สับสนหรือธีมที่ขาดหายไปคุ้มค่าที่จะแจ้งให้เราทราบ",
   "growth.shareHeading": "แชร์ CopyUI",
   "growth.shareText":
-    "CopyUI คือแหล่งรวม prompt สำหรับสร้างและ Retheme UI ด้วย {tools}",
+    "CopyUI คือแหล่งรวม prompt สำหรับสร้างและ Retheme UI ด้วย {tools} {url}",
   "growth.shareCopy": "คัดลอก",
   "growth.shareCopied": "คัดลอกแล้ว!",
 
@@ -411,7 +411,7 @@ const zhCN: Partial<Record<TranslationKey, string>> = {
     "CopyUI 尚处早期。你的反馈决定接下来要做什么——令人困惑的结果或缺失的主题都值得反馈。",
   "growth.shareHeading": "分享 CopyUI",
   "growth.shareText":
-    "CopyUI 是一个提示词市场，用于通过 {tools} 生成和换主题 UI。",
+    "CopyUI 是一个提示词市场，用于通过 {tools} 生成和换主题 UI。{url}",
   "growth.shareCopy": "复制",
   "growth.shareCopied": "已复制！",
 

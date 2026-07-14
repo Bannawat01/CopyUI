@@ -381,4 +381,17 @@ trade-offs, not blockers — in rough order:
     comments/analytics dashboard added. 183/183 tests, lint + build
     clean, hidden-prompt guarantee re-verified live (0 leak matches).
 
+22. **Launch share kit + custom-domain checklist added (2026-07-10)** —
+    prep for public sharing, documentation-focused. `README.md` gained a
+    **"Custom domain checklist"** (update `NEXT_PUBLIC_SITE_URL` after
+    attaching a domain, redeploy, verify sitemap/robots/canonical/OG show
+    the real domain — implementing the domain itself is out of scope) and
+    a **"Share CopyUI"** section with ready-to-paste blurbs for
+    X/Twitter, LinkedIn, Discord, Facebook groups, LINE (Thai, since
+    LINE's audience skews Thai), and a GitHub-README one-liner. Along the
+    way, found and fixed a real gap in the on-site share block shipped
+    last pass: its copyable text had **no link** — now interpolates the
+    real `SITE_URL`, localized across all 3 locales. 184/184 tests, lint
+    + build clean, hidden-prompt guarantee re-verified live.
+
 This list should be revised as decisions are made — do not treat it as fixed.

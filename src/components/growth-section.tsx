@@ -9,12 +9,19 @@ import {
   type FeedbackLinkId,
 } from "@/lib/feedback";
 import { toolModeList } from "@/lib/tool-modes";
+import { SITE_URL } from "@/lib/site";
 import type { TranslationKey } from "@/lib/i18n";
 
 function ShareCopy() {
   const { t } = useLocale();
   const [copied, setCopied] = useState(false);
-  const shareText = t("growth.shareText", { tools: toolModeList() });
+  // A share message with no link doesn't actually drive anyone anywhere —
+  // NEXT_PUBLIC_SITE_URL is inlined at build time, so this is the real
+  // deployed domain in production and localhost only in local dev.
+  const shareText = t("growth.shareText", {
+    tools: toolModeList(),
+    url: SITE_URL,
+  });
 
   async function handleCopy() {
     try {
